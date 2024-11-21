@@ -1,0 +1,43 @@
+{
+  "name": "stockmanage",
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "scripts": {
+    "test": " concurrently \"npm run test-front\" \"npm run test-back\" ",
+    "dev": " concurrently \"npm run dev-front\" \"npm run dev-back\" ",
+    "dev-front": "cd client && npm run dev-front",
+    "dev-back": "cd server && npm run dev-back",
+    "lint-front": "cd client && npm run lint",
+    "lint-back": "cd server && npm run lint",
+    "test-front": "cd client && npm run test",
+    "test-back": "cd server && npm run test",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*": [
+      "npm run lint-front",
+      "npm run lint-back"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "argon2": "^0.41.1",
+    "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.9.0",
+    "graphql-scalars": "^1.23.0",
+    "reflect-metadata": "^0.2.2",
+    "sqlite3": "^5.1.7",
+    "type-graphql": "^2.0.0-rc.2",
+    "typeorm": "^0.3.20"
+  }
+}

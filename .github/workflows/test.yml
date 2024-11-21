@@ -1,0 +1,42 @@
+name: test
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+    branches: [dev]
+
+jobs:
+  test:
+    name: Run integration on front & back
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses : actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache dependencies
+        id: cache-nextjob
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+            ./server/node_modules
+            ./client/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install packages at root
+        run: echo 1
+
+      - name: Install packages in frontend
+        run: echo 2
+
+      - name: Run tests in front
+        run: echo 3
+
+      - name: Install packages in backend
+        run: echo 4
+
+      - name: Run tests in back
+        run: echo 5
