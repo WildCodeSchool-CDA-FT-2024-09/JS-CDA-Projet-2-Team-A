@@ -27,16 +27,16 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install packages at root
-        run: echo 1
+        run: npm run unit-tests
 
       - name: Install packages in frontend
-        run: echo 2
+        run: npm run unit-tests
 
       - name: Run tests in front
-        run: echo 3
+        run: npm run unit-tests
 
       - name: Install packages in backend
-        run: echo 4
+        run: npm run unit-tests
 
       - name: Run tests in back
-        run: echo 5
+        run: npm run unit-tests
