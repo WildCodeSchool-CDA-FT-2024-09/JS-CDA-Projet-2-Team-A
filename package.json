@@ -17,9 +17,12 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "**/*": [
-      "npm run lint-front",
-      "npm run lint-back"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write --ignore-unknown"
+    ],
+    "*.{json,html}": [
+      "prettier --write --ignore-unknown"
     ]
   },
   "devDependencies": {
