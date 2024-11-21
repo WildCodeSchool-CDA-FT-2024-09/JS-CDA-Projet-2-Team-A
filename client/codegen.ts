@@ -5,7 +5,7 @@ const { VITE_GRAPHQL_API_URL } = process.env;
 
 const config: CodegenConfig = {
   schema: VITE_GRAPHQL_API_URL,
-  documents: ["src/schema/**/*.ts"],
+  documents: ["src/schemas/**/*.ts"],
   generates: {
     "src/generated/graphql-types.ts": {
       plugins: [
