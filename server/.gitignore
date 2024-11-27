@@ -141,4 +141,5 @@ dist-ssr
 *.sw?
 
 # Database Sqlite file
-.src/db/db.sqlite
+src/db/db.sqlite
+data/*.json
