@@ -4,32 +4,28 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "workspaces": [
-    "client",
-    "server"
-  ],
   "scripts": {
     "unit-tests": "echo 'TODO: Run Unit Tests'",
     "test": " concurrently \"npm run test-front\" \"npm run test-back\" ",
     "dev": " concurrently \"npm run dev-front\" \"npm run dev-back\" ",
-    "lint": "eslint --fix",
-    "dev-front": "npm run dev --workspace=client",
-    "dev-back": "npm run dev --workspace=server",
-    "lint-front": "npm run lint --workspace=client",
-    "lint-back": "npm run lint --workspace=server",
-    "test-front": "npm run test --workspace=client",
-    "test-back": "npm run test --workspace=server",
+    "lint": "eslint --fix --ignore-path .gitignore",
+    "dev-front": "npm run dev --prefix client",
+    "dev-back": "npm run dev --prefix server",
+    "lint-front": "npm run lint --prefix client",
+    "lint-back": "npm run lint --prefix server",
+    "test-front": "npm run test --prefix client",
+    "test-back": "npm run test --prefix server",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
     "server/**/*.{js,ts}": [
-      "npm run lint",
-      "npm run format --workspace=server"
+      "npm run lint-back",
+      "npm run format --prefix server"
     ],
     "client/**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run format --workspace=client"
+      "npm run lint-front",
+      "npm run format --prefix client"
     ]
   },
   "devDependencies": {
