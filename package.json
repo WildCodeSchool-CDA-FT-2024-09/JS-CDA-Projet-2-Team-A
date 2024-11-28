@@ -23,12 +23,13 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts}": [
-      "eslint --fix",
-      "prettier --write --ignore-unknown"
+    "api//*.{js,ts}": [
+      "npm run lint-back",
+      "npm run format --workspace=server"
     ],
-    "*.{json}": [
-      "prettier --write --ignore-unknown"
+    "client//*.{js,jsx,ts,tsx}": [
+      "npm run lint-front",
+      "npm run format --workspace=client"
     ]
   },
   "devDependencies": {
