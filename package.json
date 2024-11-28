@@ -23,12 +23,12 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "api//*.{js,ts}": [
-      "npm run lint-back",
+    "server/**/*.{js,ts}": [
+      "npm run lint",
       "npm run format --workspace=server"
     ],
-    "client//*.{js,jsx,ts,tsx}": [
-      "npm run lint-front",
+    "client/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint",
       "npm run format --workspace=client"
     ]
   },
