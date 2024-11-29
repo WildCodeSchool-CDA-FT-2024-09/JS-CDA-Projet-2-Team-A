@@ -5,7 +5,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import "reflect-metadata";
 import { Order } from "./order.entities";
 import { Product } from "./product.entities";
 

@@ -6,6 +6,7 @@
     "test": "jest --config ./jest.config.ts",
     "dev": "ts-node-dev ./index.ts",
     "lint": "eslint --fix",
+    "format": "prettier --write '*/**/*.{js,ts}'",
     "seed": "ts-node-dev ./src/db/seed-mock.ts"
   },
   "author": "",

@@ -5,7 +5,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import "reflect-metadata";
 import { Product } from "./product.entities";
 import { Employee } from "./employee.entities";
 

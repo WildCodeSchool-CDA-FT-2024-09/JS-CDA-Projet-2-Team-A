@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import "reflect-metadata";
 import { Role } from "./role.entities";
 import { Message } from "./message.entities";
 

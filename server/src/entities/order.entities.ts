@@ -5,7 +5,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import "reflect-metadata";
 import { Product } from "./product.entities";
 
 @Entity("order")

@@ -156,34 +156,6 @@ const productsArray = Array.isArray(products) ? products : [];
       })
     );
 
-    // await Promise.all(
-    //   savedProducts.map(async (product) => {
-    //     product.suppliers = savedSuppliers.filter((supplier) => {
-    //       const relations = supplier_product.filter(
-    //         (rel) =>
-    //           rel.product_id === product.id && rel.supplier_id === supplier.id
-    //       );
-    //       return relations.some((rel) => rel.supplier_id === supplier.id);
-    //     });
-
-    //     return await product.save();
-    //   })
-    // );
-
-    // await Promise.all(
-    //   savedProducts.map(async (product) => {
-    //     product.employees = savedEmployees.filter((employee) => {
-    //       const relations = employee_product.filter(
-    //         (rel) =>
-    //           rel.product_id === product.id && rel.employee_id === employee.id
-    //       );
-    //       return relations.some((rel) => rel.employee_id === employee.id);
-    //     });
-
-    //     return await product.save();
-    //   })
-    // );
-
     const savedRoles = await Promise.all(
       roles.map(async (roleEl: RoleType) => {
         const role = new Role();

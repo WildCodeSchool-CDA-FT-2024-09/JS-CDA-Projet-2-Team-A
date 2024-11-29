@@ -5,7 +5,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from "typeorm";
-import "reflect-metadata";
 import { User } from "./user.entities";
 
 @Entity("message")
@@ -22,7 +21,7 @@ export class Message extends BaseEntity {
   @Column({ type: "timestamp" })
   created_at: Date;
 
-  //"pending" | "read" | "archived"
+  // statuts possibles : "pending" | "read" | "archived"
   @Column()
   message_status: string;
 
