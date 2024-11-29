@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import "reflect-metadata";
 import { Role } from "./role.entities";
+import { Message } from "./message.entities";
 
 @Entity("user")
 export class User extends BaseEntity {
@@ -24,4 +26,7 @@ export class User extends BaseEntity {
 
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
+
+  @OneToMany(() => Message, (message) => message.id)
+  messages: Message[];
 }

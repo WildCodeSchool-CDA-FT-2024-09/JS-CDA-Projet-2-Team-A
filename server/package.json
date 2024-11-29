@@ -6,7 +6,7 @@
     "test": "jest --config ./jest.config.ts",
     "dev": "ts-node-dev ./index.ts",
     "lint": "eslint --fix",
-    "seed": "ts-node-dev ./src/db/seed.ts"
+    "seed": "ts-node-dev ./src/db/seed-mock.ts"
   },
   "author": "",
   "license": "ISC",

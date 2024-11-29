@@ -2,9 +2,8 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import "reflect-metadata";
@@ -26,6 +25,9 @@ export class Product extends BaseEntity {
   @Column({ nullable: true })
   color?: string;
 
+  @Column({ nullable: true })
+  commentary?: string;
+
   @Column()
   category: string;
 
@@ -44,14 +46,12 @@ export class Product extends BaseEntity {
   @Column()
   active: boolean;
 
-  @ManyToMany(() => Supplier, (supplier) => supplier.products)
-  @JoinTable()
-  suppliers?: Supplier[];
+  @ManyToOne(() => Supplier, (supplier) => supplier.products)
+  supplier: Supplier;
 
-  @ManyToMany(() => Employee, (employee) => employee.products)
-  @JoinTable()
-  employees?: Employee[];
+  @ManyToOne(() => Employee, (employee) => employee.products)
+  employee: Employee;
 
   @OneToMany(() => Order, (order) => order.id)
-  orders?: Order[];
+  orders: Order[];
 }

@@ -20,5 +20,5 @@ export class Order extends BaseEntity {
   created_at: Date;
 
   @OneToMany(() => Product, (product) => product.id)
-  products?: Product[];
+  products: Product[];
 }

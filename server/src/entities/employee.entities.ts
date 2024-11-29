@@ -2,7 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
+  OneToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -27,6 +27,6 @@ export class Employee extends BaseEntity {
   @ManyToOne(() => Supplier, (supplier) => supplier.id)
   supplier: Supplier;
 
-  @ManyToMany(() => Product, (product) => product.id)
-  products?: Product[];
+  @OneToMany(() => Product, (product) => product.id)
+  products: Product[];
 }

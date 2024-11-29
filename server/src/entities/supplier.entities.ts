@@ -2,7 +2,6 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -42,9 +41,12 @@ export class Supplier extends BaseEntity {
   @Column()
   active: boolean;
 
-  @ManyToMany(() => Product, (product) => product.suppliers)
-  products?: Product[];
+  @Column({ nullable: true })
+  commentary?: string;
+
+  @OneToMany(() => Product, (product) => product.supplier)
+  products: Product[];
 
   @OneToMany(() => Employee, (employee) => employee.id)
-  employees?: Employee[];
+  employees: Employee[];
 }

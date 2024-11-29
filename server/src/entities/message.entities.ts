@@ -1,5 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from "typeorm";
 import "reflect-metadata";
+import { User } from "./user.entities";
 
 @Entity("message")
 export class Message extends BaseEntity {
@@ -18,4 +25,7 @@ export class Message extends BaseEntity {
   //"pending" | "read" | "archived"
   @Column()
   message_status: string;
+
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 }
