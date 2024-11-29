@@ -8,7 +8,7 @@
     "unit-tests": "echo 'TODO: Run Unit Tests'",
     "test": " concurrently \"npm run test-front\" \"npm run test-back\" ",
     "dev": " concurrently \"npm run dev-front\" \"npm run dev-back\" ",
-    "lint": "eslint --fix",
+    "lint": "eslint --fix --ignore-path .gitignore",
     "dev-front": "npm run dev --prefix client",
     "dev-back": "npm run dev --prefix server",
     "lint-front": "npm run lint --prefix client",
@@ -19,12 +19,12 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "server/*.{js,jsx,ts,tsx}": [
-      "npm run lint --prefix server",
+    "server/**/*.{js,ts}": [
+      "npm run lint-back",
       "npm run format --prefix server"
     ],
-    "client/*.{js,jsx,ts,tsx}": [
-      "npm run lint --prefix client",
+    "client/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint-front",
       "npm run format --prefix client"
     ]
   },
