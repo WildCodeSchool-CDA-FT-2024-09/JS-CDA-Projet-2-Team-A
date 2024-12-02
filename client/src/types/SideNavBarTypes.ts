@@ -7,6 +7,6 @@ export type SideNavBarPropsType = {
 
 export type linkType = {
   name: string;
-  url: string;
+  url?: string;
   icon: ReactElement;
 };

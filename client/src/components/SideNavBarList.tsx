@@ -8,6 +8,7 @@ import { blue } from "@mui/material/colors";
 import { NavLink, useLocation } from "react-router-dom";
 import { ReactElement } from "react";
 import { linkType } from "../types/SideNavBarTypes.ts";
+import Typography from "@mui/material/Typography";
 
 export default function SideNavBarList({
   link,
@@ -31,15 +32,22 @@ export default function SideNavBarList({
         ></ListItemIcon>
         <ListItemText
           primary={
-            <NavLink
-              to={`${link.url}`}
-              style={({ isActive }: { isActive: boolean }) => ({
-                color: isActive ? blue[500] : "inherit",
-                textDecoration: "none",
-              })}
-            >
-              {link.name}
-            </NavLink>
+            link.url !== undefined ? (
+              <NavLink
+                to={`${link.url}`}
+                style={({ isActive }: { isActive: boolean }) => ({
+                  color: isActive ? blue[500] : "inherit",
+                  textDecoration: "none",
+                })}
+              >
+                {link.name}
+              </NavLink>
+            ) : (
+              <Typography // Rajouter ici le onClick/onKeyDown lier à la déconnexion
+              >
+                {link.name}
+              </Typography>
+            )
           }
         />
       </ListItemButton>

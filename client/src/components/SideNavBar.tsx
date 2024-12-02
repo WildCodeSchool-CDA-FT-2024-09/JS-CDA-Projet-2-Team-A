@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { Box, Drawer, List, Toolbar } from "@mui/material";
 import SideNavBarList from "./SideNavBarList.tsx";
-import { staticLinks } from "../assets/SideNavBarLinks/StaticLinks.tsx";
+import { allLinks } from "../links/SideNavBarLinks/allLinks.tsx";
 import { linkType, SideNavBarPropsType } from "../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
@@ -10,8 +10,6 @@ export default function SideNavBar({
   teamLinks,
   teamDashboardUrl,
 }: SideNavBarPropsType): ReactElement {
-  const drawerWidthInDVW = "22dvw"; // Largeur de la navbar
-
   return (
     <Box component="nav">
       <Drawer
@@ -20,7 +18,7 @@ export default function SideNavBar({
         sx={{
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidthInDVW,
+            width: "22dvw", // largeur de la navbar
             minWidth: "200px",
             maxWidth: "250px",
             boxSizing: "border-box",
@@ -46,7 +44,7 @@ export default function SideNavBar({
         </List>
         <Box sx={{ marginTop: "auto" }}>
           <List>
-            {staticLinks.map((link: linkType) => (
+            {allLinks.static.map((link: linkType) => (
               <SideNavBarList link={link} key={link.name} />
             ))}
           </List>
