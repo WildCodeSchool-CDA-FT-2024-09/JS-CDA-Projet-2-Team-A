@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// TODO : En prévision de la finalisation du système d'authentification
+// TODO : En prévision de la finalisation du système d'authentification (US02).
 // import { useNavigate } from 'react-router-dom';
 
 import TextField from "@mui/material/TextField";
@@ -55,10 +55,10 @@ export default function Login() {
       return;
     }
 
-    // TODO : En prévision de l'implémentation des données.
+    // TODO : En prévision de l'implémentation des données (US02).
 
     // try {
-    //   const res = await fetch("http://localhost:4000/api/login", { // ! Besoin du changement de la méthode.
+    //   const res = await fetch("http://localhost:4000/api/login", {
     //     method: "POST",
     //     headers: { "Content-Type": "application/json" },
     //     body: JSON.stringify({ email: formState.email, password: formState.password })
