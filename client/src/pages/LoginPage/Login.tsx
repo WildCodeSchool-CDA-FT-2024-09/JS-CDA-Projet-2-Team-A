@@ -16,8 +16,6 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-import "./Login.css";
-
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState({ email: "", password: "" });
@@ -81,7 +79,7 @@ export default function Login() {
     // }
   };
 
-  const preventDefault = (event: React.SyntheticEvent) =>
+  const handleLinkClick = (event: React.SyntheticEvent) =>
     event.preventDefault();
 
   const handleMouseDownPassword = (
@@ -214,7 +212,7 @@ export default function Login() {
             href="#" // ! Lien à modifier une fois le système de réinitialisation du mot de passe défini.
             role="button"
             aria-label="Réintialiser votre mot de passe"
-            onClick={preventDefault}
+            onClick={handleLinkClick}
             sx={{
               typography: "body1",
               "& > :not(style) ~ :not(style)": {
