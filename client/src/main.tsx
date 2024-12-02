@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
         children: [],
       },
       { path: "/atelier", element: "workshop", children: [] },
-      { path: "/admin", element: "admin", children: [] },
+      { path: "/admin", element: <AdminHomePage />, children: [] },
     ],
   },
 ]);
