@@ -18,8 +18,10 @@ import Box from "@mui/material/Box";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [formState, setFormState] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({ email: "", password: "", global: "" });
+  const [formState, setFormState] = useState({
+    form: { email: "", password: "" },
+    errors: { email: "", password: "", global: "" },
+  });
 
   // TODO : En prévision de la finalisation du système d'authentification
   // const navigate = useNavigate()
@@ -28,27 +30,33 @@ export default function Login() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormState((preventDefault) => ({ ...preventDefault, [name]: value }));
-    setErrors((preventDefault) => ({ ...preventDefault, [name]: "" }));
+    setFormState((prevState) => ({
+      ...prevState,
+      form: { ...prevState.form, [name]: value },
+      errors: { ...prevState.errors, [name]: "" },
+    }));
   };
 
   const validateFields = () => {
     const newErrors = { email: "", password: "", global: "" };
-    if (!formState.email) {
+    if (!formState.form.email) {
       newErrors.email = "L'email est obligatoire.";
-    } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(formState.form.email)) {
       newErrors.email = "L'email est invalide.";
     }
-    if (!formState.password) {
+    if (!formState.form.password) {
       newErrors.password = "Le mot de passe est obligatoire.";
     }
-    setErrors(newErrors);
+    setFormState((prevState) => ({ ...prevState, errors: newErrors }));
     return !newErrors.email && !newErrors.password;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setErrors((preventDefault) => ({ ...preventDefault, global: "" }));
+    setFormState((prevState) => ({
+      ...prevState,
+      errors: { ...prevState.errors, global: "" },
+    }));
 
     if (!validateFields()) {
       return;
@@ -114,6 +122,7 @@ export default function Login() {
           component="img"
           src="/StockManage_logo_xl.png"
           alt="Logo de StockManage version complète"
+          loading="lazy"
           sx={{
             width: "60%",
           }}
@@ -134,6 +143,7 @@ export default function Login() {
           component="img"
           src="/StockManage_logo.png"
           alt="Logo de StockManage version simplifiée"
+          loading="lazy"
           aria-hidden="true"
           sx={{
             width: "15%",
@@ -164,10 +174,11 @@ export default function Login() {
             label="Email"
             name="email"
             autoComplete="email"
-            value={formState.email}
-            error={!!errors.email}
-            helperText={errors.email}
+            value={formState.form.email}
+            error={!!formState.errors.email}
+            helperText={formState.errors.email}
             onChange={handleChange}
+            aria-invalid={!!formState.errors.email}
           />
           <FormControl
             sx={{
@@ -185,7 +196,7 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               name="password"
               autoComplete="current-password"
-              value={formState.password}
+              value={formState.form.password}
               onChange={handleChange}
               endAdornment={
                 <InputAdornment position="end">
@@ -204,14 +215,15 @@ export default function Login() {
                   </IconButton>
                 </InputAdornment>
               }
-              error={!!errors.password}
+              error={!!formState.errors.password}
               label="Mot de passe"
+              aria-invalid={!!formState.errors.password}
             />
           </FormControl>
           <Link
             href="#" // ! Lien à modifier une fois le système de réinitialisation du mot de passe défini.
             role="button"
-            aria-label="Réintialiser votre mot de passe"
+            aria-label="Réinitialiser votre mot de passe"
             onClick={handleLinkClick}
             sx={{
               typography: "body1",
@@ -223,11 +235,10 @@ export default function Login() {
           >
             Mot de passe oublié
           </Link>
-          {errors.password && (
-            <Typography color="error">{errors.password}</Typography>
-          )}
-          {errors.global && (
-            <Typography color="error">{errors.global}</Typography>
+          {formState.errors.global && (
+            <Typography color="error" role="alert">
+              {formState.errors.global}
+            </Typography>
           )}
           <Button variant="contained" type="submit">
             Se Connecter
