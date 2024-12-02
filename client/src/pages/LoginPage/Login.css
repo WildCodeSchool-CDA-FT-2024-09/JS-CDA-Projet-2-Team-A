@@ -1,0 +1,34 @@
+.login-container {
+  display: flex;
+  gap: 20px;
+}
+
+.logo-xl-container {
+  width: 50dvw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-logo-xl{
+  width: 60%;
+}
+
+.login-form-container{
+  width: 50dvw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-logo-sm{
+  width: 15%;
+}
+
+.login-inputs{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
