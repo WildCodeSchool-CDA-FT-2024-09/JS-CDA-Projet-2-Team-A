@@ -1,7 +1,9 @@
+import Login from "./pages/LoginPage/Login";
+
 export default function App() {
   return (
     <>
-      <h1>Stock Manage</h1>
+      <Login />
     </>
   );
 }
