@@ -14,6 +14,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 import "./Login.css";
 
@@ -96,20 +97,49 @@ export default function Login() {
   };
 
   return (
-    <main className="login-container">
-      <div className="logo-xl-container">
-        <img
-          className="login-logo-xl"
+    <Box
+      component="main"
+      sx={{
+        display: "flex",
+        gap: "20px",
+      }}
+    >
+      <Box
+        sx={{
+          width: "50dvw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="img"
           src="/StockManage_logo_xl.png"
           alt="Logo de StockManage version complète"
+          sx={{
+            width: "60%",
+          }}
         />
-      </div>
-      <section className="login-form-container">
-        <img
-          className="login-logo-sm"
+      </Box>
+      <Box
+        component="section"
+        sx={{
+          width: "50dvw",
+          height: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          component="img"
           src="/StockManage_logo.png"
           alt="Logo de StockManage version simplifiée"
           aria-hidden="true"
+          sx={{
+            width: "15%",
+          }}
         />
         <Typography
           variant="h6"
@@ -121,7 +151,15 @@ export default function Login() {
         >
           Connexion à StockManage
         </Typography>
-        <form className="login-inputs" onSubmit={handleSubmit}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center",
+          }}
+        >
           <TextField
             required
             id="login"
@@ -196,8 +234,8 @@ export default function Login() {
           <Button variant="contained" type="submit">
             Se Connecter
           </Button>
-        </form>
-      </section>
-    </main>
+        </Box>
+      </Box>
+    </Box>
   );
 }
