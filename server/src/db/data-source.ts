@@ -1,13 +1,36 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import "dotenv/config";
-import { Example } from "../entities/index";
+import {
+  Product,
+  Supplier,
+  Employee,
+  Role,
+  User,
+  Message,
+  Order,
+  OrderProduct,
+} from "../entities/index";
 
-const { SQLITE_FILE } = process.env;
+const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } =
+  process.env;
 
 const dataSourceOptions: DataSourceOptions = {
-  type: "sqlite",
-  database: SQLITE_FILE as string,
-  entities: [Example],
+  type: "postgres",
+  host: POSTGRES_HOST,
+  port: 5432,
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  entities: [
+    Product,
+    Supplier,
+    Employee,
+    Role,
+    User,
+    Message,
+    Order,
+    OrderProduct,
+  ],
   synchronize: true,
   logging: false, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
 };

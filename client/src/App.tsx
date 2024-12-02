@@ -1,5 +1,9 @@
-import { Outlet } from "react-router-dom";
+import Login from "./pages/LoginPage/Login";
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <Login />
+    </>
+  );
 }
