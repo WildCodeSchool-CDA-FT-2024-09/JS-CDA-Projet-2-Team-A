@@ -1,3 +1,8 @@
+import { useState } from "react";
+
+// TODO : En prévision de la finalisation du système d'authentification
+// import { useNavigate } from 'react-router-dom';
+
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -10,7 +15,74 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 
+import "./Login.css";
+
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "", global: "" });
+
+  // TODO : En prévision de la finalisation du système d'authentification
+  // const navigate = useNavigate()
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormState((preventDefault) => ({ ...preventDefault, [name]: value }));
+    setErrors((preventDefault) => ({ ...preventDefault, [name]: "" }));
+  };
+
+  const validateFields = () => {
+    const newErrors = { email: "", password: "", global: "" };
+    if (!formState.email) {
+      newErrors.email = "L'email est obligatoire.";
+    } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
+      newErrors.email = "L'email est invalide.";
+    }
+    if (!formState.password) {
+      newErrors.password = "Le mot de passe est obligatoire.";
+    }
+    setErrors(newErrors);
+    return !newErrors.email && !newErrors.password;
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrors((preventDefault) => ({ ...preventDefault, global: "" }));
+
+    if (!validateFields()) {
+      return;
+    }
+
+    // TODO : En prévision de l'implémentation des données.
+
+    // try {
+    //   const res = await fetch("http://localhost:4000/api/login", { // ! Besoin du changement de la méthode.
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ email: formState.email, password: formState.password })
+    //   });
+
+    //   const data = await res.json();
+
+    //   if(!res.ok) {
+    //     throw new Error(data.message || "Erreur lors de la connexion")
+    //   }
+
+    //   const { token, redirectUrl } = data;
+
+    //   localStorage.setItem("authToken", token);
+
+    //   navigate(redirectUrl);
+    // } catch (err : any) {
+    //   setErrors(err.message)
+    // }
+  };
+
+  const preventDefault = (event: React.SyntheticEvent) =>
+    event.preventDefault();
+
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -104,7 +176,7 @@ export default function Login() {
             href="#" // ! Lien à modifier une fois le système de réinitialisation du mot de passe défini.
             role="button"
             aria-label="Réintialiser votre mot de passe"
-            // onClick={preventDefault}
+            onClick={preventDefault}
             sx={{
               typography: "body1",
               "& > :not(style) ~ :not(style)": {
