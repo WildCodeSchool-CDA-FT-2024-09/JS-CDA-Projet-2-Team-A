@@ -8,6 +8,7 @@ import { UserProvider } from "./contexts/UserContext.tsx";
 import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
 
 import "./index.css";
+import SupplierHomePage from "./pages/SupplierHomePage/SupplierHomePage.tsx";
 const router = createBrowserRouter([
   {
     path: "",
