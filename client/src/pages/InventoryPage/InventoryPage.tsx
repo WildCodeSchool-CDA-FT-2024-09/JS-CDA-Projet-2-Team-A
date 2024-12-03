@@ -1,28 +1,36 @@
-import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
+import SideNavBar from "../../components/SideNavbar/SideNavBar";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
-import users from "../../../../server/data/mock/users.json";
-import roles from "../../../../server/data/mock/roles.json";
+import products from "../../../../server/data/mock/products.json";
 
-const rolesName = new Map(roles.map((role) => [role.id, role.role]));
-export default function AdminHomePage() {
+export default function InventoryPage() {
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Nom", width: 250 },
-    { field: "role", headerName: "Rôle", width: 250 },
-    { field: "login", headerName: "Login", width: 250 },
+    { field: "id", headerName: "ID", width: 10 },
+    { field: "category", headerName: "Catégorie", width: 200 },
+    { field: "product", headerName: "Produit", width: 200 },
+    { field: "material", headerName: "Matériau", width: 150 },
+    { field: "color", headerName: "Couleur", width: 150 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "minimal", headerName: "Seuil", width: 100 },
+    { field: "stock", headerName: "Stock", width: 100 },
+    { field: "status", headerName: "Etat", width: 200 },
+    { field: "supplier", headerName: "Fournisseur", width: 200 },
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const data = users.map((user, index) => ({
+  const data = products.map((product, index) => ({
     id: index + 1,
-    name: user.name,
-    role: rolesName.get(user.role),
-    login: user.login,
+    product: product.product,
+    material: product.material,
+    color: product.color,
+    category: product.category,
+    description: product.description,
+    stock: product.stock,
+    supplier: product.supplier,
   }));
 
   return (
@@ -50,7 +58,7 @@ export default function AdminHomePage() {
               mb: 3,
             }}
           >
-            Liste des utilisateurs
+            Liste des produits
           </Typography>
           <Button
             variant="contained"
@@ -59,7 +67,7 @@ export default function AdminHomePage() {
               height: "40px",
             }}
           >
-            Ajouter un utilisateur
+            Ajouter un produit
           </Button>
         </Box>
         <DashboardList columns={columns} data={data} />
