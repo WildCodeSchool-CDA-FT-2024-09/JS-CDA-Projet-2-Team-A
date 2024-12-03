@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
+import InventoryPage from "./pages/InventoryPage/InventoryPage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -9,14 +11,23 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
-      { path: "/achat", element: "buyer", children: [] },
+      { path: "achat", element: <InventoryPage />, children: [] },
       {
-        path: "/approvisionnement",
+        path: "approvisionnement",
         element: "supply",
+        children: [
+          {
+            path: "inventaire",
+            element: <InventoryPage />,
+          },
+        ],
+      },
+      {
+        path: "atelier",
+        element: <InventoryPage />,
         children: [],
       },
-      { path: "/atelier", element: "workshop", children: [] },
-      { path: "/admin", element: "admin", children: [] },
+      { path: "admin", element: <AdminHomePage />, children: [] },
     ],
   },
 ]);

@@ -1,7 +1,12 @@
+import Login from "./pages/LoginPage/Login";
+import { Outlet } from "react-router-dom";
+
 export default function App() {
   return (
     <>
-      <h1>Stock Manage</h1>
+      <Login />
+      <Outlet /> // Temporaire pour pouvoir afficher visuellement la navbar sans
+      se logger
     </>
   );
 }
