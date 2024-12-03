@@ -7,7 +7,7 @@ import {
 import { blue } from "@mui/material/colors";
 import { NavLink, useLocation } from "react-router-dom";
 import { ReactElement } from "react";
-import { linkType, linkTypeOpt } from "../types/SideNavBarTypes.ts";
+import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import Typography from "@mui/material/Typography";
 
 export default function SideNavBarList({

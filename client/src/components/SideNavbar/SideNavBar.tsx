@@ -6,8 +6,8 @@ import {
   allLinks,
   bottomLinks,
   homePageUrls,
-} from "../links/SideNavBarLinks/allLinks.tsx";
-import { linkType, linkTypeOpt } from "../types/SideNavBarTypes.ts";
+} from "../../links/SideNavBarLinks/allLinks.tsx";
+import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
 export default function SideNavBar(): ReactElement {
