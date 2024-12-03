@@ -6,6 +6,7 @@ import { User } from "./user.entities";
 import { Message } from "./message.entities";
 import { Order } from "./order.entities";
 import { OrderProduct } from "./order_product.entities";
+import { Example } from "./Example";
 
 export {
   Product,
@@ -16,4 +17,5 @@ export {
   Message,
   Order,
   OrderProduct,
+  Example,
 };

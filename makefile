@@ -9,3 +9,6 @@ test:
 
 dev:
 	docker compose -f docker-compose.dev.yml up --build -d
+
+seed:
+	docker compose -f docker-compose.dev.yml run server npm run seed
