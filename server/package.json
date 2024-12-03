@@ -7,8 +7,8 @@
     "dev": "ts-node-dev ./index.ts",
     "lint": "eslint --fix",
     "format": "prettier --write '*/**/*.{js,ts}'",
-    "seed": "ts-node-dev ./src/db/seed-mock.ts",
-    "createschema": "npx ts-node ./node_modules/typeorm/cli.js schema:sync -d ./src/db/data-source.ts"
+    "seed-dev": "ts-node-dev ./src/db/seed-mock.ts",
+    "create-schema": "npx ts-node ./node_modules/typeorm/cli.js schema:sync -d ./src/db/data-source.ts"
   },
   "author": "",
   "license": "ISC",
