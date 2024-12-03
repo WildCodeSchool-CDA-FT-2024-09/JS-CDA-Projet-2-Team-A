@@ -24,13 +24,8 @@ const router = createBrowserRouter([
       },
       {
         path: "atelier",
-        element: "workshop",
-        children: [
-          {
-            path: "inventaire",
-            element: <InventroyPage />,
-          },
-        ],
+        element: <InventroyPage />,
+        children: [],
       },
       { path: "admin", element: <AdminHomePage />, children: [] },
     ],
