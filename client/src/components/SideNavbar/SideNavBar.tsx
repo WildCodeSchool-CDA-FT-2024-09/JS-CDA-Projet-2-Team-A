@@ -18,12 +18,19 @@ export default function SideNavBar({ role }: { role: string }): ReactElement {
         variant="permanent"
         anchor="left"
         sx={{
+          height: "100%",
+          width: "22dvw", // largeur de la navbar
+          minWidth: "200px",
+          maxWidth: "250px",
+          boxSizing: "border-box",
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: "22dvw", // largeur de la navbar
-            minWidth: "200px",
-            maxWidth: "250px",
-            boxSizing: "border-box",
+            // Obligatoire de répéter les propriétés suivantes. Il doit dépendre du parent.
+            height: "inherit",
+            width: "inherit",
+            minWidth: "inherit",
+            maxWidth: "inherit",
+            boxSizing: "inherit",
           },
         }}
       >

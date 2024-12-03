@@ -4,6 +4,7 @@ import DashboardList from "../../components/DashboardList/DashboardList";
 import users from "../../../../server/data/mock/users.json";
 import roles from "../../../../server/data/mock/roles.json";
 import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
+import Box from "@mui/material/Box";
 
 const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
@@ -25,10 +26,13 @@ export default function AdminHomePage() {
   const title = "Liste des utilisateurs";
 
   return (
-    <>
-      {/*Rôle fournit en dur en attente du contexte*/}
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       <SideNavBar role={"4"} />
       <DashboardList title={title} columns={columns} data={data} />
-    </>
+    </Box>
   );
 }
