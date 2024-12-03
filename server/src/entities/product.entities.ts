@@ -39,10 +39,10 @@ export class Product extends BaseEntity {
   @Column()
   stock: number;
 
-  @Column()
+  @Column({ default: 10 })
   min_quantity: number;
 
-  @Column()
+  @Column({ default: true })
   active: boolean;
 
   @ManyToOne(() => Supplier, (supplier) => supplier.products)

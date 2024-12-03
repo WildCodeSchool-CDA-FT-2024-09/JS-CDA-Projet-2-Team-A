@@ -37,7 +37,7 @@ export class Supplier extends BaseEntity {
   @Column()
   delay: number;
 
-  @Column()
+  @Column({ default: true })
   active: boolean;
 
   @Column({ nullable: true })
