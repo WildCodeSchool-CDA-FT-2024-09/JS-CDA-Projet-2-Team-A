@@ -4,6 +4,7 @@ import DashboardList from "../../components/DashboardList/DashboardList";
 import users from "../../../../server/data/data/mock/users.json";
 import roles from "../../../../server/data/data/mock/roles.json";
 
+const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
@@ -12,8 +13,7 @@ export default function AdminHomePage() {
     { field: "login", headerName: "Login", width: 250 },
   ];
 
-  const rolesName = new Map(roles.map((role) => [role.id, role.role]));
-
+  // TODO : Données à changer une fois la connexion à la BDD réalisée
   const data = users.map((user, index) => ({
     id: index + 1,
     name: user.name,
@@ -23,9 +23,5 @@ export default function AdminHomePage() {
 
   const title = "Liste des utilisateurs";
 
-  return (
-    <>
-      <DashboardList title={title} columns={columns} data={data} />
-    </>
-  );
+  return <DashboardList title={title} columns={columns} data={data} />;
 }
