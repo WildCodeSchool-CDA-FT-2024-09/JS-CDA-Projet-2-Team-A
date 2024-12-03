@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
-import InventroyPage from "./pages/InventoryPage/InventoryPage.tsx";
+import InventoryPage from "./pages/InventoryPage/InventoryPage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -11,20 +11,20 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
-      { path: "achat", element: <InventroyPage />, children: [] },
+      { path: "achat", element: <InventoryPage />, children: [] },
       {
         path: "approvisionnement",
         element: "supply",
         children: [
           {
             path: "inventaire",
-            element: <InventroyPage />,
+            element: <InventoryPage />,
           },
         ],
       },
       {
         path: "atelier",
-        element: <InventroyPage />,
+        element: <InventoryPage />,
         children: [],
       },
       { path: "admin", element: <AdminHomePage />, children: [] },

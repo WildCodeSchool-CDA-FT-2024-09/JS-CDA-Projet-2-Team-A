@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
 import products from "../../../../server/data/mock/products.json";
 
-export default function InventroyPage() {
+export default function InventoryPage() {
   const columns = [
     { field: "id", headerName: "ID", width: 10 },
     { field: "category", headerName: "Catégorie", width: 200 },
