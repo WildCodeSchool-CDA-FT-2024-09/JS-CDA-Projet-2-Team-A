@@ -2,14 +2,17 @@ import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { Box, Drawer, List, Toolbar } from "@mui/material";
 import SideNavBarList from "./SideNavBarList.tsx";
-import { allLinks } from "../links/SideNavBarLinks/allLinks.tsx";
-import { linkType, SideNavBarPropsType } from "../types/SideNavBarTypes.ts";
+import {
+  allLinks,
+  bottomLinks,
+  homePageUrls,
+} from "../links/SideNavBarLinks/allLinks.tsx";
+import { linkType, linkTypeOpt } from "../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
-export default function SideNavBar({
-  teamLinks,
-  teamDashboardUrl,
-}: SideNavBarPropsType): ReactElement {
+export default function SideNavBar(): ReactElement {
+  const adminRole = "4"; // Ecrit en dur en attente de la mise en place du contexte.
+  const { url } = homePageUrls.find((link) => link.role.includes(adminRole))!; // Récupération de l'url selon le rôle de l'utilisateur
   return (
     <Box component="nav">
       <Drawer
@@ -26,7 +29,7 @@ export default function SideNavBar({
         }}
       >
         <Toolbar sx={{ justifyContent: "center" }}>
-          <Link to={`/${teamDashboardUrl}`}>
+          <Link to={url}>
             <Box
               component="img"
               src={logo}
@@ -38,13 +41,16 @@ export default function SideNavBar({
           </Link>
         </Toolbar>
         <List>
-          {teamLinks.map((link: linkType) => (
-            <SideNavBarList link={link} key={link.name} />
-          ))}
+          {allLinks.reduce((acc: ReactElement[], link: linkType) => {
+            if (link.role.includes(adminRole)) {
+              acc.push(<SideNavBarList link={link} key={link.name} />);
+            }
+            return acc;
+          }, [])}
         </List>
         <Box sx={{ marginTop: "auto" }}>
           <List>
-            {allLinks.static.map((link: linkType) => (
+            {bottomLinks.map((link: linkTypeOpt) => (
               <SideNavBarList link={link} key={link.name} />
             ))}
           </List>
