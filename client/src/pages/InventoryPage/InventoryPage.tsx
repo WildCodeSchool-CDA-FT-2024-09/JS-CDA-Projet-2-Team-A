@@ -1,6 +1,8 @@
 import SideNavBar from "../../components/SideNavbar/SideNavBar";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
 import products from "../../../../server/data/mock/products.json";
@@ -31,8 +33,6 @@ export default function InventroyPage() {
     supplier: product.supplier,
   }));
 
-  const title = "Liste des produits";
-
   return (
     <>
       <SideNavBar />
@@ -42,7 +42,35 @@ export default function InventroyPage() {
           padding: "10px",
         }}
       >
-        <DashboardList title={title} columns={columns} data={data} />
+        <Box
+          component="section"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              mt: 3,
+              mb: 3,
+            }}
+          >
+            Liste des produits
+          </Typography>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              height: "40px",
+            }}
+          >
+            Ajouter un produit
+          </Button>
+        </Box>
+        <DashboardList columns={columns} data={data} />
       </Box>
     </>
   );
