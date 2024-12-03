@@ -11,14 +11,28 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
-      { path: "/achat", element: <InventroyPage />, children: [] },
+      { path: "achat", element: <InventroyPage />, children: [] },
       {
-        path: "/approvisionnement",
+        path: "approvisionnement",
         element: "supply",
-        children: [],
+        children: [
+          {
+            path: "inventaire",
+            element: <InventroyPage />,
+          },
+        ],
       },
-      { path: "/atelier", element: "workshop", children: [] },
-      { path: "/admin", element: <AdminHomePage />, children: [] },
+      {
+        path: "atelier",
+        element: "workshop",
+        children: [
+          {
+            path: "inventaire",
+            element: <InventroyPage />,
+          },
+        ],
+      },
+      { path: "admin", element: <AdminHomePage />, children: [] },
     ],
   },
 ]);
