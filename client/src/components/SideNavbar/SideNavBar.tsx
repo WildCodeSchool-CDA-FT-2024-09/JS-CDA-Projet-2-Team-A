@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { Box, Drawer, List, Toolbar } from "@mui/material";
 import SideNavBarList from "./SideNavBarList.tsx";
+import { useUser } from "../../contexts/UserContext.tsx";
+import { Box, Drawer, List, Toolbar } from "@mui/material";
 import {
   allLinks,
   bottomLinks,
@@ -10,8 +11,12 @@ import {
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
-export default function SideNavBar({ role }: { role: string }): ReactElement {
+export default function SideNavBar(): ReactElement {
+  const {
+    user: { role },
+  } = useUser();
   const { url } = homePageUrls.find((link) => link.role.includes(role))!; // Récupération de l'url selon le rôle de l'utilisateur
+
   return (
     <Box component="nav">
       <Drawer
