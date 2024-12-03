@@ -10,9 +10,8 @@ import {
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
-export default function SideNavBar(): ReactElement {
-  const adminRole = "4"; // Ecrit en dur en attente de la mise en place du contexte.
-  const { url } = homePageUrls.find((link) => link.role.includes(adminRole))!; // Récupération de l'url selon le rôle de l'utilisateur
+export default function SideNavBar({ role }: { role: string }): ReactElement {
+  const { url } = homePageUrls.find((link) => link.role.includes(role))!; // Récupération de l'url selon le rôle de l'utilisateur
   return (
     <Box component="nav">
       <Drawer
@@ -42,7 +41,7 @@ export default function SideNavBar(): ReactElement {
         </Toolbar>
         <List>
           {allLinks.reduce((acc: ReactElement[], link: linkType) => {
-            if (link.role.includes(adminRole)) {
+            if (link.role.includes(role)) {
               acc.push(<SideNavBarList link={link} key={link.name} />);
             }
             return acc;

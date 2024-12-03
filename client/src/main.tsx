@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
+import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
         element: "supply",
         children: [],
       },
-      { path: "/atelier", element: "workshop", children: [] },
+      { path: "/atelier", element: <WorkshopHomePage />, children: [] },
       { path: "/admin", element: <AdminHomePage />, children: [] },
     ],
   },

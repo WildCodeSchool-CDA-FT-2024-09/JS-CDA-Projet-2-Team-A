@@ -1,9 +1,9 @@
-import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
 import users from "../../../../server/data/mock/users.json";
 import roles from "../../../../server/data/mock/roles.json";
+import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
 
 const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
@@ -26,7 +26,8 @@ export default function AdminHomePage() {
 
   return (
     <>
-      <SideNavBar />
+      {/*Rôle fournit en dur en attente du contexte*/}
+      <SideNavBar role={"4"} />
       <DashboardList title={title} columns={columns} data={data} />
     </>
   );
