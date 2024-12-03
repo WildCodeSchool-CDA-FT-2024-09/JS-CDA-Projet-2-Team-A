@@ -143,7 +143,7 @@ const productsArray = Array.isArray(products) ? products : [];
         product.image = productEl.image;
         product.description = productEl.description;
         product.stock = productEl.stock;
-        product.min_quantity = 0;
+        product.min_quantity = 10;
         product.active = true;
         product.supplier = savedSuppliers.find(
           (supplier) => supplier.id === productEl.supplier

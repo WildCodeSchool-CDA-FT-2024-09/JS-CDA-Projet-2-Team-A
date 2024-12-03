@@ -9,10 +9,13 @@ import {
   Message,
   Order,
   OrderProduct,
+  Example,
 } from "../entities/index";
 
-const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } =
+const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, ENV } =
   process.env;
+
+const sync = ENV === "dev";
 
 const dataSourceOptions: DataSourceOptions = {
   type: "postgres",
@@ -30,8 +33,9 @@ const dataSourceOptions: DataSourceOptions = {
     Message,
     Order,
     OrderProduct,
+    Example,
   ],
-  synchronize: true,
+  synchronize: sync,
   logging: false, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
 };
 
