@@ -27,46 +27,62 @@ export default function AdminHomePage() {
   }));
 
   return (
-    <>
+    <Box
+      sx={{
+        background: "#F0F1F3",
+      }}
+    >
       <SideNavBar />
       <Box
         sx={{
           marginLeft: "13dvw",
           padding: "10px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
         }}
       >
         <TopBar />
         <Box
-          component="section"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            borderRadius: "5px",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
+          <Box
+            component="section"
             sx={{
-              mt: 3,
-              mb: 3,
-              color: "#383E49",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              background: "#FFF",
+              paddingLeft: "10px",
+              paddingRight: "10px",
             }}
           >
-            Liste des utilisateurs
-          </Typography>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              height: "40px",
-            }}
-          >
-            Ajouter un utilisateur
-          </Button>
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                mt: 3,
+                mb: 3,
+                color: "#383E49",
+              }}
+            >
+              Liste des utilisateurs
+            </Typography>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Ajouter un utilisateur
+            </Button>
+          </Box>
+          <DashboardList columns={columns} data={data} />
         </Box>
-        <DashboardList columns={columns} data={data} />
       </Box>
-    </>
+    </Box>
   );
 }
