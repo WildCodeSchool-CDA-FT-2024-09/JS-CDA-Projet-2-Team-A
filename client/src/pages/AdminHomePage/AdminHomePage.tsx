@@ -1,4 +1,5 @@
 import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
+import TopBar from "../../components/TopBar/TopBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -34,6 +35,7 @@ export default function AdminHomePage() {
           padding: "10px",
         }}
       >
+        <TopBar />
         <Box
           component="section"
           sx={{
@@ -48,6 +50,7 @@ export default function AdminHomePage() {
             sx={{
               mt: 3,
               mb: 3,
+              color: "#383E49",
             }}
           >
             Liste des utilisateurs
