@@ -19,7 +19,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
   children: ReactNode;
 }) => {
   const [user, setUser] = useState<User>({
-    name: "Doe",
+    name: "John Doe",
     login: "john.doe@gmail.com",
     role: "4",
   });
