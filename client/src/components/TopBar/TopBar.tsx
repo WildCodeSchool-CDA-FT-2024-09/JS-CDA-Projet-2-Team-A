@@ -8,9 +8,9 @@ export default function TopBar() {
         position="static"
         sx={{
           height: "100px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "start",
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "start",
           borderRadius: "5px",
           background: "#FFF",
           boxShadow: "none",

@@ -30,6 +30,7 @@ export default function AdminHomePage() {
     <Box
       sx={{
         background: "#F0F1F3",
+        height: "100%",
       }}
     >
       <SideNavBar />
@@ -57,6 +58,7 @@ export default function AdminHomePage() {
               background: "#FFF",
               paddingLeft: "10px",
               paddingRight: "10px",
+              borderRadius: "5px 5px 0px 0px",
             }}
           >
             <Typography
