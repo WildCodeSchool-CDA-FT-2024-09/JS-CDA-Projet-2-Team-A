@@ -9,7 +9,7 @@ export default function App() {
         styles={{ "*": { boxSizing: "border-box", margin: "0" } }}
       />
       {/* <Login /> */}
-      <Outlet />{" "}
+      <Outlet />
       {/* Temporaire pour pouvoir afficher visuellement la navbar sans
       se logger */}
     </>

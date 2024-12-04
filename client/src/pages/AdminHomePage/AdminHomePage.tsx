@@ -80,16 +80,19 @@ export default function AdminHomePage() {
       sx={{
         background: "#F0F1F3",
         height: "100%",
+        width: "100%",
+        display: "flex",
+        // gap: "1rem",
       }}
     >
       <SideNavBar />
       <Box
         sx={{
-          marginLeft: "13dvw",
-          padding: "10px",
           display: "flex",
           flexDirection: "column",
           gap: "20px",
+          width: "87dvw",
+          padding: "20px 20px 20px 20px",
         }}
       >
         <TopBar />
