@@ -1,2 +1,2 @@
-import { ExampleResolver } from "../resolvers/Example";
-export { ExampleResolver };
+import { UserResolver } from "../resolvers/user.resolvers";
+export { UserResolver };
