@@ -26,18 +26,19 @@ export default function AdminHomePage() {
   }));
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        gap: "1rem",
+      }}
+    >
       <SideNavBar />
-      <Box
-        sx={{
-          marginLeft: "13dvw",
-          padding: "10px",
-        }}
-      >
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Box
           component="section"
           sx={{
             display: "flex",
+            width: "100%",
             justifyContent: "space-between",
             alignItems: "center",
           }}
@@ -64,6 +65,6 @@ export default function AdminHomePage() {
         </Box>
         <DashboardList columns={columns} data={data} />
       </Box>
-    </>
+    </Box>
   );
 }

@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
 import InventoryPage from "./pages/InventoryPage/InventoryPage.tsx";
 import { UserProvider } from "./contexts/UserContext.tsx";
+import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
         element: <InventoryPage />,
         children: [],
       },
+      { path: "atelier", element: <WorkshopHomePage />, children: [] },
       { path: "admin", element: <AdminHomePage />, children: [] },
     ],
   },
