@@ -1,9 +1,14 @@
+import { useState } from "react";
+import { GridRenderCellParams } from "@mui/x-data-grid";
 import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
 import TopBar from "../../components/TopBar/TopBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
 import users from "../../../../server/data/mock/users.json";
@@ -11,11 +16,54 @@ import roles from "../../../../server/data/mock/roles.json";
 
 const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
+  const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
+
+  const handleClickShowPassword = (id: number) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nom", width: 250 },
     { field: "role", headerName: "Rôle", width: 250 },
     { field: "login", headerName: "Login", width: 250 },
+    {
+      field: "password",
+      headerName: "Mot de passe",
+      width: 250,
+      renderCell: (params: GridRenderCellParams) => (
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {showPassword[params.id as number] ? params.value : "**************"}
+          <Button
+            onClick={() => handleClickShowPassword(params.id as number)}
+            sx={{ ml: 1, minWidth: "auto", padding: "4px" }}
+          >
+            {showPassword[params.id as number] ? (
+              <VisibilityOff sx={{ color: "#383E49" }} />
+            ) : (
+              <Visibility sx={{ color: "#383E49" }} />
+            )}
+          </Button>
+        </Box>
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Action",
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: () => (
+        <SettingsIcon
+          sx={{
+            textAnchor: "right",
+          }}
+        />
+      ),
+    },
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
@@ -24,6 +72,7 @@ export default function AdminHomePage() {
     name: user.name,
     role: rolesName.get(user.role),
     login: user.login,
+    password: user.password,
   }));
 
   return (
