@@ -1,15 +1,42 @@
+import { useState } from "react";
 import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-
-// TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
+import { Box, Typography, Button } from "@mui/material";
+import Modalform from "../../components/modal form/Modalform.tsx";
 import users from "../../../../server/data/mock/users.json";
 import roles from "../../../../server/data/mock/roles.json";
 
+// Types for User
+interface NewUser {
+  name: string;
+  login: string;
+  password: string;
+  role: number;
+  email: string;
+}
+
+interface ExistingUser {
+  id: number;
+  name: string;
+  login: string;
+  role: number;
+  email: string;
+}
+
 const rolesName = new Map(roles.map((role) => [role.id, role.role]));
+
 export default function AdminHomePage() {
+  const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState<ExistingUser[]>(
+    users.map((user, index) => ({
+      id: index + 1, // Ensure each existing user gets an ID
+      name: user.name,
+      role: user.role,
+      login: user.login,
+      email: user.email,
+    })),
+  );
+
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nom", width: 250 },
@@ -17,13 +44,29 @@ export default function AdminHomePage() {
     { field: "login", headerName: "Login", width: 250 },
   ];
 
-  // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const data = users.map((user, index) => ({
+  const data = userData.map((user, index) => ({
     id: index + 1,
     name: user.name,
     role: rolesName.get(user.role),
     login: user.login,
   }));
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleAddUser = (formData: NewUser) => {
+    setUserData([
+      ...userData,
+      {
+        id: userData.length + 1, // Auto-generate ID
+        name: formData.name,
+        role: Array.from(rolesName.keys())[0], // Default role ID
+        login: formData.login,
+        email: formData.email,
+      },
+    ]);
+    handleClose();
+  };
 
   return (
     <>
@@ -54,7 +97,7 @@ export default function AdminHomePage() {
           </Typography>
           <Button
             variant="contained"
-            type="submit"
+            onClick={handleOpen}
             sx={{
               height: "40px",
             }}
@@ -64,6 +107,17 @@ export default function AdminHomePage() {
         </Box>
         <DashboardList columns={columns} data={data} />
       </Box>
+      <Modalform<NewUser>
+        open={open}
+        onClose={handleClose}
+        onSubmit={handleAddUser}
+        title="Ajouter un utilisateur"
+        fields={[
+          { name: "name", label: "Nom" },
+          { name: "role", label: "Role" },
+          { name: "email", label: "Email" },
+        ]}
+      />
     </>
   );
 }
