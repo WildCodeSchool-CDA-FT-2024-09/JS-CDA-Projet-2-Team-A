@@ -1,11 +1,13 @@
 import { StrictMode } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserProvider } from "./contexts/UserContext.tsx";
 import App from "./App.tsx";
 import AdminHomePage from "./pages/AdminHomePage/AdminHomePage.tsx";
 import InventoryPage from "./pages/InventoryPage/InventoryPage.tsx";
-import { UserProvider } from "./contexts/UserContext.tsx";
 import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
+import SupplierHomePage from "./pages/SupplierHomePage/SupplierHomePage.tsx";
+import PurchaseHomePage from "./pages/PurchaseHomePage/PurchaseHomePage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -13,10 +15,19 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
-      { path: "achat", element: <InventoryPage />, children: [] },
+      {
+        path: "achat",
+        element: <PurchaseHomePage />,
+        children: [
+          {
+            path: "inventaire",
+            element: <InventoryPage />,
+          },
+        ],
+      },
       {
         path: "approvisionnement",
-        element: "supply",
+        element: <SupplierHomePage />,
         children: [
           {
             path: "inventaire",
