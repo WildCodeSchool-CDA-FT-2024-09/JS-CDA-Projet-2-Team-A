@@ -79,10 +79,10 @@ export default function AdminHomePage() {
     <Box
       sx={{
         background: "#F0F1F3",
-        height: "100%",
-        width: "100%",
+        height: "100dvh",
+        width: "100dvw",
         display: "flex",
-        // gap: "1rem",
+        alignItems: "center",
       }}
     >
       <SideNavBar />
