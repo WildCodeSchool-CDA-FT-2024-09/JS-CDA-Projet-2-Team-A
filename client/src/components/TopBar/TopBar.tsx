@@ -1,7 +1,7 @@
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import { useUser } from "../../contexts/UserContext";
@@ -12,7 +12,9 @@ export default function TopBar() {
   const teamIcon = (role: string) => {
     switch (role) {
       case "1": // Achat
-        return <ShoppingCartIcon fontSize="large" sx={{ color: "#383E49" }} />;
+        return (
+          <HandshakeOutlinedIcon fontSize="large" sx={{ color: "#383E49" }} />
+        );
       case "2": // Appro
         return <AssignmentIcon fontSize="large" sx={{ color: "#383E49" }} />;
       case "3": // Atelier
