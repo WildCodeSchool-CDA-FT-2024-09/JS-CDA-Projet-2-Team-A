@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         element: <PurchaseHomePage />,
         children: [
           {
-            path: "inventaire",
+            path: "",
             element: <InventoryPage />,
           },
         ],
@@ -30,17 +30,23 @@ const router = createBrowserRouter([
         element: <SupplierHomePage />,
         children: [
           {
-            path: "inventaire",
+            path: "",
             element: <InventoryPage />,
           },
         ],
       },
       {
         path: "atelier",
-        element: <InventoryPage />,
-        children: [],
+        element: <WorkshopHomePage />,
+        children: [
+          {
+            path: "",
+            element: <InventoryPage />,
+            children: [],
+          },
+        ],
       },
-      { path: "atelier", element: <WorkshopHomePage />, children: [] },
+
       { path: "admin", element: <AdminHomePage />, children: [] },
     ],
   },

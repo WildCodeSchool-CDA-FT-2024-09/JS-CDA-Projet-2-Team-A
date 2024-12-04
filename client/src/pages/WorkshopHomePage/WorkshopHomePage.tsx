@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
-import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
+import { Outlet } from "react-router-dom";
 
 export default function WorkshopHomePage(): ReactElement {
-  return <SideNavBar />;
+  return <Outlet />;
 }

@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import BallotOutlinedIcon from "@mui/icons-material/BallotOutlined";
-import InventoryIcon from "../../assets/svgIcons/InventoryIcon.tsx";
+import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 
 // Ici sont placés chaque équipe disponible dans l'application ainsi que l'url de retour à leur dashboard.
@@ -23,7 +23,7 @@ export const allLinks: {
   {
     name: "Inventaire",
     url: "inventaire",
-    icon: <InventoryIcon />,
+    icon: <ChecklistOutlinedIcon />,
     role: ["1", "2", "3"],
   },
   {
