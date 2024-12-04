@@ -1,12 +1,8 @@
 import { useState } from "react";
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import TopBar from "../../components/TopBar/TopBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Box, Typography, Button } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
@@ -75,48 +71,45 @@ export default function AdminHomePage() {
   }));
 
   return (
-    <>
-      <TopBar />
+    <Box
+      sx={{
+        borderRadius: "5px",
+      }}
+    >
       <Box
+        component="section"
         sx={{
-          borderRadius: "5px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          background: "#FFF",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          borderRadius: "5px 5px 0px 0px",
         }}
       >
-        <Box
-          component="section"
+        <Typography
+          variant="h5"
+          component="h2"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            background: "#FFF",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            borderRadius: "5px 5px 0px 0px",
+            mt: 3,
+            mb: 3,
+            color: "#383E49",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{
-              mt: 3,
-              mb: 3,
-              color: "#383E49",
-            }}
-          >
-            Liste des utilisateurs
-          </Typography>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              height: "40px",
-            }}
-          >
-            Ajouter un utilisateur
-          </Button>
-        </Box>
-        <DashboardList columns={columns} data={data} />
+          Liste des utilisateurs
+        </Typography>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            height: "40px",
+          }}
+        >
+          Ajouter un utilisateur
+        </Button>
       </Box>
-    </>
+      <DashboardList columns={columns} data={data} />
+    </Box>
   );
 }

@@ -3,10 +3,12 @@ import { Outlet } from "react-router-dom";
 import { GlobalStyles } from "@mui/material";
 import Box from "@mui/material/Box";
 import SideNavBar from "./components/SideNavbar/SideNavBar.tsx";
+import TopBar from "./components/TopBar/TopBar.tsx";
 
 export default function App() {
   return (
     <Box
+      component="main"
       sx={{
         background: "#F0F1F3",
         height: "100dvh",
@@ -29,6 +31,7 @@ export default function App() {
           padding: "20px 20px 20px 20px",
         }}
       >
+        <TopBar />
         <Outlet />
       </Box>
     </Box>
