@@ -1,9 +1,9 @@
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import PrecisionManufacturingIcon from "@mui/icons-material/PrecisionManufacturing";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import { useUser } from "../../contexts/UserContext";
 
 export default function TopBar() {
@@ -17,7 +17,7 @@ export default function TopBar() {
         return <AssignmentIcon fontSize="large" sx={{ color: "#383E49" }} />;
       case "3": // Atelier
         return (
-          <PrecisionManufacturingIcon
+          <ConstructionOutlinedIcon
             fontSize="large"
             sx={{ color: "#383E49" }}
           />
@@ -28,10 +28,6 @@ export default function TopBar() {
         );
     }
   };
-  console.info(
-    "Coucou les hackers, je sais pas si ça va vous servir à grand chose, mais vous avez accès à une liste d'icone :",
-    teamIcon,
-  );
 
   return (
     <>
@@ -59,12 +55,7 @@ export default function TopBar() {
         >
           Bienvenue {user.name}
         </Typography>
-        <SupervisorAccountIcon
-          fontSize="large"
-          sx={{
-            color: "#383E49",
-          }}
-        />
+        {teamIcon(user.role)}
       </AppBar>
     </>
   );
