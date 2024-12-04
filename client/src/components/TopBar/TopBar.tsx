@@ -28,8 +28,10 @@ export default function TopBar() {
         );
     }
   };
-  console.info(user);
-  console.info(teamIcon);
+  console.info(
+    "Coucou les hackers, je sais pas si ça va vous servir à grand chose, mais vous avez accès à une liste d'icone :",
+    teamIcon,
+  );
 
   return (
     <>
@@ -55,7 +57,7 @@ export default function TopBar() {
             paddingLeft: "10px",
           }}
         >
-          Bienvenue John DOE
+          Bienvenue {user.name}
         </Typography>
         <SupervisorAccountIcon
           fontSize="large"
