@@ -2,7 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
-import AssignmentIcon from "@mui/icons-material/Assignment";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import ConstructionOutlinedIcon from "@mui/icons-material/ConstructionOutlined";
 import { useUser } from "../../contexts/UserContext";
 
@@ -16,7 +16,12 @@ export default function TopBar() {
           <HandshakeOutlinedIcon fontSize="large" sx={{ color: "#383E49" }} />
         );
       case "2": // Appro
-        return <AssignmentIcon fontSize="large" sx={{ color: "#383E49" }} />;
+        return (
+          <LocalShippingOutlinedIcon
+            fontSize="large"
+            sx={{ color: "#383E49" }}
+          />
+        );
       case "3": // Atelier
         return (
           <ConstructionOutlinedIcon
