@@ -1,4 +1,3 @@
-import SideNavBar from "../../components/SideNavbar/SideNavBar";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -35,43 +34,35 @@ export default function InventoryPage() {
 
   return (
     <>
-      <SideNavBar />
       <Box
+        component="section"
         sx={{
-          marginLeft: "13dvw",
-          padding: "10px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
-        <Box
-          component="section"
+        <Typography
+          variant="h5"
+          component="h2"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            mt: 3,
+            mb: 3,
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{
-              mt: 3,
-              mb: 3,
-            }}
-          >
-            Liste des produits
-          </Typography>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              height: "40px",
-            }}
-          >
-            Ajouter un produit
-          </Button>
-        </Box>
-        <DashboardList columns={columns} data={data} />
+          Liste des produits
+        </Typography>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            height: "40px",
+          }}
+        >
+          Ajouter un produit
+        </Button>
       </Box>
+      <DashboardList columns={columns} data={data} />
     </>
   );
 }

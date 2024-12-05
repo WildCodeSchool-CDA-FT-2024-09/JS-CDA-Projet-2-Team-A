@@ -1,7 +1,8 @@
 import { ReactElement } from "react";
 import { Link } from "react-router-dom";
-import { Box, Drawer, List, Toolbar } from "@mui/material";
 import SideNavBarList from "./SideNavBarList.tsx";
+import { useUser } from "../../contexts/UserContext.tsx";
+import { Box, Drawer, List, Toolbar } from "@mui/material";
 import {
   allLinks,
   bottomLinks,
@@ -11,20 +12,30 @@ import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
 export default function SideNavBar(): ReactElement {
-  const adminRole = "4"; // Ecrit en dur en attente de la mise en place du contexte.
-  const { url } = homePageUrls.find((link) => link.role.includes(adminRole))!; // Récupération de l'url selon le rôle de l'utilisateur
+  const {
+    user: { role },
+  } = useUser();
+  const { url } = homePageUrls.find((link) => link.role.includes(role))!; // Récupération de l'url selon le rôle de l'utilisateur
+
   return (
     <Box component="nav">
       <Drawer
         variant="permanent"
         anchor="left"
         sx={{
+          height: "100%",
+          width: "22dvw", // largeur de la navbar
+          minWidth: "200px",
+          maxWidth: "250px",
+          boxSizing: "border-box",
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: "22dvw", // largeur de la navbar
-            minWidth: "200px",
-            maxWidth: "250px",
-            boxSizing: "border-box",
+            // Obligatoire de répéter les propriétés suivantes. Il doit dépendre du parent.
+            height: "inherit",
+            width: "inherit",
+            minWidth: "inherit",
+            maxWidth: "inherit",
+            boxSizing: "inherit",
           },
         }}
       >
@@ -42,7 +53,7 @@ export default function SideNavBar(): ReactElement {
         </Toolbar>
         <List>
           {allLinks.reduce((acc: ReactElement[], link: linkType) => {
-            if (link.role.includes(adminRole)) {
+            if (link.role.includes(role)) {
               acc.push(<SideNavBarList link={link} key={link.name} />);
             }
             return acc;

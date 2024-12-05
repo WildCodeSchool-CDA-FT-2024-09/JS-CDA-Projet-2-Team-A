@@ -1,22 +1,23 @@
-import { useState } from "react";
-import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
+import React, { useState } from "react";
 import DashboardList from "../../components/DashboardList/DashboardList";
-import { Box, Typography, Button } from "@mui/material";
-import Modalform from "../../components/modal form/Modalform.tsx";
+import {
+  Box,
+  Typography,
+  Button,
+  Switch,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
+
+// TODO: Replace mock data with a database connection
 import users from "../../../../server/data/mock/users.json";
 import roles from "../../../../server/data/mock/roles.json";
 
 // Types for User
 interface NewUser {
-  name: string;
-  login: string;
-  password: string;
-  role: number;
-  email: string;
-}
-
-interface ExistingUser {
-  id: number;
   name: string;
   login: string;
   role: number;
@@ -25,15 +26,74 @@ interface ExistingUser {
 
 const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 
+interface ModalFormProps<T> {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (formData: T) => void;
+  title: string;
+  fields: { name: keyof T; label: string; type?: string }[];
+}
+
+function Modalform<T>({
+  open,
+  onClose,
+  onSubmit,
+  title,
+  fields,
+}: ModalFormProps<T>) {
+  const [formData, setFormData] = useState<T>({} as T);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFormSubmit = () => {
+    onSubmit(formData);
+    setFormData({} as T);
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        {fields.map((field) => (
+          <TextField
+            key={field.name as string}
+            name={field.name as string}
+            label={field.label}
+            value={formData[field.name] || ""}
+            onChange={handleChange}
+            type={field.type || "text"}
+            fullWidth
+            sx={{ mb: 2 }}
+          />
+        ))}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="primary">
+          Annuler
+        </Button>
+        <Button onClick={handleFormSubmit} color="primary" variant="contained">
+          Ajouter
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 export default function AdminHomePage() {
   const [open, setOpen] = useState(false);
-  const [userData, setUserData] = useState<ExistingUser[]>(
+  const [userData, setUserData] = useState(
     users.map((user, index) => ({
       id: index + 1, // Ensure each existing user gets an ID
       name: user.name,
       role: user.role,
       login: user.login,
-      email: user.email,
+      activationDate: user.date || "N/A",
     })),
   );
 
@@ -42,59 +102,78 @@ export default function AdminHomePage() {
     { field: "name", headerName: "Nom", width: 250 },
     { field: "role", headerName: "Rôle", width: 250 },
     { field: "login", headerName: "Login", width: 250 },
+    { field: "activationDate", headerName: "Date d'activation", width: 250 },
+    {
+      field: "actions",
+      headerName: "Utilisateurs actifs",
+      width: 250,
+      sortable: false,
+      filterable: false,
+      renderCell: () => <Switch defaultChecked />,
+    },
   ];
 
-  const data = userData.map((user, index) => ({
-    id: index + 1,
+  const data = userData.map((user) => ({
+    id: user.id,
     name: user.name,
     role: rolesName.get(user.role),
     login: user.login,
+    activationDate: user.activationDate,
   }));
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleAddUser = (formData: NewUser) => {
-    setUserData([
-      ...userData,
+    setUserData((prevData) => [
+      ...prevData,
       {
-        id: userData.length + 1, // Auto-generate ID
+        id: prevData.length + 1,
         name: formData.name,
-        role: Array.from(rolesName.keys())[0], // Default role ID
+        role: formData.role,
         login: formData.login,
         email: formData.email,
+        activationDate: new Date().toISOString().split("T")[0],
       },
     ]);
     handleClose();
   };
 
   return (
-    <>
-      <SideNavBar />
+    <Box
+      sx={{
+        borderRadius: "5px",
+      }}
+    >
       <Box
+        component="section"
         sx={{
-          marginLeft: "13dvw",
-          padding: "10px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          background: "#FFF",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          borderRadius: "5px 5px 0px 0px",
         }}
       >
-        <Box
-          component="section"
+        <Typography
+          variant="h5"
+          component="h2"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            mt: 3,
+            mb: 3,
+            color: "#383E49",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{
-              mt: 3,
-              mb: 3,
-            }}
-          >
-            Liste des utilisateurs
-          </Typography>
+          Liste des utilisateurs
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
           <Button
             variant="contained"
             onClick={handleOpen}
@@ -104,8 +183,16 @@ export default function AdminHomePage() {
           >
             Ajouter un utilisateur
           </Button>
+          <Button
+            variant="outlined"
+            type="submit"
+            sx={{
+              height: "40px",
+            }}
+          >
+            Modifier l'utilisateur
+          </Button>
         </Box>
-        <DashboardList columns={columns} data={data} />
       </Box>
       <Modalform<NewUser>
         open={open}
@@ -114,10 +201,12 @@ export default function AdminHomePage() {
         title="Ajouter un utilisateur"
         fields={[
           { name: "name", label: "Nom" },
-          { name: "role", label: "Role" },
+          { name: "role", label: "Rôle", type: "number" },
           { name: "email", label: "Email" },
+          { name: "login", label: "Login" },
         ]}
       />
-    </>
+      <DashboardList columns={columns} data={data} />
+    </Box>
   );
 }
