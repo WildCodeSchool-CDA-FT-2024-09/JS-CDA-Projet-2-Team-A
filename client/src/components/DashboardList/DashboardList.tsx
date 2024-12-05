@@ -32,6 +32,10 @@ export default function DashboardList<T>({
           pageSizeOptions={[10]}
           checkboxSelection
           disableRowSelectionOnClick
+          sx={{
+            background: "#FFF",
+            border: "none",
+          }}
         />
       </Box>
     </Box>

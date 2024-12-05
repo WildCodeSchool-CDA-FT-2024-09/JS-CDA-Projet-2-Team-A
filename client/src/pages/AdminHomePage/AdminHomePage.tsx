@@ -1,8 +1,5 @@
-import SideNavBar from "../../components/SideNavbar/SideNavBar.tsx";
 import DashboardList from "../../components/DashboardList/DashboardList";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import { Box, Typography, Button, Switch } from "@mui/material";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
 import users from "../../../../server/data/mock/users.json";
@@ -15,6 +12,15 @@ export default function AdminHomePage() {
     { field: "name", headerName: "Nom", width: 250 },
     { field: "role", headerName: "Rôle", width: 250 },
     { field: "login", headerName: "Login", width: 250 },
+    { field: "activationDate", headerName: "Date d'activation", width: 250 },
+    {
+      field: "actions",
+      headerName: "Utilisateurs actifs",
+      width: 250,
+      sortable: false,
+      filterable: false,
+      renderCell: () => <Switch defaultChecked />,
+    },
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
@@ -23,35 +29,44 @@ export default function AdminHomePage() {
     name: user.name,
     role: rolesName.get(user.role),
     login: user.login,
+    activationDate: user.date,
   }));
 
   return (
-    <>
-      <SideNavBar />
+    <Box
+      sx={{
+        borderRadius: "5px",
+      }}
+    >
       <Box
+        component="section"
         sx={{
-          marginLeft: "13dvw",
-          padding: "10px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          background: "#FFF",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          borderRadius: "5px 5px 0px 0px",
         }}
       >
-        <Box
-          component="section"
+        <Typography
+          variant="h5"
+          component="h2"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            mt: 3,
+            mb: 3,
+            color: "#383E49",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{
-              mt: 3,
-              mb: 3,
-            }}
-          >
-            Liste des utilisateurs
-          </Typography>
+          Liste des utilisateurs
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
           <Button
             variant="contained"
             type="submit"
@@ -61,9 +76,18 @@ export default function AdminHomePage() {
           >
             Ajouter un utilisateur
           </Button>
+          <Button
+            variant="outlined"
+            type="submit"
+            sx={{
+              height: "40px",
+            }}
+          >
+            Modifier l'utilisateur
+          </Button>
         </Box>
-        <DashboardList columns={columns} data={data} />
       </Box>
-    </>
+      <DashboardList columns={columns} data={data} />
+    </Box>
   );
 }
