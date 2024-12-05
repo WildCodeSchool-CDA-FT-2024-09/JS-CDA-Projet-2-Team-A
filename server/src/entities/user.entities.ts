@@ -17,11 +17,14 @@ export class User extends BaseEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   login: string;
 
   @Column()
   password: string;
+
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  date: Date;
 
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;

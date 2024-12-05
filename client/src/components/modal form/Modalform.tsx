@@ -14,7 +14,7 @@ interface ModalFormProps<T> {
   onClose: () => void;
   onSubmit: (formData: T) => void;
   title: string;
-  fields: { name: keyof T; label: string; type?: string }[]; // Dynamic fields based on the type of T
+  fields: { name: keyof T; label: string; type?: string }[];
 }
 
 export default function Modalform<T>({
@@ -24,10 +24,8 @@ export default function Modalform<T>({
   title,
   fields,
 }: ModalFormProps<T>) {
-  // Initialize formData based on the type T
   const [formData, setFormData] = useState<T>({} as T);
 
-  // Handle field value changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -36,10 +34,9 @@ export default function Modalform<T>({
     }));
   };
 
-  // Handle form submit
   const handleFormSubmit = () => {
-    onSubmit(formData); // Pass the form data to the parent component
-    setFormData({} as T); // Reset form after submission
+    onSubmit(formData);
+    setFormData({} as T);
   };
 
   return (
@@ -48,7 +45,7 @@ export default function Modalform<T>({
       <DialogContent>
         {fields.map((field) => (
           <TextField
-            key={field.name as string} // Type assertion to convert name to string
+            key={field.name as string}
             name={field.name as string}
             label={field.label}
             value={formData[field.name] || ""}
