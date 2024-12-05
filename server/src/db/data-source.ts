@@ -1,16 +1,6 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import "dotenv/config";
-import {
-  Product,
-  Supplier,
-  Employee,
-  Role,
-  User,
-  Message,
-  Order,
-  OrderProduct,
-  Example,
-} from "../entities/index";
+import { entities } from "../entities/index";
 
 const { POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, ENV } =
   process.env;
@@ -24,17 +14,7 @@ const dataSourceOptions: DataSourceOptions = {
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
-  entities: [
-    Product,
-    Supplier,
-    Employee,
-    Role,
-    User,
-    Message,
-    Order,
-    OrderProduct,
-    Example,
-  ],
+  entities: entities,
   synchronize: sync,
   logging: false, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
 };

@@ -19,3 +19,15 @@ export {
   OrderProduct,
   Example,
 };
+
+export const entities = [
+  Product,
+  Supplier,
+  Employee,
+  Role,
+  User,
+  Message,
+  Order,
+  OrderProduct,
+  Example,
+];
