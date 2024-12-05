@@ -18,10 +18,16 @@ export class User extends BaseEntity {
   name: string;
 
   @Column()
-  login: string;
+  email: string;
 
   @Column()
   password: string;
+
+  @Column({ type: "timestamptz" })
+  activationDate: Date;
+
+  @Column({ default: true })
+  isActive: boolean;
 
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
