@@ -29,7 +29,7 @@ export default function AdminHomePage() {
     name: user.name,
     role: rolesName.get(user.role),
     login: user.login,
-    activationDate: user.date,
+    //activationDate: user.date,
   }));
 
   return (

@@ -1,4 +1,4 @@
-// import Login from "./pages/LoginPage/Login";
+import Login from "./pages/LoginPage/Login";
 import { Outlet } from "react-router-dom";
 import { GlobalStyles } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -20,7 +20,7 @@ export default function App() {
       <GlobalStyles
         styles={{ "*": { boxSizing: "border-box", margin: "0" } }}
       />
-      {/* <Login /> */}
+      <Login />
       <SideNavBar />
       <Box
         sx={{
