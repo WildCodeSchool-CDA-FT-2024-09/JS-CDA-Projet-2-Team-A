@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_USERS = gql`
-  query Query {
+  query AllUsers {
     allUsers {
       name
       email
-      isActive
       activationDate
+      isActive
     }
   }
 `;
