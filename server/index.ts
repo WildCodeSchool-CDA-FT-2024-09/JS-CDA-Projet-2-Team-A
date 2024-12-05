@@ -2,7 +2,7 @@ import { buildSchema } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { AppDataSource } from "./src/db/data-source";
-import { ExampleResolver } from "./src/resolvers/index";
+import { UserResolver } from "./src/resolvers/index";
 import "reflect-metadata";
 import "dotenv/config";
 
@@ -11,7 +11,7 @@ const { PORT } = process.env;
 (async () => {
   await AppDataSource.initialize();
   const schema = await buildSchema({
-    resolvers: [ExampleResolver],
+    resolvers: [UserResolver],
   });
 
   const server = new ApolloServer({
