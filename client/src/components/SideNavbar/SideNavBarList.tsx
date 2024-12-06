@@ -12,10 +12,13 @@ import Typography from "@mui/material/Typography";
 
 export default function SideNavBarList({
   link,
+  baseUrl,
 }: {
   link: linkType | linkTypeOpt;
+  baseUrl: string;
 }): ReactElement {
-  const location = useLocation();
+  const { pathname } = useLocation();
+
   return (
     <ListItem key={link.name}>
       <ListItemButton>
@@ -25,16 +28,14 @@ export default function SideNavBarList({
             minWidth: "fit-content",
             maxWidth: "fit-content",
             marginRight: "15px",
-            color: location.pathname.includes(`${link.url}`)
-              ? blue[500]
-              : "inherit",
+            color: pathname.includes(`${link.url}`) ? blue[500] : "inherit",
           }}
         ></ListItemIcon>
         <ListItemText
           primary={
             link.url !== undefined ? (
               <NavLink
-                to={`${link.url}`}
+                to={baseUrl + "/" + link.url}
                 style={({ isActive }: { isActive: boolean }) => ({
                   color: isActive ? blue[500] : "inherit",
                   textDecoration: "none",

@@ -54,7 +54,7 @@ export default function SideNavBar(): ReactElement {
         <List>
           {allLinks.reduce((acc: ReactElement[], link: linkType) => {
             if (link.role.includes(role)) {
-              acc.push(<SideNavBarList link={link} key={link.name} />);
+              acc.push(<SideNavBarList link={link} baseUrl={url} />);
             }
             return acc;
           }, [])}
