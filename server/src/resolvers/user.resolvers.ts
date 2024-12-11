@@ -17,7 +17,7 @@ class CreateUserInput {
   roleName: string;
 }
 @Resolver(User)
-export class UserResolver {
+export default class UserResolver {
   @Query(() => [User])
   async allUsers() {
     const users = await User.find({

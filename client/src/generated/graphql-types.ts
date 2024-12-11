@@ -37,30 +37,55 @@ export type CreateUserInput = {
   roleName: Scalars["String"]["input"];
 };
 
-export type Example = {
-  __typename?: "Example";
-  id: Scalars["Float"]["output"];
+export type Employee = {
+  __typename?: "Employee";
+  email: Scalars["String"]["output"];
+  id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
+  phone_number: Scalars["String"]["output"];
+  products: Product;
+  supplier: Supplier;
 };
 
 export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
-  newExample: Scalars["String"]["output"];
 };
 
 export type MutationCreateUserArgs = {
   body: CreateUserInput;
 };
 
-export type MutationNewExampleArgs = {
-  body: NewExampleInput;
+export type Order = {
+  __typename?: "Order";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  products: Product;
+  status: Scalars["String"]["output"];
+};
+
+export type Product = {
+  __typename?: "Product";
+  active: Scalars["Boolean"]["output"];
+  category: Scalars["String"]["output"];
+  color: Scalars["String"]["output"];
+  commentary: Scalars["String"]["output"];
+  description: Scalars["String"]["output"];
+  employee: Employee;
+  id: Scalars["Int"]["output"];
+  image: Scalars["String"]["output"];
+  material: Scalars["String"]["output"];
+  min_quantity: Scalars["Float"]["output"];
+  orders: Order;
+  product: Scalars["String"]["output"];
+  stock: Scalars["Float"]["output"];
+  supplier: Supplier;
 };
 
 export type Query = {
   __typename?: "Query";
+  allProducts: Array<Product>;
   allUsers: Array<User>;
-  getAllExamples: Array<Example>;
   getAllRoles: Array<Role>;
 };
 
@@ -68,6 +93,23 @@ export type Role = {
   __typename?: "Role";
   id: Scalars["Int"]["output"];
   role: Scalars["String"]["output"];
+};
+
+export type Supplier = {
+  __typename?: "Supplier";
+  active: Scalars["Boolean"]["output"];
+  address: Scalars["String"]["output"];
+  city: Scalars["String"]["output"];
+  commentary: Scalars["String"]["output"];
+  country: Scalars["String"]["output"];
+  delay: Scalars["Float"]["output"];
+  description: Scalars["String"]["output"];
+  employees: Employee;
+  id: Scalars["Int"]["output"];
+  logo: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  postcode: Scalars["String"]["output"];
+  products: Product;
 };
 
 export type User = {
@@ -79,10 +121,6 @@ export type User = {
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
   role: Role;
-};
-
-export type NewExampleInput = {
-  name: Scalars["String"]["input"];
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -99,6 +137,23 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetAllRolesQuery = {
   __typename?: "Query";
   getAllRoles: Array<{ __typename?: "Role"; id: number; role: string }>;
+};
+
+export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AllProductsQuery = {
+  __typename?: "Query";
+  allProducts: Array<{
+    __typename?: "Product";
+    category: string;
+    product: string;
+    material: string;
+    color: string;
+    description: string;
+    min_quantity: number;
+    stock: number;
+    supplier: { __typename?: "Supplier"; name: string };
+  }>;
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -238,6 +293,90 @@ export type GetAllRolesSuspenseQueryHookResult = ReturnType<
 export type GetAllRolesQueryResult = Apollo.QueryResult<
   GetAllRolesQuery,
   GetAllRolesQueryVariables
+>;
+export const AllProductsDocument = gql`
+  query AllProducts {
+    allProducts {
+      category
+      product
+      material
+      color
+      description
+      min_quantity
+      stock
+      supplier {
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useAllProductsQuery__
+ *
+ * To run a query within a React component, call `useAllProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllProductsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AllProductsQuery,
+    AllProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AllProductsQuery, AllProductsQueryVariables>(
+    AllProductsDocument,
+    options,
+  );
+}
+export function useAllProductsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AllProductsQuery,
+    AllProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AllProductsQuery, AllProductsQueryVariables>(
+    AllProductsDocument,
+    options,
+  );
+}
+export function useAllProductsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AllProductsQuery,
+        AllProductsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<AllProductsQuery, AllProductsQueryVariables>(
+    AllProductsDocument,
+    options,
+  );
+}
+export type AllProductsQueryHookResult = ReturnType<typeof useAllProductsQuery>;
+export type AllProductsLazyQueryHookResult = ReturnType<
+  typeof useAllProductsLazyQuery
+>;
+export type AllProductsSuspenseQueryHookResult = ReturnType<
+  typeof useAllProductsSuspenseQuery
+>;
+export type AllProductsQueryResult = Apollo.QueryResult<
+  AllProductsQuery,
+  AllProductsQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {

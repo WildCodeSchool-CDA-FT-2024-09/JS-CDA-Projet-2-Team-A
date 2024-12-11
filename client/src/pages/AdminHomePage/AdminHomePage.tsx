@@ -30,7 +30,7 @@ export default function AdminHomePage() {
 
   // Fetch all users for the dashboard
   const {
-    data: usersData,
+    data,
     loading: usersLoading,
     error: usersError,
     refetch,
@@ -79,8 +79,9 @@ export default function AdminHomePage() {
     },
   ];
 
-  const dataGrid =
-    usersData?.allUsers?.map((user, index) => ({
+  // Prepare the data for the grid
+  const dataGridUser =
+    data?.allUsers?.map((user, index) => ({
       id: index + 1,
       name: user.name,
       role: user.role?.role || "Non défini",
@@ -112,7 +113,6 @@ export default function AdminHomePage() {
       </Typography>
     );
 
-  // Render the combined component
   return (
     <Box sx={{ borderRadius: "5px" }}>
       <Box
@@ -130,11 +130,7 @@ export default function AdminHomePage() {
         <Typography
           variant="h5"
           component="h2"
-          sx={{
-            mt: 3,
-            mb: 3,
-            color: "#383E49",
-          }}
+          sx={{ mt: 3, mb: 3, color: "#383E49" }}
         >
           Liste des utilisateurs
         </Typography>
@@ -151,7 +147,7 @@ export default function AdminHomePage() {
           </Button>
         </Box>
       </Box>
-      <DashboardList columns={columns} data={dataGrid} />
+      <DashboardList columns={columns} data={dataGridUser} />
 
       {/* Modal for Creating a User */}
       <ModalForm
@@ -167,7 +163,7 @@ export default function AdminHomePage() {
           },
           {
             name: "email",
-            label: "email",
+            label: "Email",
             type: "text",
           },
           {
@@ -186,13 +182,8 @@ export default function AdminHomePage() {
         open={openSnackbar}
         autoHideDuration={3000}
         onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        sx={{
-          marginTop: "2rem",
-        }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{ marginTop: "2rem" }}
       >
         <Alert
           onClose={() => setOpenSnackbar(false)}

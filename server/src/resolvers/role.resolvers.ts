@@ -2,7 +2,7 @@ import { Query, Resolver } from "type-graphql";
 import { Role } from "../entities/role.entities";
 
 @Resolver(Role)
-export class RoleResolver {
+export default class RoleResolver {
   @Query(() => [Role])
   async getAllRoles(): Promise<Role[]> {
     try {
