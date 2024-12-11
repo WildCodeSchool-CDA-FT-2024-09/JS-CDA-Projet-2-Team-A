@@ -1,5 +1,6 @@
 import UserResolver from "./user.resolvers";
-export { UserResolver };
+import ProductResolver from "./product.resolvers";
+export { UserResolver, ProductResolver };
 
 import { NonEmptyArray } from "type-graphql";
 
