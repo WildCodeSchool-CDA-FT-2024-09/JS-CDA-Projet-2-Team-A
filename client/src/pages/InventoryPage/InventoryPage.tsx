@@ -19,21 +19,18 @@ export default function InventoryPage() {
   ];
 
   const dataGridProduct =
-    data?.allProducts?.map(
-      (product,
-      (index) => ({
-        id: index + 1,
-        category: product.category,
-        product: product.product,
-        material: product.material,
-        color: product.color,
-        description: product.description,
-        minimal: product.min_quantity,
-        stock: product.stock,
-        status: "En cours de calcul", // TODO : Affichage provisoire.
-        supplier: product.supplier?.name,
-      })),
-    ) || [];
+    data?.allProducts?.map((product, index) => ({
+      id: index + 1,
+      category: product.category,
+      product: product.product,
+      material: product.material,
+      color: product.color,
+      description: product.description,
+      minimal: product.min_quantity,
+      stock: product.stock,
+      status: "En cours de calcul", // TODO : Affichage provisoire.
+      supplier: product.supplier?.name,
+    })) || [];
 
   if (loading)
     return (
