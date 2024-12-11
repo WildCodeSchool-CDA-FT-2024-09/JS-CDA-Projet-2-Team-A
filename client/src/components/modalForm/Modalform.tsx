@@ -41,7 +41,7 @@ export default function ModalForm<T>({
 
   const handleFormSubmit = () => {
     onSubmit(formData);
-    setFormData({} as T); // Reset the form data after submission
+    setFormData({} as T);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function ModalForm<T>({
               value={formData[field.name] || ""}
               onChange={handleChange}
               fullWidth
-              sx={{ mb: 2 }}
+              sx={{ mb: 3, mt: 1 }}
             >
               {field.options.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -75,7 +75,7 @@ export default function ModalForm<T>({
               onChange={handleChange}
               type={field.type || "text"}
               fullWidth
-              sx={{ mb: 2 }}
+              sx={{ mb: 3, mt: 1 }}
             />
           ),
         )}

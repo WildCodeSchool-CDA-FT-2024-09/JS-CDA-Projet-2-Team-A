@@ -33,6 +33,7 @@ export default function AdminHomePage() {
     data: usersData,
     loading: usersLoading,
     error: usersError,
+    refetch,
   } = useAllUsersQuery();
 
   // Handle form submission for user creation
@@ -51,6 +52,7 @@ export default function AdminHomePage() {
           },
         },
       });
+      await refetch();
       setOpenSnackbar(true);
       setSnackbarMessage("Utilisateur ajouté avec succès");
       setOpenModal(false);
@@ -184,11 +186,22 @@ export default function AdminHomePage() {
         open={openSnackbar}
         autoHideDuration={3000}
         onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        sx={{
+          marginTop: "2rem",
+        }}
       >
         <Alert
           onClose={() => setOpenSnackbar(false)}
           severity={snackbarMessage.includes("Erreur") ? "error" : "success"}
-          sx={{ width: "100%" }}
+          sx={{
+            width: "25rem",
+            fontSize: "1.125rem",
+            padding: "1rem",
+          }}
         >
           {snackbarMessage}
         </Alert>
