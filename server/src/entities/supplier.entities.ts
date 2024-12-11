@@ -60,6 +60,7 @@ export class Supplier extends BaseEntity {
   @OneToMany(() => Product, (product) => product.supplier)
   products: Product[];
 
+  @Field(() => Employee)
   @OneToMany(() => Employee, (employee) => employee.id)
   employees: Employee[];
 }
