@@ -5,4 +5,7 @@ export { UserResolver, ProductResolver };
 import { NonEmptyArray } from "type-graphql";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const resolvers: NonEmptyArray<Function> = [UserResolver];
+export const resolvers: NonEmptyArray<Function> = [
+  UserResolver,
+  ProductResolver,
+];
