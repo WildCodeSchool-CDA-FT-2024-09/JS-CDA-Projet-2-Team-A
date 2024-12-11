@@ -7,6 +7,9 @@ export const GET_ALL_USERS = gql`
       email
       activationDate
       isActive
+      role {
+        role
+      }
     }
   }
 `;

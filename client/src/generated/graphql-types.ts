@@ -36,6 +36,12 @@ export type Query = {
   allUsers: Array<User>;
 };
 
+export type Role = {
+  __typename?: "Role";
+  id: Scalars["Int"]["output"];
+  role: Scalars["String"]["output"];
+};
+
 export type User = {
   __typename?: "User";
   activationDate: Scalars["DateTimeISO"]["output"];
@@ -44,6 +50,7 @@ export type User = {
   isActive: Scalars["Boolean"]["output"];
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
+  role: Role;
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -56,6 +63,7 @@ export type AllUsersQuery = {
     email: string;
     activationDate: Date;
     isActive: boolean;
+    role: { __typename?: "Role"; role: string };
   }>;
 };
 
@@ -66,6 +74,9 @@ export const AllUsersDocument = gql`
       email
       activationDate
       isActive
+      role {
+        role
+      }
     }
   }
 `;

@@ -2,10 +2,6 @@ import DashboardList from "../../components/DashboardList/DashboardList";
 import { useAllUsersQuery } from "../../generated/graphql-types";
 import { Box, Typography, Button, Switch } from "@mui/material";
 
-// TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
-import roles from "../../../../server/data/mock/roles.json";
-
-const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
   const { data, loading, error } = useAllUsersQuery();
 
@@ -26,14 +22,15 @@ export default function AdminHomePage() {
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const dataGrid = data?.allUsers?.map((user, index) => ({
-    id: index + 1,
-    name: user.name,
-    role: rolesName.get(user.role) || "Non défini",
-    login: user.email,
-    activationDate: new Date(user.activationDate).toLocaleDateString(),
-    isActive: user.isActive,
-  }));
+  const dataGrid =
+    data?.allUsers?.map((user, index) => ({
+      id: index + 1,
+      name: user.name,
+      role: user.role?.role || "Non défini",
+      login: user.email,
+      activationDate: new Date(user.activationDate).toLocaleDateString(),
+      isActive: user.isActive,
+    })) || [];
 
   if (loading)
     return (

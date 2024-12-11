@@ -5,7 +5,11 @@ import { Resolver, Query } from "type-graphql";
 export default class UserResolver {
   @Query(() => [User])
   async allUsers() {
-    const users = await User.find();
+    const users = await User.find({
+      relations: {
+        role: true,
+      },
+    });
 
     return users;
   }

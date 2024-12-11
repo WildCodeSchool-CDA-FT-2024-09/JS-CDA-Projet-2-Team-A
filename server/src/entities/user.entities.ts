@@ -37,6 +37,7 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isActive: boolean;
 
+  @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
 
