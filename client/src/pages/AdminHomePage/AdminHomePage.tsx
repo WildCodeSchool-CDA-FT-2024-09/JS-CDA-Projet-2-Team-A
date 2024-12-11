@@ -1,12 +1,10 @@
 import DashboardList from "../../components/DashboardList/DashboardList";
+import { useAllUsersQuery } from "../../generated/graphql-types";
 import { Box, Typography, Button, Switch } from "@mui/material";
 
-// TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
-import users from "../../../../server/data/mock/users.json";
-import roles from "../../../../server/data/mock/roles.json";
-
-const rolesName = new Map(roles.map((role) => [role.id, role.role]));
 export default function AdminHomePage() {
+  const { data, loading, error } = useAllUsersQuery();
+
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Nom", width: 250 },
@@ -24,70 +22,103 @@ export default function AdminHomePage() {
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const data = users.map((user, index) => ({
-    id: index + 1,
-    name: user.name,
-    role: rolesName.get(user.role),
-    login: user.login,
-    activationDate: user.date,
-  }));
+  const dataGrid =
+    data?.allUsers?.map((user, index) => ({
+      id: index + 1,
+      name: user.name,
+      role: user.role?.role || "Non défini",
+      login: user.email,
+      activationDate: new Date(user.activationDate).toLocaleDateString(),
+      isActive: user.isActive,
+    })) || [];
 
-  return (
-    <Box
-      sx={{
-        borderRadius: "5px",
-      }}
-    >
-      <Box
-        component="section"
+  if (loading)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          background: "#FFF",
-          paddingLeft: "10px",
-          paddingRight: "10px",
-          borderRadius: "5px 5px 0px 0px",
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            mt: 3,
-            mb: 3,
-            color: "#383E49",
-          }}
-        >
-          Liste des utilisateurs
-        </Typography>
+        Le site il est tout pété c'est trop long à charger là !!
+      </Typography>
+    );
+
+  if (error)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
+      >
+        Le site il est tout pété, et en plus c'est bourré d'erreurs !!
+      </Typography>
+    );
+
+  if (data)
+    return (
+      <Box
+        sx={{
+          borderRadius: "5px",
+        }}
+      >
         <Box
+          component="section"
           sx={{
             display: "flex",
-            gap: "10px",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "#FFF",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            borderRadius: "5px 5px 0px 0px",
           }}
         >
-          <Button
-            variant="contained"
-            type="submit"
+          <Typography
+            variant="h5"
+            component="h2"
             sx={{
-              height: "40px",
+              mt: 3,
+              mb: 3,
+              color: "#383E49",
             }}
           >
-            Ajouter un utilisateur
-          </Button>
-          <Button
-            variant="outlined"
-            type="submit"
+            Liste des utilisateurs
+          </Typography>
+          <Box
             sx={{
-              height: "40px",
+              display: "flex",
+              gap: "10px",
             }}
           >
-            Modifier l'utilisateur
-          </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Ajouter un utilisateur
+            </Button>
+            <Button
+              variant="outlined"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Modifier l'utilisateur
+            </Button>
+          </Box>
         </Box>
+        <DashboardList columns={columns} data={dataGrid} />
       </Box>
-      <DashboardList columns={columns} data={data} />
-    </Box>
-  );
+    );
 }
