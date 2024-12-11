@@ -22,7 +22,7 @@ export default function AdminHomePage() {
   ];
 
   // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const dataGrid =
+  const dataGridUser =
     data?.allUsers?.map((user, index) => ({
       id: index + 1,
       name: user.name,
@@ -118,7 +118,7 @@ export default function AdminHomePage() {
             </Button>
           </Box>
         </Box>
-        <DashboardList columns={columns} data={dataGrid} />
+        <DashboardList columns={columns} data={dataGridUser} />
       </Box>
     );
 }

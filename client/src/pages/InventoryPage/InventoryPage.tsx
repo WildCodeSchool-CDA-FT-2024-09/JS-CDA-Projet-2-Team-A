@@ -1,12 +1,10 @@
 import DashboardList from "../../components/DashboardList/DashboardList";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-
-// TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
-import products from "../../../../server/data/mock/products.json";
+import { useAllProductsQuery } from "../../generated/graphql-types";
+import { Box, Typography, Button } from "@mui/material";
 
 export default function InventoryPage() {
+  const { data, loading, error } = useAllProductsQuery();
+
   const columns = [
     { field: "id", headerName: "ID", width: 10 },
     { field: "category", headerName: "Catégorie", width: 200 },
@@ -20,49 +18,82 @@ export default function InventoryPage() {
     { field: "supplier", headerName: "Fournisseur", width: 200 },
   ];
 
-  // TODO : Données à changer une fois la connexion à la BDD réalisée
-  const data = products.map((product, index) => ({
-    id: index + 1,
-    product: product.product,
-    material: product.material,
-    color: product.color,
-    category: product.category,
-    description: product.description,
-    stock: product.stock,
-    supplier: product.supplier,
-  }));
+  const dataGridProduct =
+    data?.allProducts?.map((product, index) => ({
+      id: index + 1,
+      category: product.category,
+      product: product.product,
+      material: product.material,
+      color: product.color,
+      description: product.description,
+      minimal: product.min_quantity,
+      stock: product.stock,
+      status: "En cours de calcul", // TODO : Affichage provisoire.
+      supplier: product.supplier?.name,
+    })) || [];
 
-  return (
-    <>
-      <Box
-        component="section"
+  if (loading)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
+        Le site il est tout pété c'est trop long à charger là !!
+      </Typography>
+    );
+
+  if (error)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
+      >
+        Le site il est tout pété, et en plus c'est bourré d'erreurs !!
+      </Typography>
+    );
+
+  if (data)
+    return (
+      <>
+        <Box
+          component="section"
           sx={{
-            mt: 3,
-            mb: 3,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          Liste des produits
-        </Typography>
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{
-            height: "40px",
-          }}
-        >
-          Ajouter un produit
-        </Button>
-      </Box>
-      <DashboardList columns={columns} data={data} />
-    </>
-  );
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              mt: 3,
+              mb: 3,
+            }}
+          >
+            Liste des produits
+          </Typography>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              height: "40px",
+            }}
+          >
+            Ajouter un produit
+          </Button>
+        </Box>
+        <DashboardList columns={columns} data={dataGridProduct} />
+      </>
+    );
 }
