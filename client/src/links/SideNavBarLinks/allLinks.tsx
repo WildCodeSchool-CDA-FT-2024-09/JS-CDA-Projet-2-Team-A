@@ -7,10 +7,10 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 
 // Ici sont placés chaque équipe disponible dans l'application ainsi que l'url de retour à leur dashboard.
 export const homePageUrls: { url: string; role: string }[] = [
-  { url: "/achat", role: "1" },
-  { url: "/approvisionnement", role: "2" },
-  { url: "/atelier", role: "3" },
-  { url: "/admin", role: "4" },
+  { url: "/achat", role: "achat" },
+  { url: "/approvisionnement", role: "approvisionnement" },
+  { url: "/atelier", role: "atelier" },
+  { url: "/admin", role: "admin" },
 ];
 
 // Ici sont placés tous les liens propres à chaque équipe selon les rôles attribués.

@@ -35,6 +35,9 @@ class AuthResponse {
   name: string;
 
   @Field()
+  login: string;
+
+  @Field()
   role: string;
 }
 
@@ -62,6 +65,7 @@ export class UserResolver {
             }
           ),
           name: user.name,
+          login: user.login,
           role: user.role.role,
         };
       } else {

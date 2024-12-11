@@ -12,10 +12,22 @@ import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import logo from "/StockManage_logo_xl.png";
 
 export default function SideNavBar(): ReactElement {
-  const {
-    user: { role },
-  } = useUser();
-  const { url } = homePageUrls.find((link) => link.role.includes(role))!; // Récupération de l'url selon le rôle de l'utilisateur
+  const { user } = useUser();
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  const foundLink = homePageUrls.find((link) => link.role.includes(user.role));
+
+  if (!foundLink) {
+    console.error("No matching link found for the user's role:", user.role);
+    return <div>Error: No home page URL available for this role.</div>;
+  }
+
+  const { url } = foundLink;
+
+  //const { url } = homePageUrls.find((link) => link.role.includes(user!.role))!; // Récupération de l'url selon le rôle de l'utilisateur
 
   return (
     <Box component="nav">
@@ -53,7 +65,7 @@ export default function SideNavBar(): ReactElement {
         </Toolbar>
         <List>
           {allLinks.reduce((acc: ReactElement[], link: linkType) => {
-            if (link.role.includes(role)) {
+            if (link.role.includes(user!.role)) {
               acc.push(<SideNavBarList link={link} key={link.name} />);
             }
             return acc;

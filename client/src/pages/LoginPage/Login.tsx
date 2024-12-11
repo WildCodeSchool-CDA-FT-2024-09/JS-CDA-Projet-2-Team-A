@@ -1,8 +1,7 @@
 import { useState } from "react";
-
-// TODO : En prévision de la finalisation du système d'authentification (US02).
-// import { useNavigate } from 'react-router-dom';
-
+import { homePageUrls } from "../../links/SideNavBarLinks/allLinks.tsx";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -15,6 +14,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useAuthenticateQuery } from "../../generated/graphql-types";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,9 +22,29 @@ export default function Login() {
     form: { email: "", password: "" },
     errors: { email: "", password: "", global: "" },
   });
+  const { data: authData, error: authError } = useAuthenticateQuery({
+    variables: {
+      credentials: {
+        login: formState.form.email,
+        password: formState.form.password,
+      },
+    },
+  });
+  const { user, setUser } = useUser();
+  const navigate = useNavigate();
 
-  // TODO : En prévision de la finalisation du système d'authentification
-  // const navigate = useNavigate()
+  if (user.login) {
+    const foundLink = homePageUrls.find(
+      (link) => user.role !== "" && link.role === user.role,
+    );
+    if (!foundLink) {
+      console.error("No matching link found for the user's role:", user.role);
+      return <div>Error: No home page URL available for this role.</div>;
+    }
+    const { url } = foundLink;
+    navigate(url);
+    return;
+  }
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -60,6 +80,27 @@ export default function Login() {
 
     if (!validateFields()) {
       return;
+    }
+
+    if (authError) {
+      const newErrors = {
+        email: "",
+        password: "",
+        global: "Les identifiants sont incorrects.",
+      };
+      setFormState((prevState) => ({ ...prevState, errors: newErrors }));
+    } else {
+      setUser({
+        name: authData!.authenticate.name,
+        login: authData!.authenticate.login,
+        role: authData!.authenticate.role,
+      });
+      const { url } = homePageUrls.find(
+        (link) => link.role === authData!.authenticate.role,
+      )!;
+      // console.info(user);
+      // console.info(url);
+      navigate(url);
     }
 
     // TODO : En prévision de l'implémentation des données (US02).

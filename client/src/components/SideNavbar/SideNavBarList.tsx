@@ -9,6 +9,8 @@ import { NavLink, useLocation } from "react-router-dom";
 import { ReactElement } from "react";
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import Typography from "@mui/material/Typography";
+import { useUser } from "../../contexts/UserContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function SideNavBarList({
   link,
@@ -16,6 +18,18 @@ export default function SideNavBarList({
   link: linkType | linkTypeOpt;
 }): ReactElement {
   const location = useLocation();
+  const { setUser } = useUser();
+  const navigate = useNavigate();
+
+  const cleanUserContext = () => {
+    navigate("/");
+    setUser({
+      name: "",
+      login: "",
+      role: "",
+    });
+  };
+
   return (
     <ListItem key={link.name}>
       <ListItemButton>
@@ -43,7 +57,11 @@ export default function SideNavBarList({
                 {link.name}
               </NavLink>
             ) : (
-              <Typography // Rajouter ici le onClick/onKeyDown lier à la déconnexion
+              <Typography
+                onClick={(e) => {
+                  e.stopPropagation();
+                  cleanUserContext();
+                }} // Rajouter ici le onClick/onKeyDown lier à la déconnexion
               >
                 {link.name}
               </Typography>

@@ -28,7 +28,7 @@ export default function AdminHomePage() {
     id: index + 1,
     name: user.name,
     role: rolesName.get(user.role),
-    login: user.login,
+    login: user.email,
     //activationDate: user.date,
   }));
 

@@ -29,6 +29,14 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @Field()
+  @Column({ type: "timestamp" })
+  activationDate: Date;
+
+  @Field()
+  @Column({ default: true })
+  active: boolean;
+
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
