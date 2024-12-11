@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 // TODO : import de fichiers json en attendant d'avoir la connexion à la BDD
-import products from "../../../../server/data/mock/products.json";
+import products from "../../data/mock/products.json";
 
 export default function InventoryPage() {
   const columns = [

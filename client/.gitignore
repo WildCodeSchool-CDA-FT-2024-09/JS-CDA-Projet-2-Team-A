@@ -139,3 +139,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+data/*
+data/**/*
+**/data/mock/*.json

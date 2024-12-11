@@ -1,18 +1,26 @@
 import { GraphQLError } from "graphql";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Field, InputType, Mutation, Resolver } from "type-graphql";
 import { User } from "../entities/user.entities";
-import { Role } from "../entities/role.entities"; // Import the Role entity
+import { Role } from "../entities/role.entities";
+
+@InputType()
+class CreateUserInput {
+  @Field()
+  name: string;
+
+  @Field()
+  login: string;
+
+  @Field()
+  roleName: string;
+}
 
 @Resolver(User)
-export default class UserResolver {
+export class UserResolver {
   @Mutation(() => String)
-  async createUser(
-    @Arg("name") name: string,
-    @Arg("login") login: string,
-    @Arg("roleName") roleName: string // Accept role name instead of role ID
-  ): Promise<string> {
+  async createUser(@Arg("body") body: CreateUserInput): Promise<string> {
     try {
       // Step 1: Generate a cryptographically secure random password
       const passwordLength = 12;
@@ -22,21 +30,21 @@ export default class UserResolver {
       const hashedPassword = await argon2.hash(randomPassword);
 
       // Step 3: Check if the login is already in use
-      const existingUser = await User.findOne({ where: { login } });
+      const existingUser = await User.findOne({ where: { login: body.login } });
       if (existingUser) {
         throw new GraphQLError("Email already exists. Please use another.");
       }
 
       // Step 4: Find the role by its name
-      const role = await Role.findOne({ where: { role: roleName } });
+      const role = await Role.findOne({ where: { role: body.roleName } });
       if (!role) {
         throw new GraphQLError("Role not found. Please provide a valid role.");
       }
 
       // Step 5: Create the user entity
       const user = new User();
-      user.name = name;
-      user.login = login;
+      user.name = body.name;
+      user.login = body.login;
       user.password = hashedPassword;
       user.role = role; // Set the role using the role object
 
