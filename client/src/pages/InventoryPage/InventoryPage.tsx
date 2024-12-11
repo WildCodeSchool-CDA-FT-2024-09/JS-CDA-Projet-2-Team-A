@@ -64,13 +64,21 @@ export default function InventoryPage() {
 
   if (data)
     return (
-      <>
+      <Box
+        sx={{
+          borderRadius: "5px",
+        }}
+      >
         <Box
           component="section"
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            background: "#FFF",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            borderRadius: "5px 5px 0px 0px",
           }}
         >
           <Typography
@@ -79,21 +87,38 @@ export default function InventoryPage() {
             sx={{
               mt: 3,
               mb: 3,
+              color: "#383E49",
             }}
           >
             Liste des produits
           </Typography>
-          <Button
-            variant="contained"
-            type="submit"
+          <Box
             sx={{
-              height: "40px",
+              display: "flex",
+              gap: "10px",
             }}
           >
-            Ajouter un produit
-          </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Ajouter un produit
+            </Button>
+            <Button
+              variant="outlined"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Modifier un produit
+            </Button>
+          </Box>
         </Box>
         <DashboardList columns={columns} data={dataGridProduct} />
-      </>
+      </Box>
     );
 }
