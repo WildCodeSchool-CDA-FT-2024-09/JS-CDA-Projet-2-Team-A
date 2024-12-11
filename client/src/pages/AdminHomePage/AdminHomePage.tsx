@@ -1,8 +1,19 @@
 import { useState } from "react";
-import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
-import { useCreateUserMutation } from "../../generated/graphql-types";
-import { useGetAllRolesQuery } from "../../generated/graphql-types";
+import {
+  Box,
+  Typography,
+  Button,
+  Snackbar,
+  Alert,
+  Switch,
+} from "@mui/material";
+import {
+  useCreateUserMutation,
+  useGetAllRolesQuery,
+  useAllUsersQuery,
+} from "../../generated/graphql-types";
 import ModalForm from "../../components/modalForm/Modalform";
+import DashboardList from "../../components/DashboardList/DashboardList";
 
 export default function AdminHomePage() {
   const [openModal, setOpenModal] = useState(false);
@@ -10,17 +21,24 @@ export default function AdminHomePage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [createUser] = useCreateUserMutation();
 
-  // Fetch roles
+  // Fetch roles for the modal form
   const {
     data: rolesData,
     loading: rolesLoading,
     error: rolesError,
   } = useGetAllRolesQuery();
 
+  // Fetch all users for the dashboard
+  const {
+    data: usersData,
+    loading: usersLoading,
+    error: usersError,
+  } = useAllUsersQuery();
+
   // Handle form submission for user creation
   const handleUserSubmit = async (formData: {
     name: string;
-    login: string;
+    email: string;
     role: string;
   }) => {
     try {
@@ -28,7 +46,7 @@ export default function AdminHomePage() {
         variables: {
           body: {
             name: formData.name,
-            login: formData.login,
+            email: formData.email,
             roleName: formData.role,
           },
         },
@@ -42,6 +60,57 @@ export default function AdminHomePage() {
     }
   };
 
+  // Prepare user data for the dashboard
+  const columns = [
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "name", headerName: "Nom", width: 250 },
+    { field: "role", headerName: "Rôle", width: 250 },
+    { field: "login", headerName: "Login", width: 250 },
+    { field: "activationDate", headerName: "Date d'activation", width: 250 },
+    {
+      field: "actions",
+      headerName: "Utilisateurs actifs",
+      width: 250,
+      sortable: false,
+      filterable: false,
+      renderCell: () => <Switch defaultChecked />,
+    },
+  ];
+
+  const dataGrid =
+    usersData?.allUsers?.map((user, index) => ({
+      id: index + 1,
+      name: user.name,
+      role: user.role?.role || "Non défini",
+      login: user.email,
+      activationDate: new Date(user.activationDate).toLocaleDateString(),
+      isActive: user.isActive,
+    })) || [];
+
+  // Handle loading and error states
+  if (usersLoading || rolesLoading)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{ mt: 3, mb: 3, color: "#383E49" }}
+      >
+        Chargement en cours...
+      </Typography>
+    );
+
+  if (usersError || rolesError)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{ mt: 3, mb: 3, color: "#383E49" }}
+      >
+        Une erreur est survenue lors du chargement des données.
+      </Typography>
+    );
+
+  // Render the combined component
   return (
     <Box sx={{ borderRadius: "5px" }}>
       <Box
@@ -59,7 +128,11 @@ export default function AdminHomePage() {
         <Typography
           variant="h5"
           component="h2"
-          sx={{ mt: 3, mb: 3, color: "#383E49" }}
+          sx={{
+            mt: 3,
+            mb: 3,
+            color: "#383E49",
+          }}
         >
           Liste des utilisateurs
         </Typography>
@@ -76,6 +149,7 @@ export default function AdminHomePage() {
           </Button>
         </Box>
       </Box>
+      <DashboardList columns={columns} data={dataGrid} />
 
       {/* Modal for Creating a User */}
       <ModalForm
@@ -90,21 +164,17 @@ export default function AdminHomePage() {
             type: "text",
           },
           {
-            name: "login",
-            label: "Login",
+            name: "email",
+            label: "email",
             type: "text",
           },
           {
             name: "role",
             label: "Rôle",
-            options: rolesLoading
-              ? []
-              : rolesError
-                ? []
-                : rolesData?.getAllRoles?.map((role) => ({
-                    value: role.role,
-                    label: role.role,
-                  })),
+            options: rolesData?.getAllRoles?.map((role) => ({
+              value: role.role,
+              label: role.role,
+            })),
           },
         ]}
       />
