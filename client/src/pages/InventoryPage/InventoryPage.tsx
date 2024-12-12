@@ -7,15 +7,15 @@ export default function InventoryPage() {
 
   const columns = [
     { field: "id", headerName: "ID", width: 10 },
-    { field: "category", headerName: "Catégorie", width: 200 },
-    { field: "product", headerName: "Produit", width: 200 },
-    { field: "material", headerName: "Matériau", width: 150 },
-    { field: "color", headerName: "Couleur", width: 150 },
-    { field: "description", headerName: "Description", width: 200 },
-    { field: "minimal", headerName: "Seuil", width: 100 },
-    { field: "stock", headerName: "Stock", width: 100 },
-    { field: "status", headerName: "Etat", width: 200 },
-    { field: "supplier", headerName: "Fournisseur", width: 200 },
+    { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
+    { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
+    { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
+    { field: "color", headerName: "Couleur", flex: 1, maxWidth: 150 },
+    { field: "description", headerName: "Description", flex: 1 },
+    { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
+    { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
+    { field: "status", headerName: "Etat", flex: 1, maxWidth: 200 },
+    { field: "supplier", headerName: "Fournisseur", flex: 1 },
   ];
 
   const dataGridProduct =
