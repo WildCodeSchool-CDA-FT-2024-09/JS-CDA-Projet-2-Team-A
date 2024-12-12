@@ -1,11 +1,24 @@
-// import { Box, Stack, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 // import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 // import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 // import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 // import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 export default function DashboardSummary() {
-  return <h1>COUCOU LES NOOBS</h1>;
+  return (
+    <Box
+      sx={{
+        heigth: "100px",
+        // background: "#FFF",
+        background: "red",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        borderRadius: "5px",
+      }}
+    >
+      <h1>COUCOU LES NOOB</h1>
+    </Box>
+  );
 }
 
 {

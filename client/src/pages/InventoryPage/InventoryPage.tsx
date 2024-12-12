@@ -64,7 +64,13 @@ export default function InventoryPage() {
 
   if (data)
     return (
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
         <DashboardSummary />
         <Box
           sx={{
