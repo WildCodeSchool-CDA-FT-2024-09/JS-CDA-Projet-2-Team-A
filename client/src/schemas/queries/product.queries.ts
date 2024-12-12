@@ -16,3 +16,15 @@ export const GET_ALL_PRODUCTS = gql`
     }
   }
 `;
+
+export const COUNT_CATGORIES = gql`
+  query CountDistinctCategories {
+    countDistinctCategories
+  }
+`;
+
+export const COUNT_TOTAL_STOCK = gql`
+  query totalStockProduct {
+    totalStockProduct
+  }
+`;

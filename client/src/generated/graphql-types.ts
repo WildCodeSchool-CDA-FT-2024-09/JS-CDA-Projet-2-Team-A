@@ -47,6 +47,16 @@ export type Employee = {
   supplier: Supplier;
 };
 
+export type Message = {
+  __typename?: "Message";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  message: Scalars["String"]["output"];
+  message_status: Scalars["String"]["output"];
+  title: Scalars["String"]["output"];
+  user: User;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
@@ -86,7 +96,9 @@ export type Query = {
   __typename?: "Query";
   allProducts: Array<Product>;
   allUsers: Array<User>;
+  countDistinctCategories: Scalars["Float"]["output"];
   getAllRoles: Array<Role>;
+  totalStockProduct: Scalars["Float"]["output"];
 };
 
 export type Role = {
@@ -118,6 +130,7 @@ export type User = {
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   isActive: Scalars["Boolean"]["output"];
+  messages?: Maybe<Array<Message>>;
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
   role: Role;
@@ -154,6 +167,22 @@ export type AllProductsQuery = {
     stock: number;
     supplier: { __typename?: "Supplier"; name: string };
   }>;
+};
+
+export type CountDistinctCategoriesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type CountDistinctCategoriesQuery = {
+  __typename?: "Query";
+  countDistinctCategories: number;
+};
+
+export type TotalStockProductQueryVariables = Exact<{ [key: string]: never }>;
+
+export type TotalStockProductQuery = {
+  __typename?: "Query";
+  totalStockProduct: number;
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -377,6 +406,156 @@ export type AllProductsSuspenseQueryHookResult = ReturnType<
 export type AllProductsQueryResult = Apollo.QueryResult<
   AllProductsQuery,
   AllProductsQueryVariables
+>;
+export const CountDistinctCategoriesDocument = gql`
+  query CountDistinctCategories {
+    countDistinctCategories
+  }
+`;
+
+/**
+ * __useCountDistinctCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCountDistinctCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountDistinctCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountDistinctCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCountDistinctCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
+}
+export function useCountDistinctCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
+}
+export function useCountDistinctCategoriesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        CountDistinctCategoriesQuery,
+        CountDistinctCategoriesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
+}
+export type CountDistinctCategoriesQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesQuery
+>;
+export type CountDistinctCategoriesLazyQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesLazyQuery
+>;
+export type CountDistinctCategoriesSuspenseQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesSuspenseQuery
+>;
+export type CountDistinctCategoriesQueryResult = Apollo.QueryResult<
+  CountDistinctCategoriesQuery,
+  CountDistinctCategoriesQueryVariables
+>;
+export const TotalStockProductDocument = gql`
+  query totalStockProduct {
+    totalStockProduct
+  }
+`;
+
+/**
+ * __useTotalStockProductQuery__
+ *
+ * To run a query within a React component, call `useTotalStockProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTotalStockProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTotalStockProductQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTotalStockProductQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TotalStockProductQuery,
+    TotalStockProductQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    TotalStockProductQuery,
+    TotalStockProductQueryVariables
+  >(TotalStockProductDocument, options);
+}
+export function useTotalStockProductLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TotalStockProductQuery,
+    TotalStockProductQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    TotalStockProductQuery,
+    TotalStockProductQueryVariables
+  >(TotalStockProductDocument, options);
+}
+export function useTotalStockProductSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        TotalStockProductQuery,
+        TotalStockProductQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    TotalStockProductQuery,
+    TotalStockProductQueryVariables
+  >(TotalStockProductDocument, options);
+}
+export type TotalStockProductQueryHookResult = ReturnType<
+  typeof useTotalStockProductQuery
+>;
+export type TotalStockProductLazyQueryHookResult = ReturnType<
+  typeof useTotalStockProductLazyQuery
+>;
+export type TotalStockProductSuspenseQueryHookResult = ReturnType<
+  typeof useTotalStockProductSuspenseQuery
+>;
+export type TotalStockProductQueryResult = Apollo.QueryResult<
+  TotalStockProductQuery,
+  TotalStockProductQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {
