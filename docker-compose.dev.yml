@@ -23,6 +23,8 @@ services:
     build: ./server
     volumes:
       - ./server/src:/app/src
+      - ./server/data:/app/data
+      - ./server/index.ts:/app/index.ts
     env_file: ./server/.env
     command: npm run dev
     restart: always
