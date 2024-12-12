@@ -1,10 +1,7 @@
 import DashboardList from "../../components/DashboardList/DashboardList";
+import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
-import { Box, Typography, Button, Stack, Divider } from "@mui/material";
-import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
-import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
-import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import { Box, Typography, Button } from "@mui/material";
 export default function InventoryPage() {
   const { data, loading, error } = useAllProductsQuery();
 
@@ -68,106 +65,61 @@ export default function InventoryPage() {
   if (data)
     return (
       <Box>
+        <DashboardSummary />
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            gap: "20px",
+            borderRadius: "5px",
+            background: "#FFF",
           }}
         >
-          <Stack
-            direction="row"
-            divider={<Divider orientation="vertical" flexItem />}
-            spacing={2}
+          <Box
             sx={{
-              heigth: "50px",
-              background: "#FFF",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               paddingLeft: "10px",
               paddingRight: "10px",
               borderRadius: "5px 5px 0px 0px",
             }}
           >
-            <Stack>
-              <Stack direction="row" spacing={2}>
-                <CategoryOutlinedIcon />
-                <Typography>Catégories</Typography>
-              </Stack>
-            </Stack>
-            <Stack>
-              <Stack direction="row" spacing={2}>
-                <InventoryOutlinedIcon />
-                <Typography>Stock global</Typography>
-              </Stack>
-            </Stack>
-            <Stack>
-              <Stack direction="row" spacing={2}>
-                <ExitToAppOutlinedIcon />
-                <Typography>En cours de livraison</Typography>
-              </Stack>
-            </Stack>
-            <Stack>
-              <Stack direction="row" spacing={2}>
-                <WarningAmberOutlinedIcon />
-                <Typography>Alertes</Typography>
-              </Stack>
-            </Stack>
-          </Stack>
-          <Box
-            sx={{
-              borderRadius: "5px",
-            }}
-          >
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                mt: 3,
+                mb: 3,
+                color: "#383E49",
+              }}
+            >
+              Liste des produits
+            </Typography>
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                background: "#FFF",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-                borderRadius: "5px 5px 0px 0px",
+                gap: "10px",
               }}
             >
-              <Typography
-                variant="h5"
-                component="h2"
+              <Button
+                variant="contained"
+                type="submit"
                 sx={{
-                  mt: 3,
-                  mb: 3,
-                  color: "#383E49",
+                  height: "40px",
                 }}
               >
-                Liste des produits
-              </Typography>
-              <Box
+                Ajouter un produit
+              </Button>
+              <Button
+                variant="outlined"
+                type="submit"
                 sx={{
-                  display: "flex",
-                  gap: "10px",
+                  height: "40px",
                 }}
               >
-                <Button
-                  variant="contained"
-                  type="submit"
-                  sx={{
-                    height: "40px",
-                  }}
-                >
-                  Ajouter un produit
-                </Button>
-                <Button
-                  variant="outlined"
-                  type="submit"
-                  sx={{
-                    height: "40px",
-                  }}
-                >
-                  Modifier un produit
-                </Button>
-              </Box>
+                Modifier un produit
+              </Button>
             </Box>
-            <DashboardList columns={columns} data={dataGridProduct} />
           </Box>
+          <DashboardList columns={columns} data={dataGridProduct} />
         </Box>
       </Box>
     );
