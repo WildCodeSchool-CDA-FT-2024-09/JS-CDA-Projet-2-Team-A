@@ -163,6 +163,7 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
+                    {/* Donnée écrite en brut en provisoire en attendant d'avoir réalisé les fonctions avec les valeurs minimums */}
                     2
                   </Typography>
                   <Typography
@@ -181,6 +182,7 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
+                    {/* Donnée écrite en brut en provisoire en attendant d'avoir réalisé les fonctions avec les valeurs minimums */}
                     12
                   </Typography>
                   <Typography

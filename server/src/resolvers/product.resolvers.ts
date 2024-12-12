@@ -22,4 +22,13 @@ export default class ProductResolver {
 
     return parseInt(categoriesCount.count, 10);
   }
+
+  @Query(() => Number)
+  async totalStockProduct(): Promise<number> {
+    const totalStockProduct = await Product.createQueryBuilder("product")
+      .select("SUM(product.stock)", "total")
+      .getRawOne();
+
+    return parseInt(totalStockProduct.total, 10) || 0;
+  }
 }
