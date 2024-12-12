@@ -31,10 +31,17 @@ export default function DashboardSummary() {
         <Stack
           direction="row"
           divider={<Divider orientation="vertical" flexItem />}
-          spacing={15}
+          spacing={2}
+          sx={{ justifyContent: "space-between" }}
         >
           {/* first category */}
-          <Stack spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              flexGrow: 1,
+              minWidth: 0,
+            }}
+          >
             <Stack direction="row" spacing={2}>
               <CategoryOutlinedIcon />
               <Typography
@@ -57,7 +64,13 @@ export default function DashboardSummary() {
           </Stack>
 
           {/* seconde category */}
-          <Stack spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              flexGrow: 1,
+              minWidth: 0,
+            }}
+          >
             <Stack direction="row" spacing={2}>
               <InventoryOutlinedIcon />
               <Typography
@@ -90,7 +103,13 @@ export default function DashboardSummary() {
           </Stack>
 
           {/* third category */}
-          <Stack spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              flexGrow: 1,
+              minWidth: 0,
+            }}
+          >
             <Stack direction="row" spacing={2}>
               <ExitToAppOutlinedIcon />
               <Typography
@@ -143,7 +162,13 @@ export default function DashboardSummary() {
           </Stack>
 
           {/* third category */}
-          <Stack spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              flexGrow: 1,
+              minWidth: 0,
+            }}
+          >
             <Stack direction="row" spacing={2}>
               <WarningAmberOutlinedIcon />
               <Typography sx={{ fontWeight: "bold", color: "#F36960" }}>

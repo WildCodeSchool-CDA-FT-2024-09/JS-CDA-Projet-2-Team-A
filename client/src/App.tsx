@@ -10,8 +10,7 @@ export default function App() {
     <Box
       component="main"
       sx={{
-        // background: "#F0F1F3",
-        background: "red",
+        background: "#F0F1F3",
         height: "100dvh",
         width: "100dvw",
         display: "flex",
