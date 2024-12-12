@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import useScreenSize from "../../hook/useScreenSize";
 
 interface DashboardListProps<T> {
   columns: GridColDef[];
@@ -10,6 +11,10 @@ export default function DashboardList<T>({
   columns,
   data,
 }: DashboardListProps<T>) {
+  const { isSmallScreen, isMediumScreen } = useScreenSize();
+
+  const rowPerPage = isSmallScreen ? 5 : isMediumScreen ? 10 : 19;
+
   return (
     <Box component="main">
       <Box
@@ -25,7 +30,7 @@ export default function DashboardList<T>({
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: rowPerPage,
               },
             },
           }}
