@@ -16,3 +16,9 @@ export const GET_ALL_PRODUCTS = gql`
     }
   }
 `;
+
+export const COUNT_CATGORIES = gql`
+  query Query {
+    countDistinctCategories
+  }
+`;

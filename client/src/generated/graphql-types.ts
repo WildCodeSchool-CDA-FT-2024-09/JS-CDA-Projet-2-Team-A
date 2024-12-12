@@ -47,6 +47,16 @@ export type Employee = {
   supplier: Supplier;
 };
 
+export type Message = {
+  __typename?: "Message";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  message: Scalars["String"]["output"];
+  message_status: Scalars["String"]["output"];
+  title: Scalars["String"]["output"];
+  user: User;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
@@ -86,6 +96,7 @@ export type Query = {
   __typename?: "Query";
   allProducts: Array<Product>;
   allUsers: Array<User>;
+  countDistinctCategories: Scalars["Float"]["output"];
   getAllRoles: Array<Role>;
 };
 
@@ -118,6 +129,7 @@ export type User = {
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   isActive: Scalars["Boolean"]["output"];
+  messages?: Maybe<Array<Message>>;
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
   role: Role;
@@ -154,6 +166,13 @@ export type AllProductsQuery = {
     stock: number;
     supplier: { __typename?: "Supplier"; name: string };
   }>;
+};
+
+export type QueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type QueryQuery = {
+  __typename?: "Query";
+  countDistinctCategories: number;
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -377,6 +396,68 @@ export type AllProductsSuspenseQueryHookResult = ReturnType<
 export type AllProductsQueryResult = Apollo.QueryResult<
   AllProductsQuery,
   AllProductsQueryVariables
+>;
+export const QueryDocument = gql`
+  query Query {
+    countDistinctCategories
+  }
+`;
+
+/**
+ * __useQueryQuery__
+ *
+ * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQueryQuery(
+  baseOptions?: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<QueryQuery, QueryQueryVariables>(
+    QueryDocument,
+    options,
+  );
+}
+export function useQueryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(
+    QueryDocument,
+    options,
+  );
+}
+export function useQuerySuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(
+    QueryDocument,
+    options,
+  );
+}
+export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
+export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
+export type QuerySuspenseQueryHookResult = ReturnType<
+  typeof useQuerySuspenseQuery
+>;
+export type QueryQueryResult = Apollo.QueryResult<
+  QueryQuery,
+  QueryQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {
