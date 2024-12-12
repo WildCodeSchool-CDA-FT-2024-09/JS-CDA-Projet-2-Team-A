@@ -11,7 +11,7 @@ import { Message } from "./message.entities";
 import { ObjectType, Field, Int } from "type-graphql";
 
 @ObjectType()
-@Entity("user") // Marks this class as a GraphQL Object type
+@Entity("user")
 export class User extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()

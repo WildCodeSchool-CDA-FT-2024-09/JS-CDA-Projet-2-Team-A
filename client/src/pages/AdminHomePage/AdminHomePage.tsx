@@ -96,7 +96,11 @@ export default function AdminHomePage() {
       <Typography
         variant="h5"
         component="h2"
-        sx={{ mt: 3, mb: 3, color: "#383E49" }}
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
       >
         Chargement en cours...
       </Typography>
@@ -107,96 +111,123 @@ export default function AdminHomePage() {
       <Typography
         variant="h5"
         component="h2"
-        sx={{ mt: 3, mb: 3, color: "#383E49" }}
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
       >
         Une erreur est survenue lors du chargement des données.
       </Typography>
     );
 
-  return (
-    <Box sx={{ borderRadius: "5px" }}>
+  if (data)
+    return (
       <Box
-        component="section"
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          background: "#FFF",
-          paddingLeft: "10px",
-          paddingRight: "10px",
-          borderRadius: "5px 5px 0px 0px",
+          borderRadius: "5px",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{ mt: 3, mb: 3, color: "#383E49" }}
-        >
-          Liste des utilisateurs
-        </Typography>
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          <Button
-            variant="contained"
-            onClick={() => setOpenModal(true)}
-            sx={{ height: "40px" }}
-          >
-            Ajouter un utilisateur
-          </Button>
-          <Button variant="outlined" sx={{ height: "40px" }}>
-            Modifier l'utilisateur
-          </Button>
-        </Box>
-      </Box>
-      <DashboardList columns={columns} data={dataGridUser} />
-
-      {/* Modal for Creating a User */}
-      <ModalForm
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSubmit={handleUserSubmit}
-        title="Ajouter un utilisateur"
-        fields={[
-          {
-            name: "name",
-            label: "Nom",
-            type: "text",
-          },
-          {
-            name: "email",
-            label: "Email",
-            type: "text",
-          },
-          {
-            name: "role",
-            label: "Rôle",
-            options: rolesData?.getAllRoles?.map((role) => ({
-              value: role.role,
-              label: role.role,
-            })),
-          },
-        ]}
-      />
-
-      {/* Snackbar for Success/Error Feedback */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        sx={{ marginTop: "2rem" }}
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity={snackbarMessage.includes("Erreur") ? "error" : "success"}
+        <Box
+          component="section"
           sx={{
-            width: "25rem",
-            fontSize: "1.125rem",
-            padding: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "#FFF",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            borderRadius: "5px 5px 0px 0px",
           }}
         >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{
+              mt: 3,
+              mb: 3,
+              color: "#383E49",
+            }}
+          >
+            Liste des utilisateurs
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+              onClick={() => setOpenModal(true)}
+            >
+              Ajouter un utilisateur
+            </Button>
+            <Button
+              variant="outlined"
+              type="submit"
+              sx={{
+                height: "40px",
+              }}
+            >
+              Modifier l'utilisateur
+            </Button>
+          </Box>
+        </Box>
+        <DashboardList columns={columns} data={dataGridUser} />
+
+        {/* Modal for Creating a User */}
+        <ModalForm
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSubmit={handleUserSubmit}
+          title="Ajouter un utilisateur"
+          fields={[
+            {
+              name: "name",
+              label: "Nom",
+              type: "text",
+            },
+            {
+              name: "email",
+              label: "Email",
+              type: "text",
+            },
+            {
+              name: "role",
+              label: "Rôle",
+              options: rolesData?.getAllRoles?.map((role) => ({
+                value: role.role,
+                label: role.role,
+              })),
+            },
+          ]}
+        />
+
+        {/* Snackbar for Success/Error Feedback */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ marginTop: "2rem" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={snackbarMessage.includes("Erreur") ? "error" : "success"}
+            sx={{
+              width: "25rem",
+              fontSize: "1.125rem",
+              padding: "1rem",
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+    );
 }
