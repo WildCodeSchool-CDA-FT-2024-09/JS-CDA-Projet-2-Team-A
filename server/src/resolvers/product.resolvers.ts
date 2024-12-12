@@ -13,4 +13,13 @@ export default class ProductResolver {
 
     return products;
   }
+
+  @Query(() => Number)
+  async countDistinctCategories(): Promise<number> {
+    const categoriesCount = await Product.createQueryBuilder("product")
+      .select("COUNT(DISTINCT product.category)", "count")
+      .getRawOne();
+
+    return parseInt(categoriesCount.count, 10);
+  }
 }
