@@ -168,9 +168,11 @@ export type AllProductsQuery = {
   }>;
 };
 
-export type QueryQueryVariables = Exact<{ [key: string]: never }>;
+export type CountDistinctCategoriesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
 
-export type QueryQuery = {
+export type CountDistinctCategoriesQuery = {
   __typename?: "Query";
   countDistinctCategories: number;
 };
@@ -397,67 +399,80 @@ export type AllProductsQueryResult = Apollo.QueryResult<
   AllProductsQuery,
   AllProductsQueryVariables
 >;
-export const QueryDocument = gql`
-  query Query {
+export const CountDistinctCategoriesDocument = gql`
+  query CountDistinctCategories {
     countDistinctCategories
   }
 `;
 
 /**
- * __useQueryQuery__
+ * __useCountDistinctCategoriesQuery__
  *
- * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCountDistinctCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountDistinctCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useQueryQuery({
+ * const { data, loading, error } = useCountDistinctCategoriesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useQueryQuery(
-  baseOptions?: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables>,
+export function useCountDistinctCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options,
-  );
+  return Apollo.useQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
 }
-export function useQueryLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>,
+export function useCountDistinctCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options,
-  );
+  return Apollo.useLazyQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
 }
-export function useQuerySuspenseQuery(
+export function useCountDistinctCategoriesSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<QueryQuery, QueryQueryVariables>,
+    | Apollo.SuspenseQueryHookOptions<
+        CountDistinctCategoriesQuery,
+        CountDistinctCategoriesQueryVariables
+      >,
 ) {
   const options =
     baseOptions === Apollo.skipToken
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<QueryQuery, QueryQueryVariables>(
-    QueryDocument,
-    options,
-  );
+  return Apollo.useSuspenseQuery<
+    CountDistinctCategoriesQuery,
+    CountDistinctCategoriesQueryVariables
+  >(CountDistinctCategoriesDocument, options);
 }
-export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
-export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
-export type QuerySuspenseQueryHookResult = ReturnType<
-  typeof useQuerySuspenseQuery
+export type CountDistinctCategoriesQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesQuery
 >;
-export type QueryQueryResult = Apollo.QueryResult<
-  QueryQuery,
-  QueryQueryVariables
+export type CountDistinctCategoriesLazyQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesLazyQuery
+>;
+export type CountDistinctCategoriesSuspenseQueryHookResult = ReturnType<
+  typeof useCountDistinctCategoriesSuspenseQuery
+>;
+export type CountDistinctCategoriesQueryResult = Apollo.QueryResult<
+  CountDistinctCategoriesQuery,
+  CountDistinctCategoriesQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {
