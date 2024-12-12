@@ -22,3 +22,9 @@ export const COUNT_CATGORIES = gql`
     countDistinctCategories
   }
 `;
+
+export const COUNT_TOTAL_STOCK = gql`
+  query totalStockProduct {
+    totalStockProduct
+  }
+`;

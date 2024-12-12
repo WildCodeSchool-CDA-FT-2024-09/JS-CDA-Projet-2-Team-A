@@ -1,4 +1,7 @@
-import { useCountDistinctCategoriesQuery } from "../../generated/graphql-types";
+import {
+  useCountDistinctCategoriesQuery,
+  useTotalStockProductQuery,
+} from "../../generated/graphql-types";
 import { Box, Typography, Stack, Divider } from "@mui/material";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
@@ -6,9 +9,19 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 export default function DashboardSummary() {
-  const { data, loading, error } = useCountDistinctCategoriesQuery();
+  const {
+    data: categoryCountData,
+    loading: categoryCountLoading,
+    error: categoryCountError,
+  } = useCountDistinctCategoriesQuery();
 
-  if (loading)
+  const {
+    data: totalStockData,
+    loading: totalStockLoading,
+    error: totalStockError,
+  } = useTotalStockProductQuery();
+
+  if (categoryCountLoading || totalStockLoading)
     return (
       <Typography
         variant="h5"
@@ -23,7 +36,7 @@ export default function DashboardSummary() {
       </Typography>
     );
 
-  if (error)
+  if (categoryCountError || totalStockError)
     return (
       <Typography
         variant="h5"
@@ -38,7 +51,7 @@ export default function DashboardSummary() {
       </Typography>
     );
 
-  if (data)
+  if (categoryCountData || totalStockData)
     return (
       <Box
         sx={{
@@ -93,7 +106,7 @@ export default function DashboardSummary() {
                   fontWeight: "bold",
                 }}
               >
-                {data?.countDistinctCategories ?? 0}
+                {categoryCountData?.countDistinctCategories ?? 0}
               </Typography>
             </Stack>
 
@@ -123,7 +136,7 @@ export default function DashboardSummary() {
                     fontWeight: "bold",
                   }}
                 >
-                  8868
+                  {totalStockData?.totalStockProduct ?? 0}
                 </Typography>
                 <Typography
                   variant="body2"

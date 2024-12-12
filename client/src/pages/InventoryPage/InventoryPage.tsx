@@ -6,7 +6,6 @@ export default function InventoryPage() {
   const { data, loading, error } = useAllProductsQuery();
 
   const columns = [
-    { field: "id", headerName: "ID", width: 10 },
     { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
     { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
     { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
