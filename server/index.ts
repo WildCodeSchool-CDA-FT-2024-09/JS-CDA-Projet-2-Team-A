@@ -19,6 +19,7 @@ const { PORT } = process.env;
   });
   const { url } = await startStandaloneServer(server, {
     listen: { port: Number(PORT) },
+    context: async ({ req, res }) => ({ req, res }),
   });
   console.info(`🚀  Server ready at: ${url}`);
 })();

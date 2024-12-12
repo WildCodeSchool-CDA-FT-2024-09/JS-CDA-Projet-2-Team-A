@@ -5,8 +5,10 @@ import {
   ObjectType,
   Query,
   Resolver,
+  Ctx,
 } from "type-graphql";
 import { GraphQLError } from "graphql/error";
+import { IncomingMessage, ServerResponse } from "http";
 import { IsString } from "class-validator";
 import { User } from "../entities/user.entities";
 import * as argon2 from "argon2";
@@ -14,6 +16,16 @@ import * as jwt from "jsonwebtoken";
 import "dotenv/config";
 
 const { JWT_SECRET } = process.env;
+
+interface GraphQLContext {
+  req: IncomingMessage & { headers: { authorization?: string } };
+  res: ServerResponse;
+  user?: {
+    id: string;
+    email: string;
+    roles: string[];
+  };
+}
 
 @InputType()
 class Credentials {
@@ -44,7 +56,11 @@ class AuthResponse {
 @Resolver(User)
 export class UserResolver {
   @Query(() => AuthResponse)
-  async authenticate(@Arg("credentials") credentials: Credentials) {
+  async authenticate(
+    @Arg("credentials") credentials: Credentials,
+    @Ctx() context: GraphQLContext
+  ) {
+    const { res } = context;
     const user = await User.findOne({
       where: {
         login: credentials.login,
@@ -56,14 +72,20 @@ export class UserResolver {
     if (user) {
       const verified = await argon2.verify(user.password, credentials.password);
       if (verified) {
+        const token = jwt.sign(
+          { login: user.login, role: user.role.role },
+          JWT_SECRET!,
+          {
+            expiresIn: "86400s",
+          }
+        );
+        // token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict
+        res.setHeader(
+          "Set-Cookie",
+          `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`
+        );
         return {
-          token: jwt.sign(
-            { login: user.login, role: user.role.role },
-            JWT_SECRET!,
-            {
-              expiresIn: "86400s",
-            }
-          ),
+          token,
           name: user.name,
           login: user.login,
           role: user.role.role,
