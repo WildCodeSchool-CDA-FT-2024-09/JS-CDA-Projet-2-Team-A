@@ -42,5 +42,6 @@ export class User extends BaseEntity {
   role: Role;
 
   @OneToMany(() => Message, (message) => message.id)
+  @Field(() => [Message], { nullable: true })
   messages: Message[];
 }
