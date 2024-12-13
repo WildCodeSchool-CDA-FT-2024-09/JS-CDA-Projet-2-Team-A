@@ -177,7 +177,7 @@ const productsArray = Array.isArray(products) ? products : [];
         user.password = hash;
 
         user.activationDate = new Date(userEl.activationDate);
-        user.active = userEl.isActive;
+        user.isActive = userEl.isActive;
 
         user.role = savedRoles.find((role) => role.id === userEl.role) as Role;
         user.activationDate = new Date(userEl.activationDate);

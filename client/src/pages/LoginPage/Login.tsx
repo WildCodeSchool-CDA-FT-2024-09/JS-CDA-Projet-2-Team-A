@@ -25,7 +25,7 @@ export default function Login() {
   const { data: authData, error: authError } = useAuthenticateQuery({
     variables: {
       credentials: {
-        login: formState.form.email,
+        email: formState.form.email,
         password: formState.form.password,
       },
     },
@@ -80,7 +80,7 @@ export default function Login() {
     } else {
       setUser({
         name: authData!.authenticate.name,
-        login: authData!.authenticate.login,
+        login: authData!.authenticate.email,
         role: authData!.authenticate.role,
       });
       const { url } = homePageUrls.find(

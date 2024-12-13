@@ -31,10 +31,23 @@ export type Scalars = {
   DateTimeISO: { input: Date; output: Date };
 };
 
+export type AuthResponse = {
+  __typename?: "AuthResponse";
+  email: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  role: Scalars["String"]["output"];
+  token: Scalars["String"]["output"];
+};
+
 export type CreateUserInput = {
   email: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
   roleName: Scalars["String"]["input"];
+};
+
+export type Credentials = {
+  email: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
 };
 
 export type Employee = {
@@ -96,10 +109,15 @@ export type Query = {
   __typename?: "Query";
   allProducts: Array<Product>;
   allUsers: Array<User>;
+  authenticate: AuthResponse;
   countDistinctCategories: Scalars["Float"]["output"];
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   totalStockProduct: Scalars["Float"]["output"];
+};
+
+export type QueryAuthenticateArgs = {
+  credentials: Credentials;
 };
 
 export type Role = {
@@ -197,6 +215,21 @@ export type TotalStockProductQueryVariables = Exact<{ [key: string]: never }>;
 export type TotalStockProductQuery = {
   __typename?: "Query";
   totalStockProduct: number;
+};
+
+export type AuthenticateQueryVariables = Exact<{
+  credentials: Credentials;
+}>;
+
+export type AuthenticateQuery = {
+  __typename?: "Query";
+  authenticate: {
+    __typename?: "AuthResponse";
+    token: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -650,6 +683,91 @@ export type TotalStockProductSuspenseQueryHookResult = ReturnType<
 export type TotalStockProductQueryResult = Apollo.QueryResult<
   TotalStockProductQuery,
   TotalStockProductQueryVariables
+>;
+export const AuthenticateDocument = gql`
+  query Authenticate($credentials: Credentials!) {
+    authenticate(credentials: $credentials) {
+      token
+      name
+      email
+      role
+    }
+  }
+`;
+
+/**
+ * __useAuthenticateQuery__
+ *
+ * To run a query within a React component, call `useAuthenticateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthenticateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthenticateQuery({
+ *   variables: {
+ *      credentials: // value for 'credentials'
+ *   },
+ * });
+ */
+export function useAuthenticateQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AuthenticateQuery,
+    AuthenticateQueryVariables
+  > &
+    (
+      | { variables: AuthenticateQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export function useAuthenticateLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AuthenticateQuery,
+    AuthenticateQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export function useAuthenticateSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AuthenticateQuery,
+        AuthenticateQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export type AuthenticateQueryHookResult = ReturnType<
+  typeof useAuthenticateQuery
+>;
+export type AuthenticateLazyQueryHookResult = ReturnType<
+  typeof useAuthenticateLazyQuery
+>;
+export type AuthenticateSuspenseQueryHookResult = ReturnType<
+  typeof useAuthenticateSuspenseQuery
+>;
+export type AuthenticateQueryResult = Apollo.QueryResult<
+  AuthenticateQuery,
+  AuthenticateQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {

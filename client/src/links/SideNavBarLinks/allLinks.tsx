@@ -24,37 +24,37 @@ export const allLinks: {
     name: "Inventaire",
     url: "inventaire",
     icon: <ChecklistOutlinedIcon />,
-    role: ["1", "2", "3"],
+    role: ["achat", "approvisionnement", "atelier"],
   },
   {
     name: "Commandes",
     url: "commandes",
     icon: <Inventory2OutlinedIcon />,
-    role: ["1", "2"],
+    role: ["achat", "approvisionnement"],
   },
   {
     name: "Fournisseurs",
     url: "fournisseurs",
     icon: <AccountCircleOutlinedIcon />,
-    role: ["1"],
+    role: ["achat"],
   },
   {
     name: "Retours atelier",
     url: "tickets",
     icon: <BallotOutlinedIcon />,
-    role: ["1"],
+    role: ["achat"],
   },
   {
     name: "Retours achats",
     url: "tickets",
     icon: <BallotOutlinedIcon />,
-    role: ["3"],
+    role: ["atelier"],
   },
   {
     name: "Utilisateurs",
     url: "utilisateurs",
     icon: <AccountCircleOutlinedIcon />,
-    role: ["4"],
+    role: ["admin"],
   },
 ];
 
