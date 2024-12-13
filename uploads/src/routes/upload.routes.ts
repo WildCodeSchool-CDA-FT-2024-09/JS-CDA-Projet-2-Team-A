@@ -14,7 +14,20 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true); // * Acceptation du fichier si les conditions sont respectées
+  } else {
+    cb(new Error("Type de fichier non supporté. Seuls les formats .png, .jpg et .jpeg sont autorisés."));
+  }
+}
+
+const upload = multer({ 
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }
+ });
 
 console.info("je suis upload :", upload)
 
