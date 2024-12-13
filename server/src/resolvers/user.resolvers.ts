@@ -1,9 +1,62 @@
+import {
+  Arg,
+  Field,
+  InputType,
+  ObjectType,
+  Query,
+  Resolver,
+  Ctx,
+  Mutation,
+} from "type-graphql";
 import { User } from "../entities/user.entities";
 import { Role } from "../entities/role.entities";
-import { Resolver, Query, Arg, Field, InputType, Mutation } from "type-graphql";
 import { GraphQLError } from "graphql";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
+import { IncomingMessage, ServerResponse } from "http";
+import { IsString } from "class-validator";
+import * as jwt from "jsonwebtoken";
+import "dotenv/config";
+
+const { JWT_SECRET } = process.env;
+
+interface GraphQLContext {
+  req: IncomingMessage;
+  res: ServerResponse;
+  loggedUser?: {
+    name: string;
+    email: string;
+    role: string;
+    iat: number;
+    exp: number;
+  };
+}
+
+@InputType()
+class Credentials {
+  @Field()
+  @IsString()
+  email: string;
+
+  @Field()
+  @IsString()
+  password: string;
+}
+
+@ObjectType()
+class AuthResponse {
+  @Field()
+  token: string;
+
+  @Field()
+  name: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  role: string;
+}
 
 @InputType()
 class CreateUserInput {
@@ -16,8 +69,55 @@ class CreateUserInput {
   @Field()
   roleName: string;
 }
+
 @Resolver(User)
 export default class UserResolver {
+  @Query(() => AuthResponse)
+  async authenticate(
+    @Arg("credentials") credentials: Credentials,
+    @Ctx() context: GraphQLContext
+  ) {
+    const { res } = context;
+    const user = await User.findOne({
+      where: {
+        email: credentials.email,
+      },
+      relations: {
+        role: true,
+      },
+    });
+    if (user) {
+      const verified = await argon2.verify(user.password, credentials.password);
+      if (verified) {
+        const token = jwt.sign(
+          { name: user.name, email: user.email, role: user.role.role },
+          JWT_SECRET!,
+          {
+            expiresIn: "86400s",
+          }
+        );
+        res.setHeader(
+          "Set-Cookie",
+          `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`
+        );
+        return {
+          token,
+          name: user.name,
+          email: user.email,
+          role: user.role.role,
+        };
+      } else {
+        throw new GraphQLError(
+          "Incorrect password: the specified password does not match the one stored for this user."
+        );
+      }
+    } else {
+      throw new GraphQLError(
+        "User not found: no user with the specified email exists."
+      );
+    }
+  }
+
   @Query(() => [User])
   async allUsers() {
     const users = await User.find({
@@ -39,7 +139,7 @@ export default class UserResolver {
       // Step 2: Hash the password with Argon2
       const hashedPassword = await argon2.hash(randomPassword);
 
-      // Step 3: Check if the login is already in use
+      // Step 3: Check if the email is already in use
       const existingUser = await User.findOne({ where: { email: body.email } });
       if (existingUser) {
         throw new GraphQLError("Email already exists. Please use another.");

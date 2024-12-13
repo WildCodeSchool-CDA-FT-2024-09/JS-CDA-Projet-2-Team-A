@@ -62,7 +62,7 @@ export default function SideNavBar(): ReactElement {
         <Box sx={{ marginTop: "auto" }}>
           <List>
             {bottomLinks.map((link: linkTypeOpt) => (
-              <SideNavBarList link={link} key={link.name} />
+              <SideNavBarList link={link} baseUrl={url} key={link.name} />
             ))}
           </List>
         </Box>
