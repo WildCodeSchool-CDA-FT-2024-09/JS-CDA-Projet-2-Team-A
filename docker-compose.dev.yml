@@ -40,6 +40,17 @@ services:
     command: npm run dev
     restart: always
 
+  upload:
+    build: ./upload
+    volumes:
+      - ./upload/src:/app/src
+      - ./upload/uploads:/app/uploads
+    env_file: ./upload/.env
+    command: npm run dev
+    restart: always
+    depends_on:
+      - db
+
   gateway:
     image: nginx
     ports:
@@ -49,6 +60,7 @@ services:
     depends_on:
       - server
       - client
+      - upload
     healthcheck:
       test:
         [
@@ -62,6 +74,11 @@ services:
           "--silent",
           "--fail",
           "http://server:8000/",
+          "&&",
+          "curl",
+          "--silent",
+          "--fail",
+          "http://upload:3002/"
         ]
       interval: 10s
       retries: 5
