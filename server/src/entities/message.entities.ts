@@ -6,25 +6,33 @@ import {
   ManyToOne,
 } from "typeorm";
 import { User } from "./user.entities";
+import { ObjectType, Field, Int } from "type-graphql";
 
+@ObjectType()
 @Entity("message")
 export class Message extends BaseEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column()
   title: string;
 
+  @Field()
   @Column()
   message: string;
 
+  @Field()
   @Column({ type: "timestamp" })
   created_at: Date;
 
   // statuts possibles : "pending" | "read" | "archived"
+  @Field()
   @Column()
   message_status: string;
 
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.id)
   user: User;
 }

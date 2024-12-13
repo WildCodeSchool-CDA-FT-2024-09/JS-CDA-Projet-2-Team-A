@@ -1,21 +1,20 @@
 import DashboardList from "../../components/DashboardList/DashboardList";
+import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
 import { Box, Typography, Button } from "@mui/material";
-
 export default function InventoryPage() {
   const { data, loading, error } = useAllProductsQuery();
 
   const columns = [
-    { field: "id", headerName: "ID", width: 10 },
-    { field: "category", headerName: "Catégorie", width: 200 },
-    { field: "product", headerName: "Produit", width: 200 },
-    { field: "material", headerName: "Matériau", width: 150 },
-    { field: "color", headerName: "Couleur", width: 150 },
-    { field: "description", headerName: "Description", width: 200 },
-    { field: "minimal", headerName: "Seuil", width: 100 },
-    { field: "stock", headerName: "Stock", width: 100 },
-    { field: "status", headerName: "Etat", width: 200 },
-    { field: "supplier", headerName: "Fournisseur", width: 200 },
+    { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
+    { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
+    { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
+    { field: "color", headerName: "Couleur", flex: 1, maxWidth: 150 },
+    { field: "description", headerName: "Description", flex: 1 },
+    { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
+    { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
+    { field: "status", headerName: "Etat", flex: 1, maxWidth: 200 },
+    { field: "supplier", headerName: "Fournisseur", flex: 1 },
   ];
 
   const dataGridProduct =
@@ -64,36 +63,69 @@ export default function InventoryPage() {
 
   if (data)
     return (
-      <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <DashboardSummary />
         <Box
-          component="section"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            borderRadius: "5px",
+            background: "#FFF",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
+          <Box
             sx={{
-              mt: 3,
-              mb: 3,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              borderRadius: "5px 5px 0px 0px",
             }}
           >
-            Liste des produits
-          </Typography>
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{
-              height: "40px",
-            }}
-          >
-            Ajouter un produit
-          </Button>
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                mt: 3,
+                mb: 3,
+                color: "#383E49",
+              }}
+            >
+              Liste des produits
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  height: "40px",
+                }}
+              >
+                Ajouter un produit
+              </Button>
+              <Button
+                variant="outlined"
+                type="submit"
+                sx={{
+                  height: "40px",
+                }}
+              >
+                Modifier un produit
+              </Button>
+            </Box>
+          </Box>
+          <DashboardList columns={columns} data={dataGridProduct} />
         </Box>
-        <DashboardList columns={columns} data={dataGridProduct} />
-      </>
+      </Box>
     );
 }
