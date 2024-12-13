@@ -41,7 +41,6 @@ export class User extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
 
-  //@Field(() => Message)
   @OneToMany(() => Message, (message) => message.id)
   @Field(() => [Message], { nullable: true })
   messages: Message[];
