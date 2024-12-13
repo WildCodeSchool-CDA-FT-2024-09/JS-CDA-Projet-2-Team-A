@@ -40,12 +40,12 @@ services:
     command: npm run dev
     restart: always
 
-  upload:
-    build: ./upload
+  uploads:
+    build: ./uploads
     volumes:
-      - ./upload/src:/app/src
-      - ./upload/uploads:/app/uploads
-    env_file: ./upload/.env
+      - ./uploads/src:/app/src
+      - ./uploads/uploads:/app/uploads
+    env_file: ./uploads/.env
     command: npm run dev
     restart: always
     depends_on:
@@ -60,7 +60,7 @@ services:
     depends_on:
       - server
       - client
-      - upload
+      - uploads
     healthcheck:
       test:
         [
@@ -78,7 +78,7 @@ services:
           "curl",
           "--silent",
           "--fail",
-          "http://upload:3002/"
+          "http://uploads:3002/"
         ]
       interval: 10s
       retries: 5
