@@ -97,6 +97,7 @@ export type Query = {
   allProducts: Array<Product>;
   allUsers: Array<User>;
   countDistinctCategories: Scalars["Float"]["output"];
+  getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   totalStockProduct: Scalars["Float"]["output"];
 };
@@ -150,6 +151,19 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetAllRolesQuery = {
   __typename?: "Query";
   getAllRoles: Array<{ __typename?: "Role"; id: number; role: string }>;
+};
+
+export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllMessagesQuery = {
+  __typename?: "Query";
+  getAllMessages: Array<{
+    __typename?: "Message";
+    id: number;
+    title: string;
+    message: string;
+    message_status: string;
+  }>;
 };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -322,6 +336,86 @@ export type GetAllRolesSuspenseQueryHookResult = ReturnType<
 export type GetAllRolesQueryResult = Apollo.QueryResult<
   GetAllRolesQuery,
   GetAllRolesQueryVariables
+>;
+export const GetAllMessagesDocument = gql`
+  query GetAllMessages {
+    getAllMessages {
+      id
+      title
+      message
+      message_status
+    }
+  }
+`;
+
+/**
+ * __useGetAllMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetAllMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMessagesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(
+    GetAllMessagesDocument,
+    options,
+  );
+}
+export function useGetAllMessagesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(
+    GetAllMessagesDocument,
+    options,
+  );
+}
+export function useGetAllMessagesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetAllMessagesQuery,
+        GetAllMessagesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
+  >(GetAllMessagesDocument, options);
+}
+export type GetAllMessagesQueryHookResult = ReturnType<
+  typeof useGetAllMessagesQuery
+>;
+export type GetAllMessagesLazyQueryHookResult = ReturnType<
+  typeof useGetAllMessagesLazyQuery
+>;
+export type GetAllMessagesSuspenseQueryHookResult = ReturnType<
+  typeof useGetAllMessagesSuspenseQuery
+>;
+export type GetAllMessagesQueryResult = Apollo.QueryResult<
+  GetAllMessagesQuery,
+  GetAllMessagesQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {

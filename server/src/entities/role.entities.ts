@@ -8,7 +8,7 @@ export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // roles possibles : "achat" | "appro" | "atelier" | "admin"
+  // roles possibles : "achat" | "approvisionnement" | "atelier" | "admin"
   @Field()
   @Column()
   role: string;
