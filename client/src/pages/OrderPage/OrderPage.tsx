@@ -1,6 +1,7 @@
-import { Box, Typography, Button } from "@mui/material";
 import DashboardList from "../../components/DashboardList/DashboardList";
+import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useGetOrderDetailsQuery } from "../../generated/graphql-types";
+import { Box, Typography, Button } from "@mui/material";
 
 export default function OrdersDashboardPage() {
   const { data, loading, error } = useGetOrderDetailsQuery();
@@ -9,14 +10,25 @@ export default function OrdersDashboardPage() {
     {
       field: "orderReference",
       headerName: "Référence de commande",
-      width: 180,
+      flex: 1,
+      maxWidth: 250,
     },
-    { field: "supplier", headerName: "Fournisseur", width: 200 },
-    { field: "status", headerName: "Statut", width: 150 },
-    { field: "products", headerName: "Produits", width: 250 },
-    { field: "created_at", headerName: "Création", width: 200 },
-    { field: "total_quantity", headerName: "Quantité Totale", width: 200 },
-    { field: "expectedDelivery", headerName: "Date de Livraison", width: 180 },
+    { field: "supplier", headerName: "Fournisseur", flex: 1, maxWidth: 250 },
+    { field: "status", headerName: "Statut", flex: 1, maxWidth: 150 },
+    { field: "products", headerName: "Produits", flex: 1 },
+    { field: "created_at", headerName: "Création", flex: 1, maxWidth: 150 },
+    {
+      field: "total_quantity",
+      headerName: "Quantité Totale",
+      flex: 1,
+      maxWidth: 150,
+    },
+    {
+      field: "expectedDelivery",
+      headerName: "Date de Livraison",
+      flex: 1,
+      maxWidth: 200,
+    },
   ];
 
   // Prepare data for the DataGrid
@@ -66,37 +78,66 @@ export default function OrdersDashboardPage() {
       </Typography>
     );
 
-  return (
-    <>
+  if (data)
+    return (
       <Box
-        component="section"
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: "column",
+          gap: "20px",
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
+        <DashboardSummary />
+        <Box
           sx={{
-            mt: 3,
-            mb: 3,
+            borderRadius: "5px",
+            background: "#FFF",
           }}
         >
-          Liste des commandes
-        </Typography>
-        <Button
-          variant="contained"
-          type="submit"
-          sx={{
-            height: "40px",
-          }}
-        >
-          Ajouter une commande
-        </Button>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              borderRadius: "5px 5px 0px 0px",
+              paddingTop: "15px",
+              paddingBottom: "15px",
+              background: "#FFF",
+            }}
+          >
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                mt: 3,
+                mb: 3,
+                color: "#383E49",
+              }}
+            >
+              Liste des commandes
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  height: "40px",
+                  fontWeight: "bold",
+                }}
+              >
+                Ajouter une commande
+              </Button>
+            </Box>
+          </Box>
+          <DashboardList columns={columns} data={dataGridOrders} />
+        </Box>
       </Box>
-      <DashboardList columns={columns} data={dataGridOrders} />
-    </>
-  );
+    );
 }

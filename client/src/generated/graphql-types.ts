@@ -47,6 +47,12 @@ export type Employee = {
   supplier: Supplier;
 };
 
+export type EnCoursDeliveryStats = {
+  __typename?: "EnCoursDeliveryStats";
+  countDeliveries: Scalars["Int"]["output"];
+  totalProducts: Scalars["Int"]["output"];
+};
+
 export type Message = {
   __typename?: "Message";
   created_at: Scalars["DateTimeISO"]["output"];
@@ -122,6 +128,8 @@ export type Query = {
   allUsers: Array<User>;
   countDistinctCategories: Scalars["Float"]["output"];
   getAllRoles: Array<Role>;
+  getEnCoursDeliveryStats: EnCoursDeliveryStats;
+  getOrderDetails: Array<OrderDetails>;
   totalStockProduct: Scalars["Float"]["output"];
 };
 
@@ -193,6 +201,19 @@ export type GetOrderDetailsQuery = {
       expectedDelivery: Date;
     }>;
   }>;
+};
+
+export type GetEnCoursDeliveryStatsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetEnCoursDeliveryStatsQuery = {
+  __typename?: "Query";
+  getEnCoursDeliveryStats: {
+    __typename?: "EnCoursDeliveryStats";
+    countDeliveries: number;
+    totalProducts: number;
+  };
 };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -450,6 +471,84 @@ export type GetOrderDetailsSuspenseQueryHookResult = ReturnType<
 export type GetOrderDetailsQueryResult = Apollo.QueryResult<
   GetOrderDetailsQuery,
   GetOrderDetailsQueryVariables
+>;
+export const GetEnCoursDeliveryStatsDocument = gql`
+  query GetEnCoursDeliveryStats {
+    getEnCoursDeliveryStats {
+      countDeliveries
+      totalProducts
+    }
+  }
+`;
+
+/**
+ * __useGetEnCoursDeliveryStatsQuery__
+ *
+ * To run a query within a React component, call `useGetEnCoursDeliveryStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEnCoursDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEnCoursDeliveryStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEnCoursDeliveryStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export function useGetEnCoursDeliveryStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export function useGetEnCoursDeliveryStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetEnCoursDeliveryStatsQuery,
+        GetEnCoursDeliveryStatsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export type GetEnCoursDeliveryStatsQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsQuery
+>;
+export type GetEnCoursDeliveryStatsLazyQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsLazyQuery
+>;
+export type GetEnCoursDeliveryStatsSuspenseQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsSuspenseQuery
+>;
+export type GetEnCoursDeliveryStatsQueryResult = Apollo.QueryResult<
+  GetEnCoursDeliveryStatsQuery,
+  GetEnCoursDeliveryStatsQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {

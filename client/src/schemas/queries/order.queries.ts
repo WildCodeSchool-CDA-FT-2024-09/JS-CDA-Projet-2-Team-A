@@ -15,3 +15,12 @@ export const GET_ALL_ORDERS = gql`
     }
   }
 `;
+
+export const GET_PENDING_DELIVERIES_STATS = gql`
+  query GetEnCoursDeliveryStats {
+    getEnCoursDeliveryStats {
+      countDeliveries
+      totalProducts
+    }
+  }
+`;

@@ -31,6 +31,15 @@ class ProductDetails {
   expectedDelivery: Date;
 }
 
+@ObjectType()
+class EnCoursDeliveryStats {
+  @Field(() => Int)
+  countDeliveries: number;
+
+  @Field(() => Int)
+  totalProducts: number;
+}
+
 @Resolver()
 export class OrderResolver {
   // Query to get detailed order information including expected delivery dates
@@ -64,5 +73,28 @@ export class OrderResolver {
         };
       }),
     }));
+  }
+
+  // Query to get stats for "en cours" deliveries
+  @Query(() => EnCoursDeliveryStats)
+  async getEnCoursDeliveryStats(): Promise<EnCoursDeliveryStats> {
+    const deliveries = await Order.find({
+      where: { status: "en cours" },
+      relations: ["orderProducts"],
+    });
+
+    // Number of deliveries "en cours"
+    const countDeliveries = deliveries.length;
+
+    // Total number of products across all "en cours" deliveries
+    const totalProducts = deliveries.reduce((sum, delivery) => {
+      const deliveryProductsCount = delivery.orderProducts.reduce(
+        (prodSum, orderProduct) => prodSum + orderProduct.quantity,
+        0
+      );
+      return sum + deliveryProductsCount;
+    }, 0);
+
+    return { countDeliveries, totalProducts };
   }
 }
