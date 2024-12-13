@@ -11,6 +11,7 @@ import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
 import SupplierHomePage from "./pages/SupplierHomePage/SupplierHomePage.tsx";
 import PurchaseHomePage from "./pages/PurchaseHomePage/PurchaseHomePage.tsx";
 import "./index.css";
+import OrderPage from "./pages/OrderPage/OrderPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <InventoryPage />,
+            element: <OrderPage />,
           },
         ],
       },

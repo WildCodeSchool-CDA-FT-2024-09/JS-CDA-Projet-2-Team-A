@@ -9,7 +9,7 @@ import {
 import { ObjectType, Field, Int } from "type-graphql";
 import { Supplier } from "./supplier.entities";
 import { Employee } from "./employee.entities";
-import { Order } from "./order.entities";
+import { OrderProduct } from "./order_product.entities";
 
 @ObjectType()
 @Entity("product")
@@ -66,7 +66,7 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Employee, (employee) => employee.products)
   employee: Employee;
 
-  @Field(() => Order)
-  @OneToMany(() => Order, (order) => order.id)
-  orders: Order[];
+  @Field(() => [OrderProduct])
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+  orderProducts: OrderProduct[];
 }

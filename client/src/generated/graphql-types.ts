@@ -47,6 +47,11 @@ export type Employee = {
   supplier: Supplier;
 };
 
+export type Message = {
+  __typename?: "Message";
+  user: User;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
@@ -60,8 +65,24 @@ export type Order = {
   __typename?: "Order";
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
-  products: Product;
+  orderProducts: Array<OrderProduct>;
   status: Scalars["String"]["output"];
+};
+
+export type OrderDetails = {
+  __typename?: "OrderDetails";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  products: Array<ProductDetails>;
+  status: Scalars["String"]["output"];
+};
+
+export type OrderProduct = {
+  __typename?: "OrderProduct";
+  id: Scalars["Int"]["output"];
+  order: Order;
+  product: Product;
+  quantity: Scalars["Int"]["output"];
 };
 
 export type Product = {
@@ -76,10 +97,18 @@ export type Product = {
   image: Scalars["String"]["output"];
   material: Scalars["String"]["output"];
   min_quantity: Scalars["Float"]["output"];
-  orders: Order;
+  orderProducts: Array<OrderProduct>;
   product: Scalars["String"]["output"];
   stock: Scalars["Float"]["output"];
   supplier: Supplier;
+};
+
+export type ProductDetails = {
+  __typename?: "ProductDetails";
+  expectedDelivery: Scalars["DateTimeISO"]["output"];
+  productName: Scalars["String"]["output"];
+  quantity: Scalars["Int"]["output"];
+  supplierName: Scalars["String"]["output"];
 };
 
 export type Query = {
@@ -87,6 +116,7 @@ export type Query = {
   allProducts: Array<Product>;
   allUsers: Array<User>;
   getAllRoles: Array<Role>;
+  getOrderDetails: Array<OrderDetails>;
 };
 
 export type Role = {
@@ -118,6 +148,7 @@ export type User = {
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   isActive: Scalars["Boolean"]["output"];
+  messages?: Maybe<Array<Message>>;
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
   role: Role;
@@ -137,6 +168,25 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetAllRolesQuery = {
   __typename?: "Query";
   getAllRoles: Array<{ __typename?: "Role"; id: number; role: string }>;
+};
+
+export type GetOrderDetailsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetOrderDetailsQuery = {
+  __typename?: "Query";
+  getOrderDetails: Array<{
+    __typename?: "OrderDetails";
+    id: number;
+    status: string;
+    created_at: Date;
+    products: Array<{
+      __typename?: "ProductDetails";
+      productName: string;
+      supplierName: string;
+      quantity: number;
+      expectedDelivery: Date;
+    }>;
+  }>;
 };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -293,6 +343,91 @@ export type GetAllRolesSuspenseQueryHookResult = ReturnType<
 export type GetAllRolesQueryResult = Apollo.QueryResult<
   GetAllRolesQuery,
   GetAllRolesQueryVariables
+>;
+export const GetOrderDetailsDocument = gql`
+  query GetOrderDetails {
+    getOrderDetails {
+      id
+      status
+      created_at
+      products {
+        productName
+        supplierName
+        quantity
+        expectedDelivery
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetOrderDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetOrderDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderDetailsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrderDetailsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetOrderDetailsQuery, GetOrderDetailsQueryVariables>(
+    GetOrderDetailsDocument,
+    options,
+  );
+}
+export function useGetOrderDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export function useGetOrderDetailsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetOrderDetailsQuery,
+        GetOrderDetailsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export type GetOrderDetailsQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsQuery
+>;
+export type GetOrderDetailsLazyQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsLazyQuery
+>;
+export type GetOrderDetailsSuspenseQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsSuspenseQuery
+>;
+export type GetOrderDetailsQueryResult = Apollo.QueryResult<
+  GetOrderDetailsQuery,
+  GetOrderDetailsQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {
