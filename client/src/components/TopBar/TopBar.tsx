@@ -11,25 +11,25 @@ export default function TopBar() {
 
   const teamIcon = (role: string) => {
     switch (role) {
-      case "1": // Achat
+      case "achat": // Achat
         return (
           <HandshakeOutlinedIcon fontSize="large" sx={{ color: "#383E49" }} />
         );
-      case "2": // Appro
+      case "approvisionnement": // Appro
         return (
           <LocalShippingOutlinedIcon
             fontSize="large"
             sx={{ color: "#383E49" }}
           />
         );
-      case "3": // Atelier
+      case "atelier": // Atelier
         return (
           <ConstructionOutlinedIcon
             fontSize="large"
             sx={{ color: "#383E49" }}
           />
         );
-      case "4": // Admin
+      case "admin": // Admin
         return (
           <SupervisorAccountIcon fontSize="large" sx={{ color: "#383E49" }} />
         );
