@@ -27,7 +27,7 @@ export class Message extends BaseEntity {
   @Column({ type: "timestamp" })
   created_at: Date;
 
-  // statuts possibles : "pending" | "read" | "archived"
+  // statuts possibles : "En attente" | "Lu" | "Archivé"
   @Field()
   @Column()
   message_status: string;
