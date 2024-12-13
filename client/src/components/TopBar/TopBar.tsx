@@ -60,9 +60,9 @@ export default function TopBar() {
             paddingLeft: "10px",
           }}
         >
-          Bienvenue {user.name}
+          Bienvenue {user!.name}
         </Typography>
-        {teamIcon(user.role)}
+        {teamIcon(user!.role)}
       </AppBar>
     </>
   );

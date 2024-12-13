@@ -44,10 +44,7 @@ export default function SideNavBarList({
                 {link.name}
               </NavLink>
             ) : (
-              <Typography // Rajouter ici le onClick/onKeyDown lier à la déconnexion
-              >
-                {link.name}
-              </Typography>
+              <Typography>{link.name}</Typography> // Rajouter ici le onClick/onKeyDown lier à la déconnexion
             )
           }
         />
