@@ -30,21 +30,9 @@ export default function Login() {
       },
     },
   });
-  const { user, setUser } = useUser();
-  const navigate = useNavigate();
 
-  if (user.login) {
-    const foundLink = homePageUrls.find(
-      (link) => user.role !== "" && link.role === user.role,
-    );
-    if (!foundLink) {
-      console.error("No matching link found for the user's role:", user.role);
-      return <div>Error: No home page URL available for this role.</div>;
-    }
-    const { url } = foundLink;
-    navigate(url);
-    return;
-  }
+  const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -98,34 +86,8 @@ export default function Login() {
       const { url } = homePageUrls.find(
         (link) => link.role === authData!.authenticate.role,
       )!;
-      // console.info(user);
-      // console.info(url);
       navigate(url);
     }
-
-    // TODO : En prévision de l'implémentation des données (US02).
-
-    // try {
-    //   const res = await fetch("http://localhost:4000/api/login", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ email: formState.email, password: formState.password })
-    //   });
-
-    //   const data = await res.json();
-
-    //   if(!res.ok) {
-    //     throw new Error(data.message || "Erreur lors de la connexion")
-    //   }
-
-    //   const { token, redirectUrl } = data;
-
-    //   localStorage.setItem("authToken", token);
-
-    //   navigate(redirectUrl);
-    // } catch (err : any) {
-    //   setErrors(err.message)
-    // }
   };
 
   const handleLinkClick = (event: React.SyntheticEvent) =>

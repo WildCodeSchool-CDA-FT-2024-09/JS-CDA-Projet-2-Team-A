@@ -18,12 +18,14 @@ import "dotenv/config";
 const { JWT_SECRET } = process.env;
 
 interface GraphQLContext {
-  req: IncomingMessage & { headers: { authorization?: string } };
+  req: IncomingMessage;
   res: ServerResponse;
-  user?: {
-    id: string;
-    email: string;
-    roles: string[];
+  loggedUser?: {
+    name: string;
+    login: string;
+    role: string;
+    iat: number;
+    exp: number;
   };
 }
 
@@ -73,13 +75,12 @@ export class UserResolver {
       const verified = await argon2.verify(user.password, credentials.password);
       if (verified) {
         const token = jwt.sign(
-          { login: user.login, role: user.role.role },
+          { name: user.name, login: user.login, role: user.role.role },
           JWT_SECRET!,
           {
             expiresIn: "86400s",
           }
         );
-        // token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict
         res.setHeader(
           "Set-Cookie",
           `token=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`
