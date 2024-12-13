@@ -27,7 +27,7 @@ export default function App() {
           display: "flex",
           flexDirection: "column",
           gap: "20px",
-          width: "87dvw",
+          width: "100dvw",
           padding: "20px 20px 20px 20px",
         }}
       >

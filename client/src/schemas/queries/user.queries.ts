@@ -10,3 +10,17 @@ export const AUTHENTICATE = gql`
     }
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query AllUsers {
+    allUsers {
+      name
+      email
+      activationDate
+      isActive
+      role {
+        role
+      }
+    }
+  }
+`;

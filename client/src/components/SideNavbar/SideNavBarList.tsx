@@ -9,26 +9,15 @@ import { NavLink, useLocation } from "react-router-dom";
 import { ReactElement } from "react";
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import Typography from "@mui/material/Typography";
-import { useUser } from "../../contexts/UserContext.tsx";
-import { useNavigate } from "react-router-dom";
 
 export default function SideNavBarList({
   link,
+  baseUrl,
 }: {
   link: linkType | linkTypeOpt;
+  baseUrl: string;
 }): ReactElement {
-  const location = useLocation();
-  const { setUser } = useUser();
-  const navigate = useNavigate();
-
-  const cleanUserContext = () => {
-    navigate("/");
-    setUser({
-      name: "",
-      login: "",
-      role: "",
-    });
-  };
+  const { pathname } = useLocation();
 
   return (
     <ListItem key={link.name}>
@@ -39,16 +28,14 @@ export default function SideNavBarList({
             minWidth: "fit-content",
             maxWidth: "fit-content",
             marginRight: "15px",
-            color: location.pathname.includes(`${link.url}`)
-              ? blue[500]
-              : "inherit",
+            color: pathname.includes(`${link.url}`) ? blue[500] : "inherit",
           }}
         ></ListItemIcon>
         <ListItemText
           primary={
             link.url !== undefined ? (
               <NavLink
-                to={`${link.url}`}
+                to={baseUrl + "/" + link.url}
                 style={({ isActive }: { isActive: boolean }) => ({
                   color: isActive ? blue[500] : "inherit",
                   textDecoration: "none",
@@ -57,14 +44,7 @@ export default function SideNavBarList({
                 {link.name}
               </NavLink>
             ) : (
-              <Typography
-                onClick={(e) => {
-                  e.stopPropagation();
-                  cleanUserContext();
-                }} // Rajouter ici le onClick/onKeyDown lier à la déconnexion
-              >
-                {link.name}
-              </Typography>
+              <Typography>{link.name}</Typography> // Rajouter ici le onClick/onKeyDown lier à la déconnexion
             )
           }
         />

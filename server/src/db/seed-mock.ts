@@ -171,7 +171,7 @@ const productsArray = Array.isArray(products) ? products : [];
         const user = new User();
 
         user.name = userEl.name;
-        user.login = userEl.email;
+        user.email = userEl.email;
 
         const hash = await argon2.hash(userEl.password, hashingOptions);
         user.password = hash;
@@ -180,6 +180,8 @@ const productsArray = Array.isArray(products) ? products : [];
         user.active = userEl.isActive;
 
         user.role = savedRoles.find((role) => role.id === userEl.role) as Role;
+        user.activationDate = new Date(userEl.activationDate);
+        user.isActive = true;
 
         return await user.save();
       })

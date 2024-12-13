@@ -6,9 +6,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ObjectType, Int } from "type-graphql";
 import { Role } from "./role.entities";
 import { Message } from "./message.entities";
+import { ObjectType, Field, Int } from "type-graphql";
 
 @ObjectType()
 @Entity("user")
@@ -23,7 +23,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column()
-  login: string;
+  email: string;
 
   @Field()
   @Column()
@@ -35,7 +35,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({ default: true })
-  active: boolean;
+  isActive: boolean;
 
   @Field(() => Role)
   @ManyToOne(() => Role, (role) => role.id)
@@ -43,5 +43,6 @@ export class User extends BaseEntity {
 
   //@Field(() => Message)
   @OneToMany(() => Message, (message) => message.id)
+  @Field(() => [Message], { nullable: true })
   messages: Message[];
 }
