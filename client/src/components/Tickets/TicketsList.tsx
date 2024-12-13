@@ -13,9 +13,7 @@ export default function TicketsList(): ReactElement {
   if (error) {
     return (
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Typography variant="body2" component="span">
-          {error.message}
-        </Typography>
+        <Typography variant="body2">{error.message}</Typography>
       </Box>
     );
   }
@@ -61,9 +59,7 @@ export default function TicketsList(): ReactElement {
           ),
         )
       ) : (
-        <Typography variant="body2" component="span">
-          Aucun tickets pour le moment.
-        </Typography>
+        <Typography variant="body2">Aucun tickets pour le moment.</Typography>
       )}
     </Box>
   );

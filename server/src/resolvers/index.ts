@@ -2,7 +2,7 @@ import { NonEmptyArray } from "type-graphql";
 import UserResolver from "./user.resolvers";
 import ProductResolver from "./product.resolvers";
 import RoleResolver from "./role.resolvers";
-import MessageResolver from "../resolvers/message.resolver";
+import MessageResolver from "./message.resolver";
 
 // Export individual resolvers
 export { UserResolver, ProductResolver, RoleResolver, MessageResolver };

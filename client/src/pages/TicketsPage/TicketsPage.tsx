@@ -1,7 +1,5 @@
 import { ReactElement } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import { Box, Typography, Button } from "@mui/material";
 import TicketsList from "../../components/Tickets/TicketsList.tsx";
 
 export default function TicketsPage(): ReactElement {
@@ -21,7 +19,7 @@ export default function TicketsPage(): ReactElement {
         sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
       >
         <Typography variant="h6" component="h2">
-          Retours atelier
+          Tickets
         </Typography>
         <Button
           variant="contained"

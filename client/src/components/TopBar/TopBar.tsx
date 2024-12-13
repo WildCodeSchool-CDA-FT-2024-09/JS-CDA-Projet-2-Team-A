@@ -41,7 +41,7 @@ export default function TopBar() {
       <AppBar
         position="static"
         sx={{
-          height: "10dvh",
+          height: "100px",
           borderRadius: "5px",
           background: "#FFF",
           boxShadow: "none",

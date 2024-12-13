@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import Grid from "@mui/material/Grid2";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import { Button, Typography } from "@mui/material";
 import { Message } from "../../generated/graphql-types.ts";
 
 export default function Ticket({
@@ -65,7 +64,6 @@ export default function Ticket({
         </Button>
         <Typography
           variant="body2"
-          component="span"
           sx={{
             textAlign: "center",
             marginTop: "auto",
