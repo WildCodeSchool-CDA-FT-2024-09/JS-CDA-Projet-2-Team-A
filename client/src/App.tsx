@@ -5,12 +5,30 @@ import Box from "@mui/material/Box";
 import SideNavBar from "./components/SideNavbar/SideNavBar.tsx";
 import TopBar from "./components/TopBar/TopBar.tsx";
 import { useUser } from "./contexts/UserContext.tsx";
+import { useEffect } from "react";
+import { useWhoAmIQuery } from "./generated/graphql-types";
 
 export default function App() {
-  const { user } = useUser();
-  if (!user.name) {
+  const { data: loggedUserData, error: loggedUserError } = useWhoAmIQuery({
+    variables: {},
+  });
+
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    if (!loggedUserError && loggedUserData) {
+      setUser({
+        name: loggedUserData!.whoAmI.name,
+        login: loggedUserData!.whoAmI.login,
+        role: loggedUserData!.whoAmI.role,
+      });
+    }
+  }, [loggedUserData, loggedUserError, setUser]);
+
+  if (loggedUserError) {
     return <Login />;
   }
+
   return (
     <Box
       component="main"
@@ -25,7 +43,6 @@ export default function App() {
       <GlobalStyles
         styles={{ "*": { boxSizing: "border-box", margin: "0" } }}
       />
-      <Login />
       <SideNavBar />
       <Box
         sx={{
