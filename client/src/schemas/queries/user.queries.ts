@@ -5,7 +5,7 @@ export const AUTHENTICATE = gql`
     authenticate(credentials: $credentials) {
       token
       name
-      login
+      email
       role
     }
   }

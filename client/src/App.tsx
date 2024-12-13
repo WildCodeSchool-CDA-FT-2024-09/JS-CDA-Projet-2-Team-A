@@ -4,8 +4,13 @@ import { GlobalStyles } from "@mui/material";
 import Box from "@mui/material/Box";
 import SideNavBar from "./components/SideNavbar/SideNavBar.tsx";
 import TopBar from "./components/TopBar/TopBar.tsx";
+import { useUser } from "./contexts/UserContext.tsx";
 
 export default function App() {
+  const { user } = useUser();
+  if (!user.name) {
+    return <Login />;
+  }
   return (
     <Box
       component="main"
