@@ -26,6 +26,10 @@ const router = createBrowserRouter([
             path: "",
             element: <InventoryPage />,
           },
+          {
+            path: "tickets",
+            element: <TicketsPage />,
+          },
         ],
       },
       {
