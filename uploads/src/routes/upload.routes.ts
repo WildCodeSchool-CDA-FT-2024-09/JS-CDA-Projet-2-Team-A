@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import multer from 'multer';
 import path from "path";
 
@@ -30,5 +30,17 @@ const upload = multer({
  });
 
 console.info("je suis upload :", upload)
+
+router.post("/", upload.single("file"), (req: Request, res: Response): void => {
+  if (!req.file) {
+    res.status(400).send({ message: "Aucun fichier importé ou type de fichier incorrect." });
+    return;
+  }
+
+  res.status(200).send({
+    message: "Fichier importé avec succès.",
+    filePath: `/uploads/${req.file.filename}`,
+  });
+});
 
 export const uploadRoutes = router;
