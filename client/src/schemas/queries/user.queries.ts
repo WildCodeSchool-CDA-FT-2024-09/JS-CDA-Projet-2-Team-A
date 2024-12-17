@@ -24,3 +24,13 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
+
+export const WHOAMI = gql`
+  query WhoAmI {
+    whoAmI {
+      name
+      login
+      role
+    }
+  }
+`;
