@@ -9,11 +9,15 @@ import { useEffect } from "react";
 import { useWhoAmIQuery } from "./generated/graphql-types";
 
 export default function App() {
-  const { data: loggedUserData, error: loggedUserError } = useWhoAmIQuery({
+  const {
+    data: loggedUserData,
+    error: loggedUserError,
+    loading,
+  } = useWhoAmIQuery({
     variables: {},
   });
 
-  const { setUser } = useUser();
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     if (!loggedUserError && loggedUserData) {
@@ -25,7 +29,11 @@ export default function App() {
     }
   }, [loggedUserData, loggedUserError, setUser]);
 
-  if (loggedUserError) {
+  if (loading) {
+    return <div>Chargement...</div>;
+  }
+
+  if (!user.name) {
     return <Login />;
   }
 
