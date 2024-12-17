@@ -43,8 +43,6 @@ services:
 
   uploads:
     build: ./uploads
-    ports:
-      - 3002:3002
     volumes:
       - ./uploads/src:/app/src
       - ./uploads/uploads:/app/uploads
