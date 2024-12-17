@@ -71,5 +71,5 @@ export class Supplier extends BaseEntity {
 
   @Field(() => [Order], { nullable: true })
   @OneToMany(() => Order, (Order) => Order.supplier)
-  order?: Order;
+  order?: Order[];
 }
