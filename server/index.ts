@@ -7,10 +7,6 @@ import "reflect-metadata";
 import "dotenv/config";
 import * as jwt from "jsonwebtoken";
 
-// -------------------------------------------------------------------
-// console.info à virer avant merge
-// -------------------------------------------------------------------
-
 function parseCookies(cookieHeader: string | undefined) {
   if (!cookieHeader) return {};
   return cookieHeader
@@ -40,23 +36,17 @@ const { PORT, JWT_SECRET } = process.env;
   const { url } = await startStandaloneServer(server, {
     listen: { port: Number(PORT) },
     context: async ({ req, res }) => {
-      console.info(req.headers.cookie);
-
       if (!req.headers.cookie) return { res };
 
       const cookies = parseCookies(req.headers.cookie);
       const token = cookies.token;
 
-      console.info(token);
-
       if (!token) return { res };
 
       try {
         const payload = jwt.verify(token, JWT_SECRET as string);
-        console.info(payload);
         return { res, loggedUser: payload };
-      } catch (error) {
-        console.info(error);
+      } catch {
         return { res };
       }
     },
