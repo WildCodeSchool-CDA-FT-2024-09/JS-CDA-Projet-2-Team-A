@@ -33,6 +33,6 @@ export class Message extends BaseEntity {
   message_status: string;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.messages)
   user: User;
 }

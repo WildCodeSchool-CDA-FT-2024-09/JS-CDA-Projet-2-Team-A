@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Burgess Illing",
+    "email": "billing0@example.com",
+    "password": "iI7.D,$H(t",
+    "role": 3,
+    "activationDate": "2024-06-14 08:36:24",
+    "isActive": true
+  },
+  {
+    "name": "Jamesy Duffit",
+    "email": "jduffit1@example.com",
+    "password": "cE9.MRnSVI",
+    "role": 2,
+    "activationDate": "2024-04-03 09:44:11",
+    "isActive": true
+  },
+  {
+    "name": "Giles Casseldine",
+    "email": "gcasseldine2@example.com",
+    "password": "gD9{0eo?1",
+    "role": 3,
+    "activationDate": "2024-04-02 09:54:05",
+    "isActive": true
+  },
+  {
+    "name": "Stearne Braben",
+    "email": "sbraben3@example.com",
+    "password": "vG0ps'r85R",
+    "role": 3,
+    "activationDate": "2024-06-19 19:25:12",
+    "isActive": true
+  },
+  {
+    "name": "Joellyn Bencher",
+    "email": "jbencher4@example.com",
+    "password": "eB1=ia6ECF.sau_&",
+    "role": 2,
+    "activationDate": "2024-09-24 13:42:41",
+    "isActive": true
+  },
+  {
+    "name": "Lynnett Curtois",
+    "email": "lcurtois5@example.com",
+    "password": "eG3(aa<?,PsF",
+    "role": 3,
+    "activationDate": "2024-07-02 20:25:35",
+    "isActive": true
+  },
+  {
+    "name": "Jacki Enderlein",
+    "email": "jenderlein6@example.com",
+    "password": "bH6?JfwB",
+    "role": 4,
+    "activationDate": "2024-10-15 21:44:23",
+    "isActive": true
+  },
+  {
+    "name": "Norene Diggell",
+    "email": "ndiggell7@example.com",
+    "password": "dY6){H53(kGs",
+    "role": 1,
+    "activationDate": "2024-04-03 09:44:11",
+    "isActive": true
+  },
+  {
+    "name": "Leo Stansfield",
+    "email": "lstansfield8@example.com",
+    "password": "rK1~Lc&p+m3#KG&h",
+    "role": 1,
+    "activationDate": "2024-05-04 20:09:40",
+    "isActive": true
+  },
+  {
+    "name": "Mervin Menego",
+    "email": "mmenego9@example.com",
+    "password": "rB8g=mER>W",
+    "role": 4,
+    "activationDate": "2024-06-02 17:20:45",
+    "isActive": true
+  }
+]

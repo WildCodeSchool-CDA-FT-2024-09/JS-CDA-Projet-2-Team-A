@@ -1,0 +1,121 @@
+[
+  {
+    "name": "Julie Richard",
+    "email": "julie.richard@fournisseur_1.com",
+    "phone_number": "+33 533 3543168",
+    "supplier_id": 1,
+    "product_id": 1
+  },
+  {
+    "name": "Jean Petit",
+    "email": "jean.petit@fournisseur_1.com",
+    "phone_number": "+33 158 3025481",
+    "supplier_id": 1,
+    "product_id": 2
+  },
+  {
+    "name": "Anne Dupont",
+    "email": "anne.dupont@fournisseur_1.com",
+    "phone_number": "+33 703 4384121",
+    "supplier_id": 1,
+    "product_id": 3
+  },
+  {
+    "name": "Marie Robert",
+    "email": "marie.robert@fournisseur_10.com",
+    "phone_number": "+33 249 2335882",
+    "supplier_id": 2,
+    "product_id": 4
+  },
+  {
+    "name": "Lucie Martin",
+    "email": "lucie.martin@fournisseur_10.com",
+    "phone_number": "+33 694 7203345",
+    "supplier_id": 2,
+    "product_id": 5
+  },
+  {
+    "name": "Marie Thomas",
+    "email": "marie.thomas@fournisseur_100.com",
+    "phone_number": "+33 554 9317276",
+    "supplier_id": 3,
+    "product_id": 6
+  },
+  {
+    "name": "Jacques Richard",
+    "email": "jacques.richard@fournisseur_100.com",
+    "phone_number": "+33 142 9570505",
+    "supplier_id": 3,
+    "product_id": 7
+  },
+  {
+    "name": "Lucie Michel",
+    "email": "lucie.michel@fournisseur_100.com",
+    "phone_number": "+33 233 2190420",
+    "supplier_id": 3,
+    "product_id": 8
+  },
+  {
+    "name": "Lucie Simon",
+    "email": "lucie.simon@fournisseur_101.com",
+    "phone_number": "+33 857 9859462",
+    "supplier_id": 4,
+    "product_id": 9
+  },
+  {
+    "name": "Claire Bernard",
+    "email": "claire.bernard@fournisseur_101.com",
+    "phone_number": "+33 292 5035281",
+    "supplier_id": 4,
+    "product_id": 10
+  },
+  {
+    "name": "Anne Richard",
+    "email": "anne.richard@fournisseur_102.com",
+    "phone_number": "+33 188 2891957",
+    "supplier_id": 5,
+    "product_id": 11
+  },
+  {
+    "name": "Louis Bernard",
+    "email": "louis.bernard@fournisseur_103.com",
+    "phone_number": "+33 980 7417696",
+    "supplier_id": 6,
+    "product_id": 12
+  },
+  {
+    "name": "Louis Martin",
+    "email": "louis.martin@fournisseur_104.com",
+    "phone_number": "+33 927 9446241",
+    "supplier_id": 7,
+    "product_id": 13
+  },
+  {
+    "name": "Jacques Robert",
+    "email": "jacques.robert@fournisseur_105.com",
+    "phone_number": "+33 593 9635780",
+    "supplier_id": 8,
+    "product_id": 14
+  },
+  {
+    "name": "Marie Martin",
+    "email": "marie.martin@fournisseur_105.com",
+    "phone_number": "+33 564 1228404",
+    "supplier_id": 8,
+    "product_id": 15
+  },
+  {
+    "name": "Julie Durand",
+    "email": "julie.durand@fournisseur_106.com",
+    "phone_number": "+33 885 4102053",
+    "supplier_id": 9,
+    "product_id": 16
+  },
+  {
+    "name": "Lucie Michel",
+    "email": "lucie.michel@fournisseur_107.com",
+    "phone_number": "+33 654 2636917",
+    "supplier_id": 10,
+    "product_id": 17
+  }
+]

@@ -16,7 +16,7 @@ const dataSourceOptions: DataSourceOptions = {
   database: POSTGRES_DB,
   entities: entities,
   synchronize: sync,
-  logging: false, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
+  logging: true, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
 };
 
 export const AppDataSource = new DataSource(dataSourceOptions);
