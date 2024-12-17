@@ -1,0 +1,297 @@
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  List,
+  ListItem,
+  Divider,
+} from "@mui/material";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+export default function TabsProductGlobal() {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Aperçu" {...a11yProps(0)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <Box>
+          <Typography
+            variant="h6"
+            component="h3"
+            sx={{
+              mt: 3,
+              mb: 3,
+              color: "#383E49",
+            }}
+          >
+            Détails principaux
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box
+              sx={{
+                width: "40%",
+              }}
+            >
+              <List>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body2">Nom du produit:</Typography>
+                    <Typography variant="body2">
+                      Câble inox 4 / 35 mm
+                    </Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body2">
+                      Référence du produit:
+                    </Typography>
+                    <Typography variant="body2">-</Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body2">Catégorie produit:</Typography>
+                    <Typography variant="body2">Câble</Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body2">Matériaux produit:</Typography>
+                    <Typography variant="body2">Inox</Typography>
+                  </Box>
+                </ListItem>
+                <ListItem>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="body2">Couleur produit:</Typography>
+                    <Typography variant="body2">Blanc</Typography>
+                  </Box>
+                </ListItem>
+              </List>
+            </Box>
+            <Box
+              sx={{
+                width: "40%",
+              }}
+            >
+              <Box
+                sx={
+                  {
+                    // display: 'flex',
+                    // flexDirection: 'column',
+                    // alignItems: 'end'
+                  }
+                }
+              >
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="Câble inox"
+                  style={{
+                    left: "0",
+                    width: "150px",
+                    height: "150px",
+                    border: "1px dashed lightgray",
+                    borderRadius: "8px",
+                  }}
+                />
+                <List>
+                  <ListItem>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="body2">Stock actuel</Typography>
+                      <Typography variant="body2">40</Typography>
+                    </Box>
+                  </ListItem>
+                  <ListItem>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="body2">Valeur seuil</Typography>
+                      <Typography variant="body2">12</Typography>
+                    </Box>
+                  </ListItem>
+                  <ListItem>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="body2">
+                        En cours de livraison
+                      </Typography>
+                      <Typography variant="body2">158</Typography>
+                    </Box>
+                  </ListItem>
+                </List>
+              </Box>
+            </Box>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+        <Box>
+          <Typography
+            variant="h6"
+            component="h3"
+            sx={{
+              mt: 3,
+              mb: 3,
+              color: "#383E49",
+            }}
+          >
+            Détails Supplémentaires
+          </Typography>
+          <List>
+            <ListItem>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">Nom du fournisseur</Typography>
+                <Typography variant="body2">Fournisseur n°45</Typography>
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">Contact fournisseur</Typography>
+                <Typography variant="body2">Julie Richard</Typography>
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">Email contact</Typography>
+                <Typography variant="body2">
+                  julie.richard@fournisseur_45.com
+                </Typography>
+              </Box>
+            </ListItem>
+            <ListItem>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">Téléphone contact</Typography>
+                <Typography variant="body2">+33 533 354 3168</Typography>
+              </Box>
+            </ListItem>
+          </List>
+        </Box>
+      </CustomTabPanel>
+    </Box>
+  );
+}
