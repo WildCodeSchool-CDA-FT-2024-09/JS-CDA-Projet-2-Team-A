@@ -30,7 +30,7 @@ export default function App() {
   }, [loggedUserData, loggedUserError, setUser]);
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return <Box>Chargement...</Box>;
   }
 
   if (!user.name) {
