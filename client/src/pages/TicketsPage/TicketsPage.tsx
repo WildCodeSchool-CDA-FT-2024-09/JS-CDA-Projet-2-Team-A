@@ -1,12 +1,8 @@
 import { ReactElement } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import TicketsList from "../../components/Tickets/TicketsList.tsx";
-import { useUser } from "../../contexts/UserContext.tsx";
 
 export default function TicketsPage(): ReactElement {
-  const {
-    user: { role },
-  } = useUser();
   return (
     <Box
       component="section"
@@ -32,7 +28,7 @@ export default function TicketsPage(): ReactElement {
             textTransform: "none",
           }}
         >
-          {role === "achat" ? "Modifier ticket" : "Nouveau ticket"}
+          Nouveau ticket
         </Button>
       </Box>
       <TicketsList />
