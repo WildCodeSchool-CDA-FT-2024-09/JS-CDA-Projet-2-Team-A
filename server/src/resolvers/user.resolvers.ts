@@ -70,6 +70,18 @@ class CreateUserInput {
   roleName: string;
 }
 
+@ObjectType()
+class WhoAmIResponse {
+  @Field()
+  name: string;
+
+  @Field()
+  login: string;
+
+  @Field()
+  role: string;
+}
+
 @Resolver(User)
 export default class UserResolver {
   @Query(() => AuthResponse)
@@ -172,6 +184,22 @@ export default class UserResolver {
             code: 400,
           },
         }
+      );
+    }
+  }
+
+  @Query(() => WhoAmIResponse)
+  async whoAmI(@Ctx() context: GraphQLContext) {
+    const user = context.loggedUser;
+    if (user?.name && user?.email && user?.role) {
+      return {
+        name: user.name,
+        login: user.email,
+        role: user.role,
+      };
+    } else {
+      throw new GraphQLError(
+        "No user is properly authenticated (token missing or invalid, or context issue)."
       );
     }
   }
