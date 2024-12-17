@@ -81,6 +81,7 @@ type MessageType = {
 type OrderType = {
   order_status: string;
   created_at: string;
+  supplier_id: number;
 };
 
 type OrderProductType = {
@@ -216,25 +217,28 @@ type OrderProductType = {
         order.status = orderEl.order_status;
         order.created_at = new Date(orderEl.created_at);
         order.orderProduct = [];
+        order.supplier = savedSuppliers.find(
+          (supplier) => supplier.id === orderEl.supplier_id
+        ) as Supplier;
 
         return await order.save();
       })
     );
 
     await Promise.all(
-      order_product.map(async (orderProductEl: OrderProductType) => {
-        const orderProduct = new OrderProduct();
+      order_product.map(
+        async (orderProductEl: OrderProductType, index: number) => {
+          const orderProduct = new OrderProduct();
 
-        orderProduct.order = savedOrders.find(
-          (order) => order.id === orderProductEl.order_id
-        ) as Order;
-        orderProduct.product = savedProducts.find(
-          (product) => product.id === orderProductEl.product_id
-        ) as Product;
-        orderProduct.quantity = orderProductEl.quantity;
+          orderProduct.order = savedOrders.find(
+            (order) => order.id === orderProductEl.order_id
+          ) as Order;
+          orderProduct.product = savedProducts[index];
+          orderProduct.quantity = savedProducts[index].stock - 10;
 
-        return await orderProduct.save();
-      })
+          return await orderProduct.save();
+        }
+      )
     );
 
     await queryRunner.commitTransaction();
