@@ -7,10 +7,10 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 
 // Ici sont placés chaque équipe disponible dans l'application ainsi que l'url de retour à leur dashboard.
 export const homePageUrls: { url: string; role: string }[] = [
-  { url: "/achat", role: "1" },
-  { url: "/approvisionnement", role: "2" },
-  { url: "/atelier", role: "3" },
-  { url: "/admin", role: "4" },
+  { url: "/achat", role: "achat" },
+  { url: "/approvisionnement", role: "approvisionnement" },
+  { url: "/atelier", role: "atelier" },
+  { url: "/admin", role: "admin" },
 ];
 
 // Ici sont placés tous les liens propres à chaque équipe selon les rôles attribués.
@@ -24,37 +24,37 @@ export const allLinks: {
     name: "Inventaire",
     url: "inventaire",
     icon: <ChecklistOutlinedIcon />,
-    role: ["1", "2", "3"],
+    role: ["achat", "approvisionnement", "atelier"],
   },
   {
     name: "Commandes",
     url: "commandes",
     icon: <Inventory2OutlinedIcon />,
-    role: ["1", "2"],
+    role: ["achat", "approvisionnement"],
   },
   {
     name: "Fournisseurs",
     url: "fournisseurs",
     icon: <AccountCircleOutlinedIcon />,
-    role: ["1"],
+    role: ["achat"],
   },
   {
     name: "Retours atelier",
     url: "tickets",
     icon: <BallotOutlinedIcon />,
-    role: ["1"],
+    role: ["achat"],
   },
   {
     name: "Retours achats",
     url: "tickets",
     icon: <BallotOutlinedIcon />,
-    role: ["3"],
+    role: ["atelier"],
   },
   {
     name: "Utilisateurs",
     url: "utilisateurs",
     icon: <AccountCircleOutlinedIcon />,
-    role: ["4"],
+    role: ["admin"],
   },
 ];
 

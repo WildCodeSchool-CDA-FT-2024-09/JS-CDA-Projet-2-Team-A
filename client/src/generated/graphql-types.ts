@@ -31,10 +31,23 @@ export type Scalars = {
   DateTimeISO: { input: Date; output: Date };
 };
 
+export type AuthResponse = {
+  __typename?: "AuthResponse";
+  email: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  role: Scalars["String"]["output"];
+  token: Scalars["String"]["output"];
+};
+
 export type CreateUserInput = {
   email: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
   roleName: Scalars["String"]["input"];
+};
+
+export type Credentials = {
+  email: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
 };
 
 export type Employee = {
@@ -126,11 +139,17 @@ export type Query = {
   __typename?: "Query";
   allProducts: Array<Product>;
   allUsers: Array<User>;
+  authenticate: AuthResponse;
   countDistinctCategories: Scalars["Float"]["output"];
+  getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getEnCoursDeliveryStats: EnCoursDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
   totalStockProduct: Scalars["Float"]["output"];
+};
+
+export type QueryAuthenticateArgs = {
+  credentials: Credentials;
 };
 
 export type Role = {
@@ -184,36 +203,17 @@ export type GetAllRolesQuery = {
   getAllRoles: Array<{ __typename?: "Role"; id: number; role: string }>;
 };
 
-export type GetOrderDetailsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetOrderDetailsQuery = {
+export type GetAllMessagesQuery = {
   __typename?: "Query";
-  getOrderDetails: Array<{
-    __typename?: "OrderDetails";
+  getAllMessages: Array<{
+    __typename?: "Message";
     id: number;
-    status: string;
-    created_at: Date;
-    products: Array<{
-      __typename?: "ProductDetails";
-      productName: string;
-      supplierName: string;
-      quantity: number;
-      expectedDelivery: Date;
-    }>;
+    title: string;
+    message: string;
+    message_status: string;
   }>;
-};
-
-export type GetEnCoursDeliveryStatsQueryVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type GetEnCoursDeliveryStatsQuery = {
-  __typename?: "Query";
-  getEnCoursDeliveryStats: {
-    __typename?: "EnCoursDeliveryStats";
-    countDeliveries: number;
-    totalProducts: number;
-  };
 };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -247,6 +247,21 @@ export type TotalStockProductQueryVariables = Exact<{ [key: string]: never }>;
 export type TotalStockProductQuery = {
   __typename?: "Query";
   totalStockProduct: number;
+};
+
+export type AuthenticateQueryVariables = Exact<{
+  credentials: Credentials;
+}>;
+
+export type AuthenticateQuery = {
+  __typename?: "Query";
+  authenticate: {
+    __typename?: "AuthResponse";
+    token: string;
+    name: string;
+    email: string;
+    role: string;
+  };
 };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -387,67 +402,62 @@ export type GetAllRolesQueryResult = Apollo.QueryResult<
   GetAllRolesQuery,
   GetAllRolesQueryVariables
 >;
-export const GetOrderDetailsDocument = gql`
-  query GetOrderDetails {
-    getOrderDetails {
+export const GetAllMessagesDocument = gql`
+  query GetAllMessages {
+    getAllMessages {
       id
-      status
-      created_at
-      products {
-        productName
-        supplierName
-        quantity
-        expectedDelivery
-      }
+      title
+      message
+      message_status
     }
   }
 `;
 
 /**
- * __useGetOrderDetailsQuery__
+ * __useGetAllMessagesQuery__
  *
- * To run a query within a React component, call `useGetOrderDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetOrderDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetOrderDetailsQuery({
+ * const { data, loading, error } = useGetAllMessagesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetOrderDetailsQuery(
+export function useGetAllMessagesQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    GetOrderDetailsQuery,
-    GetOrderDetailsQueryVariables
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetOrderDetailsQuery, GetOrderDetailsQueryVariables>(
-    GetOrderDetailsDocument,
+  return Apollo.useQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(
+    GetAllMessagesDocument,
     options,
   );
 }
-export function useGetOrderDetailsLazyQuery(
+export function useGetAllMessagesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetOrderDetailsQuery,
-    GetOrderDetailsQueryVariables
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetOrderDetailsQuery,
-    GetOrderDetailsQueryVariables
-  >(GetOrderDetailsDocument, options);
+  return Apollo.useLazyQuery<GetAllMessagesQuery, GetAllMessagesQueryVariables>(
+    GetAllMessagesDocument,
+    options,
+  );
 }
-export function useGetOrderDetailsSuspenseQuery(
+export function useGetAllMessagesSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        GetOrderDetailsQuery,
-        GetOrderDetailsQueryVariables
+        GetAllMessagesQuery,
+        GetAllMessagesQueryVariables
       >,
 ) {
   const options =
@@ -455,100 +465,22 @@ export function useGetOrderDetailsSuspenseQuery(
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
   return Apollo.useSuspenseQuery<
-    GetOrderDetailsQuery,
-    GetOrderDetailsQueryVariables
-  >(GetOrderDetailsDocument, options);
+    GetAllMessagesQuery,
+    GetAllMessagesQueryVariables
+  >(GetAllMessagesDocument, options);
 }
-export type GetOrderDetailsQueryHookResult = ReturnType<
-  typeof useGetOrderDetailsQuery
+export type GetAllMessagesQueryHookResult = ReturnType<
+  typeof useGetAllMessagesQuery
 >;
-export type GetOrderDetailsLazyQueryHookResult = ReturnType<
-  typeof useGetOrderDetailsLazyQuery
+export type GetAllMessagesLazyQueryHookResult = ReturnType<
+  typeof useGetAllMessagesLazyQuery
 >;
-export type GetOrderDetailsSuspenseQueryHookResult = ReturnType<
-  typeof useGetOrderDetailsSuspenseQuery
+export type GetAllMessagesSuspenseQueryHookResult = ReturnType<
+  typeof useGetAllMessagesSuspenseQuery
 >;
-export type GetOrderDetailsQueryResult = Apollo.QueryResult<
-  GetOrderDetailsQuery,
-  GetOrderDetailsQueryVariables
->;
-export const GetEnCoursDeliveryStatsDocument = gql`
-  query GetEnCoursDeliveryStats {
-    getEnCoursDeliveryStats {
-      countDeliveries
-      totalProducts
-    }
-  }
-`;
-
-/**
- * __useGetEnCoursDeliveryStatsQuery__
- *
- * To run a query within a React component, call `useGetEnCoursDeliveryStatsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEnCoursDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetEnCoursDeliveryStatsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetEnCoursDeliveryStatsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
-}
-export function useGetEnCoursDeliveryStatsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
-}
-export function useGetEnCoursDeliveryStatsSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<
-        GetEnCoursDeliveryStatsQuery,
-        GetEnCoursDeliveryStatsQueryVariables
-      >,
-) {
-  const options =
-    baseOptions === Apollo.skipToken
-      ? baseOptions
-      : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
-}
-export type GetEnCoursDeliveryStatsQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsQuery
->;
-export type GetEnCoursDeliveryStatsLazyQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsLazyQuery
->;
-export type GetEnCoursDeliveryStatsSuspenseQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsSuspenseQuery
->;
-export type GetEnCoursDeliveryStatsQueryResult = Apollo.QueryResult<
-  GetEnCoursDeliveryStatsQuery,
-  GetEnCoursDeliveryStatsQueryVariables
+export type GetAllMessagesQueryResult = Apollo.QueryResult<
+  GetAllMessagesQuery,
+  GetAllMessagesQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {
@@ -783,6 +715,91 @@ export type TotalStockProductSuspenseQueryHookResult = ReturnType<
 export type TotalStockProductQueryResult = Apollo.QueryResult<
   TotalStockProductQuery,
   TotalStockProductQueryVariables
+>;
+export const AuthenticateDocument = gql`
+  query Authenticate($credentials: Credentials!) {
+    authenticate(credentials: $credentials) {
+      token
+      name
+      email
+      role
+    }
+  }
+`;
+
+/**
+ * __useAuthenticateQuery__
+ *
+ * To run a query within a React component, call `useAuthenticateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthenticateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthenticateQuery({
+ *   variables: {
+ *      credentials: // value for 'credentials'
+ *   },
+ * });
+ */
+export function useAuthenticateQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AuthenticateQuery,
+    AuthenticateQueryVariables
+  > &
+    (
+      | { variables: AuthenticateQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export function useAuthenticateLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AuthenticateQuery,
+    AuthenticateQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export function useAuthenticateSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        AuthenticateQuery,
+        AuthenticateQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<AuthenticateQuery, AuthenticateQueryVariables>(
+    AuthenticateDocument,
+    options,
+  );
+}
+export type AuthenticateQueryHookResult = ReturnType<
+  typeof useAuthenticateQuery
+>;
+export type AuthenticateLazyQueryHookResult = ReturnType<
+  typeof useAuthenticateLazyQuery
+>;
+export type AuthenticateSuspenseQueryHookResult = ReturnType<
+  typeof useAuthenticateSuspenseQuery
+>;
+export type AuthenticateQueryResult = Apollo.QueryResult<
+  AuthenticateQuery,
+  AuthenticateQueryVariables
 >;
 export const AllUsersDocument = gql`
   query AllUsers {

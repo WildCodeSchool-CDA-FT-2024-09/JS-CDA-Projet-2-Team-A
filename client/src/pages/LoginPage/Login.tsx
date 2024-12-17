@@ -1,8 +1,7 @@
 import { useState } from "react";
-
-// TODO : En prévision de la finalisation du système d'authentification (US02).
-// import { useNavigate } from 'react-router-dom';
-
+import { homePageUrls } from "../../links/SideNavBarLinks/allLinks.tsx";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -15,6 +14,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useAuthenticateQuery } from "../../generated/graphql-types";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,9 +22,17 @@ export default function Login() {
     form: { email: "", password: "" },
     errors: { email: "", password: "", global: "" },
   });
+  const { data: authData, error: authError } = useAuthenticateQuery({
+    variables: {
+      credentials: {
+        email: formState.form.email,
+        password: formState.form.password,
+      },
+    },
+  });
 
-  // TODO : En prévision de la finalisation du système d'authentification
-  // const navigate = useNavigate()
+  const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -62,29 +70,24 @@ export default function Login() {
       return;
     }
 
-    // TODO : En prévision de l'implémentation des données (US02).
-
-    // try {
-    //   const res = await fetch("http://localhost:4000/api/login", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ email: formState.email, password: formState.password })
-    //   });
-
-    //   const data = await res.json();
-
-    //   if(!res.ok) {
-    //     throw new Error(data.message || "Erreur lors de la connexion")
-    //   }
-
-    //   const { token, redirectUrl } = data;
-
-    //   localStorage.setItem("authToken", token);
-
-    //   navigate(redirectUrl);
-    // } catch (err : any) {
-    //   setErrors(err.message)
-    // }
+    if (authError) {
+      const newErrors = {
+        email: "",
+        password: "",
+        global: "Les identifiants sont incorrects.",
+      };
+      setFormState((prevState) => ({ ...prevState, errors: newErrors }));
+    } else {
+      setUser({
+        name: authData!.authenticate.name,
+        login: authData!.authenticate.email,
+        role: authData!.authenticate.role,
+      });
+      const { url } = homePageUrls.find(
+        (link) => link.role === authData!.authenticate.role,
+      )!;
+      navigate(url);
+    }
   };
 
   const handleLinkClick = (event: React.SyntheticEvent) =>
