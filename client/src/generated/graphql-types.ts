@@ -56,7 +56,7 @@ export type Employee = {
   id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
   phone_number: Scalars["String"]["output"];
-  products: Product;
+  products?: Maybe<Array<Product>>;
   supplier: Supplier;
 };
 
@@ -89,8 +89,9 @@ export type Order = {
   __typename?: "Order";
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
-  orderProducts: Array<OrderProduct>;
+  orderProduct: Array<OrderProduct>;
   status: Scalars["String"]["output"];
+  supplier: Supplier;
 };
 
 export type OrderDetails = {
@@ -106,22 +107,22 @@ export type OrderProduct = {
   id: Scalars["Int"]["output"];
   order: Order;
   product: Product;
-  quantity: Scalars["Int"]["output"];
+  quantity: Scalars["Float"]["output"];
 };
 
 export type Product = {
   __typename?: "Product";
   active: Scalars["Boolean"]["output"];
   category: Scalars["String"]["output"];
-  color: Scalars["String"]["output"];
-  commentary: Scalars["String"]["output"];
+  color?: Maybe<Scalars["String"]["output"]>;
+  commentary?: Maybe<Scalars["String"]["output"]>;
   description: Scalars["String"]["output"];
   employee: Employee;
   id: Scalars["Int"]["output"];
   image: Scalars["String"]["output"];
-  material: Scalars["String"]["output"];
+  material?: Maybe<Scalars["String"]["output"]>;
   min_quantity: Scalars["Float"]["output"];
-  orderProducts: Array<OrderProduct>;
+  orderProduct?: Maybe<Array<OrderProduct>>;
   product: Scalars["String"]["output"];
   stock: Scalars["Float"]["output"];
   supplier: Supplier;
@@ -164,16 +165,17 @@ export type Supplier = {
   active: Scalars["Boolean"]["output"];
   address: Scalars["String"]["output"];
   city: Scalars["String"]["output"];
-  commentary: Scalars["String"]["output"];
+  commentary?: Maybe<Scalars["String"]["output"]>;
   country: Scalars["String"]["output"];
   delay: Scalars["Float"]["output"];
   description: Scalars["String"]["output"];
-  employees: Employee;
+  employees: Array<Employee>;
   id: Scalars["Int"]["output"];
   logo: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
+  order?: Maybe<Array<Order>>;
   postcode: Scalars["String"]["output"];
-  products: Product;
+  products?: Maybe<Array<Product>>;
 };
 
 export type User = {
@@ -264,8 +266,8 @@ export type AllProductsQuery = {
     __typename?: "Product";
     category: string;
     product: string;
-    material: string;
-    color: string;
+    material?: string | null;
+    color?: string | null;
     description: string;
     min_quantity: number;
     stock: number;

@@ -47,9 +47,9 @@ export class OrderResolver {
   async getOrderDetails(): Promise<OrderDetails[]> {
     const orders = await Order.find({
       relations: [
-        "orderProducts",
-        "orderProducts.product",
-        "orderProducts.product.supplier",
+        "orderProduct", // Corrected from "orderProducts"
+        "orderProduct.product",
+        "orderProduct.product.supplier",
       ],
     });
 
@@ -57,19 +57,18 @@ export class OrderResolver {
       id: order.id,
       status: order.status,
       created_at: order.created_at,
-      products: order.orderProducts.map((orderProduct) => {
+      products: order.orderProduct.map((orderProduct) => {
         const product = orderProduct.product;
         const supplier = product.supplier;
 
-        // Calculate expected delivery date: Add supplier's delay to the order's creation date
-        const expectedDelivery = new Date(order.created_at); // Create a new date object from the order's creation date
-        expectedDelivery.setDate(expectedDelivery.getDate() + supplier.delay); // Add the delay (in days) to the date
+        const expectedDelivery = new Date(order.created_at);
+        expectedDelivery.setDate(expectedDelivery.getDate() + supplier.delay);
 
         return {
-          productName: product.product, // Product name
-          supplierName: supplier.name, // Supplier name
-          quantity: orderProduct.quantity, // Product quantity
-          expectedDelivery, // Calculated expected delivery date
+          productName: product.product,
+          supplierName: supplier.name,
+          quantity: orderProduct.quantity,
+          expectedDelivery,
         };
       }),
     }));
@@ -80,15 +79,14 @@ export class OrderResolver {
   async getEnCoursDeliveryStats(): Promise<EnCoursDeliveryStats> {
     const deliveries = await Order.find({
       where: { status: "en cours" },
-      relations: ["orderProducts"],
+      relations: ["orderProduct"], // Use "orderProduct", not "orderProducts"
     });
 
-    // Number of deliveries "en cours"
+    // Calculate stats
     const countDeliveries = deliveries.length;
 
-    // Total number of products across all "en cours" deliveries
     const totalProducts = deliveries.reduce((sum, delivery) => {
-      const deliveryProductsCount = delivery.orderProducts.reduce(
+      const deliveryProductsCount = delivery.orderProduct.reduce(
         (prodSum, orderProduct) => prodSum + orderProduct.quantity,
         0
       );
