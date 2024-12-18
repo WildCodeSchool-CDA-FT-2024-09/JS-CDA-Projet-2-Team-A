@@ -216,6 +216,38 @@ export type GetAllMessagesQuery = {
   }>;
 };
 
+export type GetOrderDetailsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetOrderDetailsQuery = {
+  __typename?: "Query";
+  getOrderDetails: Array<{
+    __typename?: "OrderDetails";
+    id: number;
+    status: string;
+    created_at: Date;
+    products: Array<{
+      __typename?: "ProductDetails";
+      productName: string;
+      supplierName: string;
+      quantity: number;
+      expectedDelivery: Date;
+    }>;
+  }>;
+};
+
+export type GetEnCoursDeliveryStatsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetEnCoursDeliveryStatsQuery = {
+  __typename?: "Query";
+  getEnCoursDeliveryStats: {
+    __typename?: "EnCoursDeliveryStats";
+    countDeliveries: number;
+    totalProducts: number;
+  };
+};
+
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type AllProductsQuery = {
@@ -481,6 +513,169 @@ export type GetAllMessagesSuspenseQueryHookResult = ReturnType<
 export type GetAllMessagesQueryResult = Apollo.QueryResult<
   GetAllMessagesQuery,
   GetAllMessagesQueryVariables
+>;
+export const GetOrderDetailsDocument = gql`
+  query GetOrderDetails {
+    getOrderDetails {
+      id
+      status
+      created_at
+      products {
+        productName
+        supplierName
+        quantity
+        expectedDelivery
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetOrderDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetOrderDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderDetailsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrderDetailsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetOrderDetailsQuery, GetOrderDetailsQueryVariables>(
+    GetOrderDetailsDocument,
+    options,
+  );
+}
+export function useGetOrderDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export function useGetOrderDetailsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetOrderDetailsQuery,
+        GetOrderDetailsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export type GetOrderDetailsQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsQuery
+>;
+export type GetOrderDetailsLazyQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsLazyQuery
+>;
+export type GetOrderDetailsSuspenseQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsSuspenseQuery
+>;
+export type GetOrderDetailsQueryResult = Apollo.QueryResult<
+  GetOrderDetailsQuery,
+  GetOrderDetailsQueryVariables
+>;
+export const GetEnCoursDeliveryStatsDocument = gql`
+  query GetEnCoursDeliveryStats {
+    getEnCoursDeliveryStats {
+      countDeliveries
+      totalProducts
+    }
+  }
+`;
+
+/**
+ * __useGetEnCoursDeliveryStatsQuery__
+ *
+ * To run a query within a React component, call `useGetEnCoursDeliveryStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetEnCoursDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetEnCoursDeliveryStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetEnCoursDeliveryStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export function useGetEnCoursDeliveryStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export function useGetEnCoursDeliveryStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetEnCoursDeliveryStatsQuery,
+        GetEnCoursDeliveryStatsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetEnCoursDeliveryStatsQuery,
+    GetEnCoursDeliveryStatsQueryVariables
+  >(GetEnCoursDeliveryStatsDocument, options);
+}
+export type GetEnCoursDeliveryStatsQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsQuery
+>;
+export type GetEnCoursDeliveryStatsLazyQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsLazyQuery
+>;
+export type GetEnCoursDeliveryStatsSuspenseQueryHookResult = ReturnType<
+  typeof useGetEnCoursDeliveryStatsSuspenseQuery
+>;
+export type GetEnCoursDeliveryStatsQueryResult = Apollo.QueryResult<
+  GetEnCoursDeliveryStatsQuery,
+  GetEnCoursDeliveryStatsQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {

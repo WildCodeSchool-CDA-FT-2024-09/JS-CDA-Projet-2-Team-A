@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <SupplierHomePage />,
         children: [
           {
-            path: "",
+            path: "commandes",
             element: <OrderPage />,
           },
         ],
