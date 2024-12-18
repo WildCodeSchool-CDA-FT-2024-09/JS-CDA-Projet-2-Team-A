@@ -56,7 +56,7 @@ export type Employee = {
   id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
   phone_number: Scalars["String"]["output"];
-  products: Product;
+  products?: Maybe<Array<Product>>;
   supplier: Supplier;
 };
 
@@ -83,23 +83,32 @@ export type Order = {
   __typename?: "Order";
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
-  products: Product;
+  orderProduct: Array<OrderProduct>;
   status: Scalars["String"]["output"];
+  supplier: Supplier;
+};
+
+export type OrderProduct = {
+  __typename?: "OrderProduct";
+  id: Scalars["Int"]["output"];
+  order: Order;
+  product: Product;
+  quantity: Scalars["Float"]["output"];
 };
 
 export type Product = {
   __typename?: "Product";
   active: Scalars["Boolean"]["output"];
   category: Scalars["String"]["output"];
-  color: Scalars["String"]["output"];
-  commentary: Scalars["String"]["output"];
+  color?: Maybe<Scalars["String"]["output"]>;
+  commentary?: Maybe<Scalars["String"]["output"]>;
   description: Scalars["String"]["output"];
   employee: Employee;
   id: Scalars["Int"]["output"];
   image: Scalars["String"]["output"];
-  material: Scalars["String"]["output"];
+  material?: Maybe<Scalars["String"]["output"]>;
   min_quantity: Scalars["Float"]["output"];
-  orders: Order;
+  orderProduct?: Maybe<Array<OrderProduct>>;
   product: Scalars["String"]["output"];
   stock: Scalars["Float"]["output"];
   supplier: Supplier;
@@ -113,6 +122,7 @@ export type Query = {
   countDistinctCategories: Scalars["Float"]["output"];
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
+  getAllSuppliersWithEmployees: Array<Supplier>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
 };
@@ -132,16 +142,17 @@ export type Supplier = {
   active: Scalars["Boolean"]["output"];
   address: Scalars["String"]["output"];
   city: Scalars["String"]["output"];
-  commentary: Scalars["String"]["output"];
+  commentary?: Maybe<Scalars["String"]["output"]>;
   country: Scalars["String"]["output"];
   delay: Scalars["Float"]["output"];
   description: Scalars["String"]["output"];
-  employees: Employee;
+  employees: Array<Employee>;
   id: Scalars["Int"]["output"];
   logo: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
+  order?: Maybe<Array<Order>>;
   postcode: Scalars["String"]["output"];
-  products: Product;
+  products?: Maybe<Array<Product>>;
 };
 
 export type User = {
@@ -200,8 +211,8 @@ export type AllProductsQuery = {
     __typename?: "Product";
     category: string;
     product: string;
-    material: string;
-    color: string;
+    material?: string | null;
+    color?: string | null;
     description: string;
     min_quantity: number;
     stock: number;
@@ -223,6 +234,29 @@ export type TotalStockProductQueryVariables = Exact<{ [key: string]: never }>;
 export type TotalStockProductQuery = {
   __typename?: "Query";
   totalStockProduct: number;
+};
+
+export type SuppliersWithEmployeesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SuppliersWithEmployeesQuery = {
+  __typename?: "Query";
+  getAllSuppliersWithEmployees: Array<{
+    __typename?: "Supplier";
+    id: number;
+    name: string;
+    address: string;
+    city: string;
+    country: string;
+    employees: Array<{
+      __typename?: "Employee";
+      id: number;
+      name: string;
+      phone_number: string;
+      email: string;
+    }>;
+  }>;
 };
 
 export type AuthenticateQueryVariables = Exact<{
@@ -703,6 +737,93 @@ export type TotalStockProductSuspenseQueryHookResult = ReturnType<
 export type TotalStockProductQueryResult = Apollo.QueryResult<
   TotalStockProductQuery,
   TotalStockProductQueryVariables
+>;
+export const SuppliersWithEmployeesDocument = gql`
+  query SuppliersWithEmployees {
+    getAllSuppliersWithEmployees {
+      id
+      name
+      address
+      city
+      country
+      employees {
+        id
+        name
+        phone_number
+        email
+      }
+    }
+  }
+`;
+
+/**
+ * __useSuppliersWithEmployeesQuery__
+ *
+ * To run a query within a React component, call `useSuppliersWithEmployeesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSuppliersWithEmployeesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSuppliersWithEmployeesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSuppliersWithEmployeesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    SuppliersWithEmployeesQuery,
+    SuppliersWithEmployeesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    SuppliersWithEmployeesQuery,
+    SuppliersWithEmployeesQueryVariables
+  >(SuppliersWithEmployeesDocument, options);
+}
+export function useSuppliersWithEmployeesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SuppliersWithEmployeesQuery,
+    SuppliersWithEmployeesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SuppliersWithEmployeesQuery,
+    SuppliersWithEmployeesQueryVariables
+  >(SuppliersWithEmployeesDocument, options);
+}
+export function useSuppliersWithEmployeesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        SuppliersWithEmployeesQuery,
+        SuppliersWithEmployeesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    SuppliersWithEmployeesQuery,
+    SuppliersWithEmployeesQueryVariables
+  >(SuppliersWithEmployeesDocument, options);
+}
+export type SuppliersWithEmployeesQueryHookResult = ReturnType<
+  typeof useSuppliersWithEmployeesQuery
+>;
+export type SuppliersWithEmployeesLazyQueryHookResult = ReturnType<
+  typeof useSuppliersWithEmployeesLazyQuery
+>;
+export type SuppliersWithEmployeesSuspenseQueryHookResult = ReturnType<
+  typeof useSuppliersWithEmployeesSuspenseQuery
+>;
+export type SuppliersWithEmployeesQueryResult = Apollo.QueryResult<
+  SuppliersWithEmployeesQuery,
+  SuppliersWithEmployeesQueryVariables
 >;
 export const AuthenticateDocument = gql`
   query Authenticate($credentials: Credentials!) {
