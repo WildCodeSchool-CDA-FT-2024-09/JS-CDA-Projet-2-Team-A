@@ -7,7 +7,7 @@ export default function ProductDetail() {
       sx={{
         background: "#FFF",
         width: "100%",
-        borderRadius: "5px 5px 0px 0px",
+        borderRadius: "5px",
       }}
     >
       <Box

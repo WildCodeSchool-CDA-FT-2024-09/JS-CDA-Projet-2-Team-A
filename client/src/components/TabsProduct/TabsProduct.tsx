@@ -26,17 +26,42 @@ function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
+      {value === index && (
+        <Box sx={{ pt: 0, pr: 3, pl: 3, pb: 0 }}>{children}</Box>
+      )}
+    </Box>
   );
 }
+
+const ListItemRow = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}): JSX.Element => {
+  return (
+    <ListItem>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <Typography variant="body2">{label}</Typography>
+        <Typography variant="body2">{value}</Typography>
+      </Box>
+    </ListItem>
+  );
+};
 
 export default function TabsProductGlobal() {
   const [value, setValue] = useState(0);
@@ -45,10 +70,35 @@ export default function TabsProductGlobal() {
     setValue(newValue);
   };
 
+  // TODO : Données provisoire en attendant la query
+
+  const ListItemMainDetail = [
+    { label: "Nom du produit :", value: "Câble Inox 4 / 35 mm" },
+    { label: "Référence du produit :", value: "-" },
+    { label: "Catégorie du produit :", value: "Câble" },
+    { label: "Matériaux du produit :", value: "Inox" },
+    { label: "Couleur du produit :", value: "Blanc" },
+  ];
+
+  const ListItemAddDetail = [
+    { label: "Nom du fournisseur :", value: "fournisseur_45" },
+    { label: "Contact fournisseur :", value: "Julie Richard" },
+    { label: "Email contact :", value: "julie.richard@fournisseur_45.com" },
+    { label: "Téléphone contact :", value: "+33 6 46 65 47 38" },
+  ];
+
+  const ListItemStockDetail = [
+    { label: "Stock actuel :", value: "40" },
+    { label: "En cours de livraison :", value: "12" },
+    { label: "Valeur seuil :", value: "158" },
+  ];
+  console.info(ListItemAddDetail, ListItemStockDetail);
+
   return (
     <Box
       sx={{
         width: "100%",
+        height: "75dvh",
       }}
     >
       <Box
@@ -89,71 +139,10 @@ export default function TabsProductGlobal() {
                 width: "40%",
               }}
             >
-              <List>
-                <ListItem>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">Nom du produit:</Typography>
-                    <Typography variant="body2">
-                      Câble inox 4 / 35 mm
-                    </Typography>
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">
-                      Référence du produit:
-                    </Typography>
-                    <Typography variant="body2">-</Typography>
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">Catégorie produit:</Typography>
-                    <Typography variant="body2">Câble</Typography>
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">Matériaux produit:</Typography>
-                    <Typography variant="body2">Inox</Typography>
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography variant="body2">Couleur produit:</Typography>
-                    <Typography variant="body2">Blanc</Typography>
-                  </Box>
-                </ListItem>
+              <List disablePadding>
+                {ListItemMainDetail.map((mainDetail, index) => (
+                  <ListItemRow key={index} {...mainDetail} />
+                ))}
               </List>
             </Box>
             <Box
@@ -161,15 +150,7 @@ export default function TabsProductGlobal() {
                 width: "40%",
               }}
             >
-              <Box
-                sx={
-                  {
-                    // display: 'flex',
-                    // flexDirection: 'column',
-                    // alignItems: 'end'
-                  }
-                }
-              >
+              <Box>
                 <img
                   src="https://via.placeholder.com/150"
                   alt="Câble inox"

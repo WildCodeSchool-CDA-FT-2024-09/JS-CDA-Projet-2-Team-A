@@ -43,7 +43,7 @@ export default function App() {
       sx={{
         background: "#F0F1F3",
         height: "100dvh",
-        width: "100dvw",
+        // width: "100dvw",
         display: "flex",
         alignItems: "center",
       }}
