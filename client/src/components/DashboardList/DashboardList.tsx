@@ -1,6 +1,5 @@
-import Box from "@mui/material/Box";
+import { Box, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Typography from "@mui/material/Typography";
 import useScreenSize from "../../hook/useScreenSize";
 
 interface DashboardListProps<T> {
