@@ -4,6 +4,7 @@ import ProductResolver from "./product.resolvers";
 import RoleResolver from "./role.resolvers";
 import { OrderResolver } from "./order.resolvers";
 import MessageResolver from "./message.resolver";
+import SupplierResolver from "./supplier.resolvers";
 
 // Export individual resolvers
 export {
@@ -12,6 +13,7 @@ export {
   RoleResolver,
   OrderResolver,
   MessageResolver,
+  SupplierResolver,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -21,4 +23,5 @@ export const resolvers: NonEmptyArray<Function> = [
   RoleResolver,
   OrderResolver,
   MessageResolver,
+  SupplierResolver,
 ];
