@@ -60,7 +60,7 @@ export default function Ticket({
             lineHeight: "1",
           }}
         >
-          Modifier le status
+          Modifier le statut
         </Button>
         <Typography
           variant="body2"
