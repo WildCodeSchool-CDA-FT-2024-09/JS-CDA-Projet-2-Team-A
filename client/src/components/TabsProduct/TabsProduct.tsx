@@ -97,7 +97,7 @@ export default function TabsProductGlobal() {
     <Box
       sx={{
         width: "100%",
-        height: "75dvh",
+        height: "73dvh",
       }}
     >
       <Box
@@ -121,7 +121,7 @@ export default function TabsProductGlobal() {
             component="h3"
             sx={{
               mt: 3,
-              mb: 3,
+              mb: 2,
               color: "#383E49",
             }}
           >
@@ -171,13 +171,17 @@ export default function TabsProductGlobal() {
           </Box>
           <Divider sx={{ my: 2 }} />
         </Box>
-        <Box>
+        <Box
+          sx={{
+            width: "33dvw",
+          }}
+        >
           <Typography
             variant="h6"
             component="h3"
             sx={{
               mt: 3,
-              mb: 3,
+              mb: 2,
               color: "#383E49",
             }}
           >
