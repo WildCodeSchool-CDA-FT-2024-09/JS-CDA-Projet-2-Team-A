@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <SupplierHomePage />,
         children: [
           {
-            path: "commandes",
+            path: "",
             element: <OrderPage />,
           },
         ],

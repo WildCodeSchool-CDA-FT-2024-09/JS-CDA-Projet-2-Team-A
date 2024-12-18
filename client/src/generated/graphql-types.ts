@@ -94,6 +94,14 @@ export type Order = {
   supplier: Supplier;
 };
 
+export type OrderDetails = {
+  __typename?: "OrderDetails";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  products: Array<ProductDetails>;
+  status: Scalars["String"]["output"];
+};
+
 export type OrderProduct = {
   __typename?: "OrderProduct";
   id: Scalars["Int"]["output"];
@@ -137,6 +145,8 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
+  getEnCoursDeliveryStats: EnCoursDeliveryStats;
+  getOrderDetails: Array<OrderDetails>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
 };
