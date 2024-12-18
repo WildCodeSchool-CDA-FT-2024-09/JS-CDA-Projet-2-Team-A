@@ -37,11 +37,11 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @Field(() => Role)
+  @Field(() => Role, { nullable: false })
   @ManyToOne(() => Role, (role) => role.id)
   role: Role;
 
-  @OneToMany(() => Message, (message) => message.id)
   @Field(() => [Message], { nullable: true })
-  messages: Message[];
+  @OneToMany(() => Message, (message) => message.user)
+  messages?: Message[];
 }

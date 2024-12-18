@@ -8,6 +8,7 @@ import {
 import { ObjectType, Field, Int } from "type-graphql";
 import { Product } from "./product.entities";
 import { Employee } from "./employee.entities";
+import { Order } from "./order.entities";
 
 @ObjectType()
 @Entity("supplier")
@@ -52,15 +53,23 @@ export class Supplier extends BaseEntity {
   @Column({ default: true })
   active: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   commentary?: string;
 
-  @Field(() => Product)
-  @OneToMany(() => Product, (product) => product.supplier)
-  products: Product[];
+  @Field(() => [Product], { nullable: true })
+  @OneToMany(() => Product, (product) => product.supplier, {
+    onDelete: "CASCADE",
+  })
+  products?: Product[];
 
-  @Field(() => Employee)
-  @OneToMany(() => Employee, (employee) => employee.id)
+  @Field(() => [Employee])
+  @OneToMany(() => Employee, (employee) => employee.supplier, {
+    onDelete: "CASCADE",
+  })
   employees: Employee[];
+
+  @Field(() => [Order], { nullable: true })
+  @OneToMany(() => Order, (Order) => Order.supplier)
+  order?: Order[];
 }

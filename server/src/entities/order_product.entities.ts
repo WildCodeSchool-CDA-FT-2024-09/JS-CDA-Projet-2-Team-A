@@ -7,18 +7,24 @@ import {
 } from "typeorm";
 import { Order } from "./order.entities";
 import { Product } from "./product.entities";
+import { Field, Int, ObjectType } from "type-graphql";
 
+@ObjectType()
 @Entity("order_product")
 export class OrderProduct extends BaseEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column()
   quantity: number;
 
-  @ManyToOne(() => Order, (order) => order.id)
+  @Field(() => Order)
+  @ManyToOne(() => Order, (Order) => Order.orderProduct)
   order: Order;
 
-  @ManyToOne(() => Product, (product) => product.id)
+  @Field(() => Product)
+  @ManyToOne(() => Product, (Product) => Product.orderProduct)
   product: Product;
 }

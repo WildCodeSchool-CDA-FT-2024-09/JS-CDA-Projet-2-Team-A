@@ -10,6 +10,7 @@ import {
   OrderProduct,
 } from "../entities";
 import * as argon2 from "argon2";
+import employeeByProduct from "../../data/mock/employee_product.json";
 import products from "../../data/mock/products.json";
 import suppliers from "../../data/mock/suppliers.json";
 import employees from "../../data/mock/employees.json";
@@ -35,7 +36,6 @@ type ProductType = {
   description: string;
   stock: number;
   supplier: number;
-  employee: number;
 };
 
 type SupplierType = {
@@ -54,6 +54,7 @@ type EmployeeType = {
   email: string;
   phone_number: string;
   supplier_id: number;
+  product_id: number;
 };
 
 type RoleType = {
@@ -80,6 +81,7 @@ type MessageType = {
 type OrderType = {
   order_status: string;
   created_at: string;
+  supplier_id: number;
 };
 
 type OrderProductType = {
@@ -87,8 +89,6 @@ type OrderProductType = {
   product_id: number;
   quantity: number;
 };
-
-const productsArray = Array.isArray(products) ? products : [];
 
 (async () => {
   await AppDataSource.initialize();
@@ -134,7 +134,17 @@ const productsArray = Array.isArray(products) ? products : [];
     );
 
     const savedProducts = await Promise.all(
-      productsArray.map(async (productEl: ProductType) => {
+      products.map(async (productEl: ProductType, index: number) => {
+        const supplier = savedSuppliers.find(
+          (supplier) => supplier.id === productEl.supplier
+        ) as Supplier;
+        const target = employeeByProduct.find(
+          (employ) => employ.product_id === index + 1
+        ) as { employee_id: number; product_id: number };
+        const targetEmploye = savedEmployees.find(
+          (employe) => employe.id === target.employee_id
+        );
+
         const product = new Product();
 
         product.product = productEl.product;
@@ -147,12 +157,8 @@ const productsArray = Array.isArray(products) ? products : [];
         product.stock = productEl.stock;
         product.min_quantity = 10;
         product.active = true;
-        product.supplier = savedSuppliers.find(
-          (supplier) => supplier.id === productEl.supplier
-        ) as Supplier;
-        product.employee = savedEmployees.find(
-          (employee) => employee.id === productEl.employee
-        ) as Employee;
+        product.supplier = supplier;
+        product.employee = targetEmploye as Employee;
 
         return await product.save();
       })
@@ -210,26 +216,29 @@ const productsArray = Array.isArray(products) ? products : [];
 
         order.status = orderEl.order_status;
         order.created_at = new Date(orderEl.created_at);
-        order.products = [];
+        order.orderProduct = [];
+        order.supplier = savedSuppliers.find(
+          (supplier) => supplier.id === orderEl.supplier_id
+        ) as Supplier;
 
         return await order.save();
       })
     );
 
     await Promise.all(
-      order_product.map(async (orderProductEl: OrderProductType) => {
-        const orderProduct = new OrderProduct();
+      order_product.map(
+        async (orderProductEl: OrderProductType, index: number) => {
+          const orderProduct = new OrderProduct();
 
-        orderProduct.order = savedOrders.find(
-          (order) => order.id === orderProductEl.order_id
-        ) as Order;
-        orderProduct.product = savedProducts.find(
-          (product) => product.id === orderProductEl.product_id
-        ) as Product;
-        orderProduct.quantity = orderProductEl.quantity;
+          orderProduct.order = savedOrders.find(
+            (order) => order.id === orderProductEl.order_id
+          ) as Order;
+          orderProduct.product = savedProducts[index];
+          orderProduct.quantity = savedProducts[index].stock - 10;
 
-        return await orderProduct.save();
-      })
+          return await orderProduct.save();
+        }
+      )
     );
 
     await queryRunner.commitTransaction();
