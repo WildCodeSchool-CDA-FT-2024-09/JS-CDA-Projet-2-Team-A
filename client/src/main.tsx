@@ -11,6 +11,7 @@ import WorkshopHomePage from "./pages/WorkshopHomePage/WorkshopHomePage.tsx";
 import SupplierHomePage from "./pages/SupplierHomePage/SupplierHomePage.tsx";
 import PurchaseHomePage from "./pages/PurchaseHomePage/PurchaseHomePage.tsx";
 import TicketsPage from "./pages/TicketsPage/TicketsPage.tsx";
+import SuppliersPage from "./pages/SuppliersPage/SuppliersPage.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
           {
             path: "tickets",
             element: <TicketsPage />,
+          },
+          {
+            path: "fournisseurs",
+            element: <SuppliersPage />,
           },
         ],
       },
