@@ -92,7 +92,6 @@ export default function TabsProductGlobal() {
     { label: "En cours de livraison :", value: "12" },
     { label: "Valeur seuil :", value: "158" },
   ];
-  console.info(ListItemAddDetail, ListItemStockDetail);
 
   return (
     <Box
@@ -163,44 +162,9 @@ export default function TabsProductGlobal() {
                   }}
                 />
                 <List>
-                  <ListItem>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography variant="body2">Stock actuel</Typography>
-                      <Typography variant="body2">40</Typography>
-                    </Box>
-                  </ListItem>
-                  <ListItem>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography variant="body2">Valeur seuil</Typography>
-                      <Typography variant="body2">12</Typography>
-                    </Box>
-                  </ListItem>
-                  <ListItem>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography variant="body2">
-                        En cours de livraison
-                      </Typography>
-                      <Typography variant="body2">158</Typography>
-                    </Box>
-                  </ListItem>
+                  {ListItemStockDetail.map((stockDetail, index) => (
+                    <ListItemRow key={index} {...stockDetail} />
+                  ))}
                 </List>
               </Box>
             </Box>
@@ -220,56 +184,9 @@ export default function TabsProductGlobal() {
             Détails Supplémentaires
           </Typography>
           <List>
-            <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="body2">Nom du fournisseur</Typography>
-                <Typography variant="body2">Fournisseur n°45</Typography>
-              </Box>
-            </ListItem>
-            <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="body2">Contact fournisseur</Typography>
-                <Typography variant="body2">Julie Richard</Typography>
-              </Box>
-            </ListItem>
-            <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="body2">Email contact</Typography>
-                <Typography variant="body2">
-                  julie.richard@fournisseur_45.com
-                </Typography>
-              </Box>
-            </ListItem>
-            <ListItem>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="body2">Téléphone contact</Typography>
-                <Typography variant="body2">+33 533 354 3168</Typography>
-              </Box>
-            </ListItem>
+            {ListItemAddDetail.map((addDetail, index) => (
+              <ListItemRow key={index} {...addDetail} />
+            ))}
           </List>
         </Box>
       </CustomTabPanel>
