@@ -5,9 +5,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { ObjectType, Field, Int } from "type-graphql";
 import { Order } from "./order.entities";
 import { Product } from "./product.entities";
+import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 @Entity("order_product")
@@ -16,15 +16,15 @@ export class OrderProduct extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
+  @Field()
   @Column()
   quantity: number;
 
-  @Field(() => Order) // Relates to the Order entity
-  @ManyToOne(() => Order, (order) => order.id)
+  @Field(() => Order)
+  @ManyToOne(() => Order, (Order) => Order.orderProduct)
   order: Order;
 
-  @Field(() => Product) // Relates to the Product entity
-  @ManyToOne(() => Product, (product) => product.id)
+  @Field(() => Product)
+  @ManyToOne(() => Product, (Product) => Product.orderProduct)
   product: Product;
 }

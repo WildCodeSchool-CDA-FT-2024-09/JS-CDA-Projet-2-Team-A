@@ -30,10 +30,10 @@ export class Employee extends BaseEntity {
   phone_number: string;
 
   @Field(() => Supplier)
-  @ManyToOne(() => Supplier, (supplier) => supplier.id)
+  @ManyToOne(() => Supplier, (supplier) => supplier.employees)
   supplier: Supplier;
 
-  @Field(() => Product)
-  @OneToMany(() => Product, (product) => product.id)
-  products: Product[];
+  @Field(() => [Product], { nullable: true })
+  @OneToMany(() => Product, (product) => product.employee)
+  products?: Product[];
 }

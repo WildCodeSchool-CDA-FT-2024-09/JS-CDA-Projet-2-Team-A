@@ -4,9 +4,11 @@ import {
   OneToMany,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { OrderProduct } from "./order_product.entities";
+import { Supplier } from "./supplier.entities";
 
 @ObjectType()
 @Entity("order")
@@ -24,6 +26,10 @@ export class Order extends BaseEntity {
   created_at: Date;
 
   @Field(() => [OrderProduct])
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-  orderProducts: OrderProduct[];
+  @OneToMany(() => OrderProduct, (OrderProduct) => OrderProduct.order)
+  orderProduct: OrderProduct[];
+
+  @Field(() => Supplier)
+  @ManyToOne(() => Supplier, (Supplier) => Supplier.order)
+  supplier: Supplier;
 }

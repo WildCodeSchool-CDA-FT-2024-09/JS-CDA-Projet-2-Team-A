@@ -22,15 +22,15 @@ export class Product extends BaseEntity {
   @Column()
   product: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   material?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   color?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   commentary?: string;
 
@@ -66,7 +66,7 @@ export class Product extends BaseEntity {
   @ManyToOne(() => Employee, (employee) => employee.products)
   employee: Employee;
 
-  @Field(() => [OrderProduct])
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
-  orderProducts: OrderProduct[];
+  @Field(() => [OrderProduct], { nullable: true })
+  @OneToMany(() => OrderProduct, (OrderProduct) => OrderProduct.product)
+  orderProduct?: OrderProduct[];
 }
