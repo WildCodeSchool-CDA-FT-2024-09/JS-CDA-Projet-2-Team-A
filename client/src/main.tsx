@@ -13,6 +13,7 @@ import PurchaseHomePage from "./pages/PurchaseHomePage/PurchaseHomePage.tsx";
 import TicketsPage from "./pages/TicketsPage/TicketsPage.tsx";
 import SuppliersPage from "./pages/SuppliersPage/SuppliersPage.tsx";
 import "./index.css";
+import OrderPage from "./pages/OrderPage/OrderPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <InventoryPage />,
+            element: <OrderPage />,
           },
         ],
       },
