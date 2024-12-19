@@ -204,6 +204,23 @@ export default class UserResolver {
     }
   }
 
+  @Mutation(() => String)
+  async logout(@Ctx() context: GraphQLContext): Promise<string> {
+    const user = context.loggedUser;
+    if (user?.name && user?.email && user?.role) {
+      const { res } = context;
+      res.setHeader(
+        "Set-Cookie",
+        `token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict`
+      );
+      return "Success : the token was properly deleted.";
+    } else {
+      throw new GraphQLError(
+        "No user is properly authenticated (token missing or invalid, or context issue)."
+      );
+    }
+  }
+
   // Function to generate a cryptographically secure random password
   private generateRandomPassword(length: number): string {
     // Generate random bytes using crypto
