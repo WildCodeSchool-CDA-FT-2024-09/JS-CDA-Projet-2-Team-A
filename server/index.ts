@@ -36,12 +36,6 @@ const { PORT, JWT_SECRET } = process.env;
   const { url } = await startStandaloneServer(server, {
     listen: { port: Number(PORT) },
     context: async ({ req, res }) => {
-      if (req.headers.cookie) {
-        console.info(req.headers.cookie);
-      } else {
-        console.info("no token");
-      }
-
       if (!req.headers.cookie) return { res };
 
       const cookies = parseCookies(req.headers.cookie);
