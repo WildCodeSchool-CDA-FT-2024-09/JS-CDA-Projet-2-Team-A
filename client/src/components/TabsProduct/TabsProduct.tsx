@@ -7,6 +7,7 @@ import {
   ListItem,
   Divider,
 } from "@mui/material";
+import { useProductByIdQuery } from "../../generated/graphql-types";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,151 +55,203 @@ const ListItemRow = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          gap: "100px",
+          // justifyContent: "space-between",
           width: "100%",
         }}
       >
-        <Typography variant="body2">{label}</Typography>
-        <Typography variant="body2">{value}</Typography>
+        <Box sx={{ width: "25%" }}>
+          <Typography variant="body2">{label}</Typography>
+        </Box>
+        <Box>
+          <Typography variant="body2">{value}</Typography>
+        </Box>
       </Box>
     </ListItem>
   );
 };
 
-export default function TabsProductGlobal() {
+export default function TabsProductGlobal({
+  product,
+  description,
+  category,
+  material,
+  color,
+  min_quantity,
+  supplier,
+  employee,
+  email_employee,
+  phone_employee,
+  stock,
+}) {
+  const productByIdId = 1;
+  const { data, loading, error } = useProductByIdQuery({
+    variables: { productByIdId },
+  });
   // TODO : Données provisoire en attendant la query
 
   const mainDetails = [
-    { label: "Nom du produit :", value: "Câble Inox 4 / 35 mm" },
-    { label: "Description du produit :", value: "-" },
-    { label: "Catégorie du produit :", value: "Câble" },
-    { label: "Matériaux du produit :", value: "Inox" },
-    { label: "Couleur du produit :", value: "Blanc" },
-    { label: "Valeur seuil :", value: "158" },
+    { label: "Nom :", value: product || "-" },
+    { label: "Description :", value: description || "-" },
+    { label: "Catégorie :", value: category || "-" },
+    { label: "Matériau :", value: material || "-" },
+    { label: "Couleur :", value: color || "-" },
+    { label: "Valeur seuil :", value: min_quantity || "-" },
   ];
 
   const additionalDetails = [
-    { label: "Nom du fournisseur :", value: "fournisseur_45" },
-    { label: "Contact fournisseur :", value: "Julie Richard" },
-    { label: "Email contact :", value: "julie.richard@fournisseur_45.com" },
-    { label: "Téléphone contact :", value: "+33 6 46 65 47 38" },
+    { label: "Nom du fournisseur :", value: supplier || "-" },
+    { label: "Contact fournisseur :", value: employee || "-" },
+    { label: "Email contact :", value: email_employee || "-" },
+    { label: "Téléphone contact :", value: phone_employee || "-" },
   ];
 
   const stockDetails = [
-    { label: "Stock actuel :", value: "40" },
-    { label: "En cours de livraison :", value: "12" },
+    { label: "Stock actuel :", value: stock || "-" },
+    { label: "En livraison :", value: "En cours de calcul" },
   ];
 
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "73dvh",
-      }}
-    >
-      <Box
+  if (loading)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
         sx={{
-          borderBottom: 1,
-          borderColor: "divider",
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
         }}
       >
-        <Tabs aria-label="basic tabs example">
-          <Tab label="Aperçu" {...a11yProps(0)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel index={0} value={0}>
-        <Box>
-          <Typography
-            variant="h6"
-            component="h3"
-            sx={{
-              mt: 3,
-              mb: 2,
-              color: "#383E49",
-            }}
-          >
-            Détails principaux
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-around",
-              alignItems: "end",
-              gap: "200px",
-            }}
-          >
-            <Box
+        Chargement en cours...
+      </Typography>
+    );
+
+  if (error)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
+      >
+        Une erreur s'est produite lors du chargement des données.
+      </Typography>
+    );
+
+  if (data)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: "73dvh",
+        }}
+      >
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+          }}
+        >
+          <Tabs aria-label="basic tabs example">
+            <Tab label="Aperçu" {...a11yProps(0)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel index={0} value={0}>
+          <Box>
+            <Typography
+              variant="h6"
+              component="h3"
               sx={{
-                width: "30%",
+                mt: 3,
+                mb: 2,
+                color: "#383E49",
               }}
             >
-              <List>
-                {mainDetails.map((mainDetail, index) => (
-                  <ListItemRow key={index} {...mainDetail} />
-                ))}
-              </List>
-            </Box>
+              Détails principaux
+            </Typography>
             <Box
               sx={{
-                width: "30%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "end",
+                // gap: "200px",
               }}
             >
               <Box
                 sx={{
-                  width: "100%",
+                  width: "70%",
+                }}
+              >
+                <List>
+                  {mainDetails.map((mainDetail, index) => (
+                    <ListItemRow key={index} {...mainDetail} />
+                  ))}
+                </List>
+              </Box>
+              <Box
+                sx={{
+                  width: "30%",
                 }}
               >
                 <Box
                   sx={{
-                    textAlign: "center",
-                    mb: 2,
+                    width: "100%",
                   }}
                 >
-                  <img
-                    src="https://via.placeholder.com/150"
-                    alt="Câble inox"
-                    style={{
-                      left: "0",
-                      width: "150px",
-                      height: "150px",
-                      border: "2px dashed lightgray",
-                      borderRadius: "8px",
+                  <Box
+                    sx={{
+                      textAlign: "center",
+                      mb: 2,
                     }}
-                  />
+                  >
+                    <img
+                      src="https://via.placeholder.com/150"
+                      alt="Câble inox"
+                      style={{
+                        left: "0",
+                        width: "150px",
+                        height: "150px",
+                        border: "2px dashed lightgray",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </Box>
+                  <List>
+                    {stockDetails.map((stockDetail, index) => (
+                      <ListItemRow key={index} {...stockDetail} />
+                    ))}
+                  </List>
                 </Box>
-                <List>
-                  {stockDetails.map((stockDetail, index) => (
-                    <ListItemRow key={index} {...stockDetail} />
-                  ))}
-                </List>
               </Box>
             </Box>
+            <Divider sx={{ my: 2 }} />
           </Box>
-          <Divider sx={{ my: 2 }} />
-        </Box>
-        <Box
-          sx={{
-            width: "33dvw",
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h3"
+          <Box
             sx={{
-              mt: 3,
-              mb: 2,
-              color: "#383E49",
+              width: "33dvw",
             }}
           >
-            Détails Supplémentaires
-          </Typography>
-          <List>
-            {additionalDetails.map((addDetail, index) => (
-              <ListItemRow key={index} {...addDetail} />
-            ))}
-          </List>
-        </Box>
-      </CustomTabPanel>
-    </Box>
-  );
+            <Typography
+              variant="h6"
+              component="h3"
+              sx={{
+                mt: 3,
+                mb: 2,
+                color: "#383E49",
+              }}
+            >
+              Détails Supplémentaires
+            </Typography>
+            <List>
+              {additionalDetails.map((addDetail, index) => (
+                <ListItemRow key={index} {...addDetail} />
+              ))}
+            </List>
+          </Box>
+        </CustomTabPanel>
+      </Box>
+    );
 }

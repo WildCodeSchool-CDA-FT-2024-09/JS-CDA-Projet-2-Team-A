@@ -133,7 +133,7 @@ export type QueryAuthenticateArgs = {
 };
 
 export type QueryProductByIdArgs = {
-  id: Scalars["Float"]["input"];
+  id: Scalars["Int"]["input"];
 };
 
 export type Role = {
@@ -242,7 +242,7 @@ export type TotalStockProductQuery = {
 };
 
 export type ProductByIdQueryVariables = Exact<{
-  productByIdId: Scalars["Float"]["input"];
+  productByIdId: Scalars["Int"]["input"];
 }>;
 
 export type ProductByIdQuery = {
@@ -257,6 +257,7 @@ export type ProductByIdQuery = {
     category: string;
     color?: string | null;
     description: string;
+    stock: number;
     employee: {
       __typename?: "Employee";
       id: number;
@@ -771,7 +772,7 @@ export type TotalStockProductQueryResult = Apollo.QueryResult<
   TotalStockProductQueryVariables
 >;
 export const ProductByIdDocument = gql`
-  query ProductById($productByIdId: Float!) {
+  query ProductById($productByIdId: Int!) {
     productById(id: $productByIdId) {
       id
       product
@@ -791,6 +792,7 @@ export const ProductByIdDocument = gql`
         name
       }
       description
+      stock
     }
   }
 `;

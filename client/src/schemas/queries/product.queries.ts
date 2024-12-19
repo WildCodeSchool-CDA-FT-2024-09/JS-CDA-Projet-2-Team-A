@@ -30,7 +30,7 @@ export const COUNT_TOTAL_STOCK = gql`
 `;
 
 export const GET_PRODUCT_BY_ID = gql`
-  query ProductById($productByIdId: Float!) {
+  query ProductById($productByIdId: Int!) {
     productById(id: $productByIdId) {
       id
       product
@@ -50,6 +50,7 @@ export const GET_PRODUCT_BY_ID = gql`
         name
       }
       description
+      stock
     }
   }
 `;
