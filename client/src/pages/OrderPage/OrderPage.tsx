@@ -37,7 +37,7 @@ export default function OrdersDashboardPage() {
       id: order.id,
       orderReference: order.id,
       supplier: order.products[0]?.supplierName,
-      status: order.status,
+      status: order.status.status,
       created_at: new Date(order.created_at).toLocaleDateString("fr-FR"), // Format date
       products: order.products.map((p) => p.productName).join(", "), // Combine product names
       total_quantity: order.products.reduce((sum, p) => sum + p.quantity, 0),

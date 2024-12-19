@@ -3,7 +3,7 @@ import UserResolver from "./user.resolvers";
 import ProductResolver from "./product.resolvers";
 import RoleResolver from "./role.resolvers";
 import { OrderResolver } from "./order.resolvers";
-import MessageResolver from "./message.resolver";
+import MessageResolver from "./message.resolvers";
 import SupplierResolver from "./supplier.resolvers";
 
 // Export individual resolvers

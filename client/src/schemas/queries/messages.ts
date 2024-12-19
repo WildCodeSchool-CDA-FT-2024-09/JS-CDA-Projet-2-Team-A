@@ -6,7 +6,9 @@ export const GET_ALL_MESSAGES = gql`
       id
       title
       message
-      message_status
+      status {
+        status
+      }
     }
   }
 `;

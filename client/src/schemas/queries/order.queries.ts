@@ -4,13 +4,15 @@ export const GET_ALL_ORDERS = gql`
   query GetOrderDetails {
     getOrderDetails {
       id
-      status
       created_at
       products {
         productName
-        supplierName
         quantity
+        supplierName
         expectedDelivery
+      }
+      status {
+        status
       }
     }
   }
