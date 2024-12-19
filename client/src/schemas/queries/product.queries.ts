@@ -28,3 +28,28 @@ export const COUNT_TOTAL_STOCK = gql`
     totalStockProduct
   }
 `;
+
+export const GET_PRODUCT_BY_ID = gql`
+  query ProductById($productByIdId: Float!) {
+    productById(id: $productByIdId) {
+      id
+      product
+      image
+      material
+      min_quantity
+      category
+      color
+      employee {
+        id
+        name
+        email
+        phone_number
+      }
+      supplier {
+        id
+        name
+      }
+      description
+    }
+  }
+`;

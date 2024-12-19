@@ -123,12 +123,17 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
+  productById?: Maybe<Product>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
 };
 
 export type QueryAuthenticateArgs = {
   credentials: Credentials;
+};
+
+export type QueryProductByIdArgs = {
+  id: Scalars["Float"]["input"];
 };
 
 export type Role = {
@@ -234,6 +239,33 @@ export type TotalStockProductQueryVariables = Exact<{ [key: string]: never }>;
 export type TotalStockProductQuery = {
   __typename?: "Query";
   totalStockProduct: number;
+};
+
+export type ProductByIdQueryVariables = Exact<{
+  productByIdId: Scalars["Float"]["input"];
+}>;
+
+export type ProductByIdQuery = {
+  __typename?: "Query";
+  productById?: {
+    __typename?: "Product";
+    id: number;
+    product: string;
+    image: string;
+    material?: string | null;
+    min_quantity: number;
+    category: string;
+    color?: string | null;
+    description: string;
+    employee: {
+      __typename?: "Employee";
+      id: number;
+      name: string;
+      email: string;
+      phone_number: string;
+    };
+    supplier: { __typename?: "Supplier"; id: number; name: string };
+  } | null;
 };
 
 export type SuppliersWithEmployeesQueryVariables = Exact<{
@@ -737,6 +769,103 @@ export type TotalStockProductSuspenseQueryHookResult = ReturnType<
 export type TotalStockProductQueryResult = Apollo.QueryResult<
   TotalStockProductQuery,
   TotalStockProductQueryVariables
+>;
+export const ProductByIdDocument = gql`
+  query ProductById($productByIdId: Float!) {
+    productById(id: $productByIdId) {
+      id
+      product
+      image
+      material
+      min_quantity
+      category
+      color
+      employee {
+        id
+        name
+        email
+        phone_number
+      }
+      supplier {
+        id
+        name
+      }
+      description
+    }
+  }
+`;
+
+/**
+ * __useProductByIdQuery__
+ *
+ * To run a query within a React component, call `useProductByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductByIdQuery({
+ *   variables: {
+ *      productByIdId: // value for 'productByIdId'
+ *   },
+ * });
+ */
+export function useProductByIdQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    ProductByIdQuery,
+    ProductByIdQueryVariables
+  > &
+    (
+      | { variables: ProductByIdQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    ),
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProductByIdQuery, ProductByIdQueryVariables>(
+    ProductByIdDocument,
+    options,
+  );
+}
+export function useProductByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ProductByIdQuery,
+    ProductByIdQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProductByIdQuery, ProductByIdQueryVariables>(
+    ProductByIdDocument,
+    options,
+  );
+}
+export function useProductByIdSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        ProductByIdQuery,
+        ProductByIdQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<ProductByIdQuery, ProductByIdQueryVariables>(
+    ProductByIdDocument,
+    options,
+  );
+}
+export type ProductByIdQueryHookResult = ReturnType<typeof useProductByIdQuery>;
+export type ProductByIdLazyQueryHookResult = ReturnType<
+  typeof useProductByIdLazyQuery
+>;
+export type ProductByIdSuspenseQueryHookResult = ReturnType<
+  typeof useProductByIdSuspenseQuery
+>;
+export type ProductByIdQueryResult = Apollo.QueryResult<
+  ProductByIdQuery,
+  ProductByIdQueryVariables
 >;
 export const SuppliersWithEmployeesDocument = gql`
   query SuppliersWithEmployees {

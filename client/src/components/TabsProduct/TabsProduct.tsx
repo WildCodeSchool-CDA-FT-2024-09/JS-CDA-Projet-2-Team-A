@@ -70,7 +70,7 @@ export default function TabsProductGlobal() {
 
   const mainDetails = [
     { label: "Nom du produit :", value: "Câble Inox 4 / 35 mm" },
-    { label: "Référence du produit :", value: "-" },
+    { label: "Description du produit :", value: "-" },
     { label: "Catégorie du produit :", value: "Câble" },
     { label: "Matériaux du produit :", value: "Inox" },
     { label: "Couleur du produit :", value: "Blanc" },
