@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { OrderProduct } from "./order_product.entities";
+import { OrderStatus } from "./order_status.entities";
 import { Supplier } from "./supplier.entities";
 
 @ObjectType()
@@ -18,12 +19,12 @@ export class Order extends BaseEntity {
   id: number;
 
   @Field()
-  @Column()
-  status: string;
-
-  @Field()
   @Column({ type: "timestamp" })
   created_at: Date;
+
+  @Field(() => OrderStatus)
+  @ManyToOne(() => OrderStatus, (OrderStatus) => OrderStatus.status)
+  status: OrderStatus;
 
   @Field(() => [OrderProduct])
   @OneToMany(() => OrderProduct, (OrderProduct) => OrderProduct.order)
