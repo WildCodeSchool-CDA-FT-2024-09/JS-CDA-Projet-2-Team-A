@@ -124,7 +124,11 @@ export default function InventoryPage() {
               </Button>
             </Box>
           </Box>
-          <DashboardList columns={columns} data={dataGridProduct} />
+          <DashboardList
+            columns={columns}
+            data={dataGridProduct}
+            withSummary={true}
+          />
         </Box>
       </Box>
     );

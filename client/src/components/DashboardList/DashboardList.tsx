@@ -5,20 +5,17 @@ import useScreenSize from "../../hook/useScreenSize";
 interface DashboardListProps<T> {
   columns: GridColDef[];
   data: Array<T>;
+  withSummary?: boolean;
 }
 
 export default function DashboardList<T>({
   columns,
   data,
+  withSummary = false,
 }: DashboardListProps<T>) {
-  const { isSmallScreen, isMediumScreen } = useScreenSize();
-
-  const rowPerPage = isSmallScreen ? 7 : isMediumScreen ? 12 : 26;
-  const dataGridHeight = isSmallScreen
-    ? "473px"
-    : isMediumScreen
-      ? "734px"
-      : "1461px";
+  const { dataGridHeight, rowPerPage } = useScreenSize({
+    withSummary,
+  });
 
   return (
     <Box component="main">
