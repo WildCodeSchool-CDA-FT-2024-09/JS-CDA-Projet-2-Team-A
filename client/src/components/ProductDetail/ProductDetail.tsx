@@ -78,17 +78,18 @@ export default function ProductDetail() {
           </Button>
         </Box>
         <TabsProductGlobal
-          product={data?.productById?.product}
-          description={data?.productById?.description}
-          category={data?.productById?.category}
-          material={data?.productById?.material}
-          color={data?.productById?.color}
-          min_quantity={data?.productById?.min_quantity}
-          supplier={data?.productById?.supplier?.name}
-          employee={data?.productById?.employee?.name}
-          email_employee={data?.productById?.employee?.email}
-          phone_employee={data?.productById?.employee?.phone_number}
-          stock={data?.productById?.stock}
+          product={data?.productById?.product ?? ""}
+          description={data?.productById?.description ?? ""}
+          category={data?.productById?.category ?? ""}
+          material={data?.productById?.material ?? ""}
+          color={data?.productById?.color ?? ""}
+          min_quantity={data?.productById?.min_quantity ?? 0}
+          supplier={data?.productById?.supplier?.name ?? ""}
+          employee={data?.productById?.employee?.name ?? ""}
+          email_employee={data?.productById?.employee?.email ?? ""}
+          phone_employee={data?.productById?.employee?.phone_number ?? ""}
+          stock={data?.productById?.stock ?? 0}
+          image={data?.productById?.image ?? ""}
         />
       </Box>
     );

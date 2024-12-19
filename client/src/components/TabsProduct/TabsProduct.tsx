@@ -15,6 +15,21 @@ interface TabPanelProps {
   value: number;
 }
 
+interface TabsProductGlobalProps {
+  product: string;
+  description: string;
+  category: string;
+  material: string;
+  color: string;
+  min_quantity: number;
+  supplier: string;
+  employee: string;
+  email_employee: string;
+  phone_employee: string;
+  stock: number;
+  image: string;
+}
+
 // * Fonction pour générer des propriétés d'accessibilité pour les onglets
 function a11yProps(index: number) {
   return {
@@ -48,42 +63,27 @@ const ListItemRow = ({
   value,
 }: {
   label: string;
-  value: string;
+  value: string | number;
 }): JSX.Element => {
   return (
     <ListItem>
       <Box
         sx={{
           display: "flex",
-          gap: "100px",
-          // justifyContent: "space-between",
+          gap: "space-between",
           width: "100%",
         }}
       >
-        <Box sx={{ width: "25%" }}>
+        <Box sx={{ flex: "1", maxWidth: "150px" }}>
           <Typography variant="body2">{label}</Typography>
         </Box>
-        <Box>
+        <Box sx={{ flex: "2" }}>
           <Typography variant="body2">{value}</Typography>
         </Box>
       </Box>
     </ListItem>
   );
 };
-
-interface TabsProductGlobalProps {
-  product: string;
-  description: string;
-  category: string;
-  material: string;
-  color: string;
-  min_quantity: string;
-  supplier: string;
-  employee: string;
-  email_employee: string;
-  phone_employee: string;
-  stock: string;
-}
 
 export default function TabsProductGlobal({
   product,
@@ -97,6 +97,7 @@ export default function TabsProductGlobal({
   email_employee,
   phone_employee,
   stock,
+  image,
 }: TabsProductGlobalProps) {
   const productByIdId = 1;
   const { data, loading, error } = useProductByIdQuery({
@@ -198,7 +199,13 @@ export default function TabsProductGlobal({
                   width: "70%",
                 }}
               >
-                <List>
+                <List
+                  sx={{
+                    width: "100%",
+                    padding: 0,
+                    margin: 0,
+                  }}
+                >
                   {mainDetails.map((mainDetail, index) => (
                     <ListItemRow key={index} {...mainDetail} />
                   ))}
@@ -221,7 +228,7 @@ export default function TabsProductGlobal({
                     }}
                   >
                     <img
-                      src="https://via.placeholder.com/150"
+                      src={image}
                       alt="Câble inox"
                       style={{
                         left: "0",
@@ -232,7 +239,13 @@ export default function TabsProductGlobal({
                       }}
                     />
                   </Box>
-                  <List>
+                  <List
+                    sx={{
+                      width: "100%",
+                      padding: 0,
+                      margin: 0,
+                    }}
+                  >
                     {stockDetails.map((stockDetail, index) => (
                       <ListItemRow key={index} {...stockDetail} />
                     ))}
@@ -251,14 +264,20 @@ export default function TabsProductGlobal({
               variant="h6"
               component="h3"
               sx={{
-                mt: 3,
+                mt: 5,
                 mb: 2,
                 color: "#383E49",
               }}
             >
               Détails Supplémentaires
             </Typography>
-            <List>
+            <List
+              sx={{
+                width: "100%",
+                padding: 0,
+                margin: 0,
+              }}
+            >
               {additionalDetails.map((addDetail, index) => (
                 <ListItemRow key={index} {...addDetail} />
               ))}
