@@ -1,4 +1,4 @@
-import Box from "@mui/material/Box";
+import { Box, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import useScreenSize from "../../hook/useScreenSize";
 
@@ -29,24 +29,30 @@ export default function DashboardList<T>({
           width: "100%",
         }}
       >
-        <DataGrid
-          rows={data}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: rowPerPage,
+        {data.length ? (
+          <DataGrid
+            rows={data}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: rowPerPage,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[5]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          sx={{
-            background: "#FFF",
-            border: "none",
-          }}
-        />
+            }}
+            pageSizeOptions={[5]}
+            checkboxSelection
+            disableRowSelectionOnClick
+            sx={{
+              background: "#FFF",
+              border: "none",
+            }}
+          />
+        ) : (
+          <Typography variant="h6" component="h3">
+            Aucune donnée à afficher.
+          </Typography>
+        )}
       </Box>
     </Box>
   );
