@@ -12,6 +12,7 @@ import SupplierHomePage from "./pages/SupplierHomePage/SupplierHomePage.tsx";
 import PurchaseHomePage from "./pages/PurchaseHomePage/PurchaseHomePage.tsx";
 import TicketsPage from "./pages/TicketsPage/TicketsPage.tsx";
 import SuppliersPage from "./pages/SuppliersPage/SuppliersPage.tsx";
+import ProductPage from "./pages/ProductPage/ProductPage.tsx";
 import "./index.css";
 import OrderPage from "./pages/OrderPage/OrderPage.tsx";
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           {
             path: "fournisseurs",
             element: <SuppliersPage />,
+          },
+          {
+            path: "produit",
+            element: <ProductPage />,
           },
         ],
       },
