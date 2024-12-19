@@ -1,5 +1,5 @@
 import { Product } from "../entities/product.entities";
-import { Resolver, Query } from "type-graphql";
+import { Resolver, Query, Arg } from "type-graphql";
 
 @Resolver(Product)
 export default class ProductResolver {
@@ -30,5 +30,18 @@ export default class ProductResolver {
       .getRawOne();
 
     return parseInt(totalStockProduct.total, 10) || 0;
+  }
+
+  @Query(() => Product, { nullable: true })
+  async productById(@Arg("id") id: number): Promise<Product | null> {
+    const product = await Product.findOne({
+      where: { id },
+      relations: {
+        supplier: true,
+        employee: true,
+      },
+    });
+
+    return product;
   }
 }
