@@ -9,6 +9,8 @@ import { useLocation } from "react-router-dom";
 import { ReactElement } from "react";
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import Typography from "@mui/material/Typography";
+import { useLogoutMutation } from "../../generated/graphql-types.ts";
+import { useUser } from "../../contexts/UserContext";
 
 export default function SideNavBarList({
   link,
@@ -18,16 +20,23 @@ export default function SideNavBarList({
   baseUrl: string;
 }): ReactElement {
   const { pathname } = useLocation();
+  const [logout] = useLogoutMutation();
+  const { setUser } = useUser();
 
-  const teste = () => {
-    alert("test");
+  const fullLogout = () => {
+    logout();
+    setUser({
+      name: "",
+      login: "",
+      role: "",
+    });
   };
 
   let listItemProps = {};
   if (link.url !== undefined) {
     listItemProps = { component: "a", href: baseUrl + "/" + link.url };
   } else {
-    listItemProps = { component: "button", onClick: teste };
+    listItemProps = { component: "button", onClick: fullLogout };
   }
 
   return (
