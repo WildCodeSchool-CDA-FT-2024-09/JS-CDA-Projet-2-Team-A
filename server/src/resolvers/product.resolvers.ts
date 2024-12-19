@@ -1,5 +1,5 @@
 import { Product } from "../entities/product.entities";
-import { Resolver, Query, Arg } from "type-graphql";
+import { Resolver, Query, Arg, Int } from "type-graphql";
 
 @Resolver(Product)
 export default class ProductResolver {
@@ -33,7 +33,7 @@ export default class ProductResolver {
   }
 
   @Query(() => Product, { nullable: true })
-  async productById(@Arg("id") id: number): Promise<Product | null> {
+  async productById(@Arg("id", () => Int) id: number): Promise<Product | null> {
     const product = await Product.findOne({
       where: { id },
       relations: {

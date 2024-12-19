@@ -71,6 +71,20 @@ const ListItemRow = ({
   );
 };
 
+interface TabsProductGlobalProps {
+  product: string;
+  description: string;
+  category: string;
+  material: string;
+  color: string;
+  min_quantity: string;
+  supplier: string;
+  employee: string;
+  email_employee: string;
+  phone_employee: string;
+  stock: string;
+}
+
 export default function TabsProductGlobal({
   product,
   description,
@@ -83,12 +97,11 @@ export default function TabsProductGlobal({
   email_employee,
   phone_employee,
   stock,
-}) {
+}: TabsProductGlobalProps) {
   const productByIdId = 1;
   const { data, loading, error } = useProductByIdQuery({
     variables: { productByIdId },
   });
-  // TODO : Données provisoire en attendant la query
 
   const mainDetails = [
     { label: "Nom :", value: product || "-" },
