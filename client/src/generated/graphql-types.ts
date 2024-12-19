@@ -60,6 +60,12 @@ export type Employee = {
   supplier: Supplier;
 };
 
+export type InProgressDeliveryStats = {
+  __typename?: "InProgressDeliveryStats";
+  countDeliveries: Scalars["Int"]["output"];
+  totalProducts: Scalars["Int"]["output"];
+};
+
 export type Message = {
   __typename?: "Message";
   created_at: Scalars["DateTimeISO"]["output"];
@@ -73,6 +79,7 @@ export type Message = {
 export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
+  logout: Scalars["String"]["output"];
 };
 
 export type MutationCreateUserArgs = {
@@ -86,6 +93,14 @@ export type Order = {
   orderProduct: Array<OrderProduct>;
   status: Scalars["String"]["output"];
   supplier: Supplier;
+};
+
+export type OrderDetails = {
+  __typename?: "OrderDetails";
+  created_at: Scalars["DateTimeISO"]["output"];
+  id: Scalars["Int"]["output"];
+  products: Array<ProductDetails>;
+  status: Scalars["String"]["output"];
 };
 
 export type OrderProduct = {
@@ -114,6 +129,14 @@ export type Product = {
   supplier: Supplier;
 };
 
+export type ProductDetails = {
+  __typename?: "ProductDetails";
+  expectedDelivery: Scalars["DateTimeISO"]["output"];
+  productName: Scalars["String"]["output"];
+  quantity: Scalars["Int"]["output"];
+  supplierName: Scalars["String"]["output"];
+};
+
 export type Query = {
   __typename?: "Query";
   allProducts: Array<Product>;
@@ -123,6 +146,8 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
+  getInProgressDeliveryStats: InProgressDeliveryStats;
+  getOrderDetails: Array<OrderDetails>;
   productById?: Maybe<Product>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
@@ -188,6 +213,10 @@ export type CreateUserMutation = {
   createUser: string;
 };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+
+export type LogoutMutation = { __typename?: "Mutation"; logout: string };
+
 export type GetAllRolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetAllRolesQuery = {
@@ -206,6 +235,38 @@ export type GetAllMessagesQuery = {
     message: string;
     message_status: string;
   }>;
+};
+
+export type GetOrderDetailsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetOrderDetailsQuery = {
+  __typename?: "Query";
+  getOrderDetails: Array<{
+    __typename?: "OrderDetails";
+    id: number;
+    status: string;
+    created_at: Date;
+    products: Array<{
+      __typename?: "ProductDetails";
+      productName: string;
+      supplierName: string;
+      quantity: number;
+      expectedDelivery: Date;
+    }>;
+  }>;
+};
+
+export type GetInprogressDeliveryStatsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetInprogressDeliveryStatsQuery = {
+  __typename?: "Query";
+  getInProgressDeliveryStats: {
+    __typename?: "InProgressDeliveryStats";
+    countDeliveries: number;
+    totalProducts: number;
+  };
 };
 
 export type AllProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -381,6 +442,50 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<
   CreateUserMutation,
   CreateUserMutationVariables
 >;
+export const LogoutDocument = gql`
+  mutation Logout {
+    logout
+  }
+`;
+export type LogoutMutationFn = Apollo.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LogoutMutation,
+    LogoutMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    options,
+  );
+}
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 export const GetAllRolesDocument = gql`
   query GetAllRoles {
     getAllRoles {
@@ -536,6 +641,169 @@ export type GetAllMessagesSuspenseQueryHookResult = ReturnType<
 export type GetAllMessagesQueryResult = Apollo.QueryResult<
   GetAllMessagesQuery,
   GetAllMessagesQueryVariables
+>;
+export const GetOrderDetailsDocument = gql`
+  query GetOrderDetails {
+    getOrderDetails {
+      id
+      status
+      created_at
+      products {
+        productName
+        supplierName
+        quantity
+        expectedDelivery
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetOrderDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetOrderDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderDetailsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrderDetailsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetOrderDetailsQuery, GetOrderDetailsQueryVariables>(
+    GetOrderDetailsDocument,
+    options,
+  );
+}
+export function useGetOrderDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export function useGetOrderDetailsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetOrderDetailsQuery,
+        GetOrderDetailsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetOrderDetailsQuery,
+    GetOrderDetailsQueryVariables
+  >(GetOrderDetailsDocument, options);
+}
+export type GetOrderDetailsQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsQuery
+>;
+export type GetOrderDetailsLazyQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsLazyQuery
+>;
+export type GetOrderDetailsSuspenseQueryHookResult = ReturnType<
+  typeof useGetOrderDetailsSuspenseQuery
+>;
+export type GetOrderDetailsQueryResult = Apollo.QueryResult<
+  GetOrderDetailsQuery,
+  GetOrderDetailsQueryVariables
+>;
+export const GetInprogressDeliveryStatsDocument = gql`
+  query GetInprogressDeliveryStats {
+    getInProgressDeliveryStats {
+      countDeliveries
+      totalProducts
+    }
+  }
+`;
+
+/**
+ * __useGetInprogressDeliveryStatsQuery__
+ *
+ * To run a query within a React component, call `useGetInprogressDeliveryStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInprogressDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInprogressDeliveryStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetInprogressDeliveryStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
+}
+export function useGetInprogressDeliveryStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
+}
+export function useGetInprogressDeliveryStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetInprogressDeliveryStatsQuery,
+        GetInprogressDeliveryStatsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
+}
+export type GetInprogressDeliveryStatsQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsQuery
+>;
+export type GetInprogressDeliveryStatsLazyQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsLazyQuery
+>;
+export type GetInprogressDeliveryStatsSuspenseQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsSuspenseQuery
+>;
+export type GetInprogressDeliveryStatsQueryResult = Apollo.QueryResult<
+  GetInprogressDeliveryStatsQuery,
+  GetInprogressDeliveryStatsQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {
