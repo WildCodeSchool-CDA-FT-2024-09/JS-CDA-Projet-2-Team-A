@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Typography,
@@ -15,6 +14,7 @@ interface TabPanelProps {
   value: number;
 }
 
+// * Fonction pour générer des propriétés d'accessibilité pour les onglets
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -22,6 +22,7 @@ function a11yProps(index: number) {
   };
 }
 
+// * Composant pour afficher le contenu d'un onglet
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -40,6 +41,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
+// * Composant pour afficher une ligne de détail
 const ListItemRow = ({
   label,
   value,
@@ -64,33 +66,27 @@ const ListItemRow = ({
 };
 
 export default function TabsProductGlobal() {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   // TODO : Données provisoire en attendant la query
 
-  const ListItemMainDetail = [
+  const mainDetails = [
     { label: "Nom du produit :", value: "Câble Inox 4 / 35 mm" },
     { label: "Référence du produit :", value: "-" },
     { label: "Catégorie du produit :", value: "Câble" },
     { label: "Matériaux du produit :", value: "Inox" },
     { label: "Couleur du produit :", value: "Blanc" },
+    { label: "Valeur seuil :", value: "158" },
   ];
 
-  const ListItemAddDetail = [
+  const additionalDetails = [
     { label: "Nom du fournisseur :", value: "fournisseur_45" },
     { label: "Contact fournisseur :", value: "Julie Richard" },
     { label: "Email contact :", value: "julie.richard@fournisseur_45.com" },
     { label: "Téléphone contact :", value: "+33 6 46 65 47 38" },
   ];
 
-  const ListItemStockDetail = [
+  const stockDetails = [
     { label: "Stock actuel :", value: "40" },
     { label: "En cours de livraison :", value: "12" },
-    { label: "Valeur seuil :", value: "158" },
   ];
 
   return (
@@ -106,15 +102,11 @@ export default function TabsProductGlobal() {
           borderColor: "divider",
         }}
       >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
+        <Tabs aria-label="basic tabs example">
           <Tab label="Aperçu" {...a11yProps(0)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel index={0} value={0}>
         <Box>
           <Typography
             variant="h6"
@@ -130,39 +122,52 @@ export default function TabsProductGlobal() {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
+              alignItems: "end",
+              gap: "200px",
             }}
           >
             <Box
               sx={{
-                width: "40%",
+                width: "30%",
               }}
             >
-              <List disablePadding>
-                {ListItemMainDetail.map((mainDetail, index) => (
+              <List>
+                {mainDetails.map((mainDetail, index) => (
                   <ListItemRow key={index} {...mainDetail} />
                 ))}
               </List>
             </Box>
             <Box
               sx={{
-                width: "40%",
+                width: "30%",
               }}
             >
-              <Box>
-                <img
-                  src="https://via.placeholder.com/150"
-                  alt="Câble inox"
-                  style={{
-                    left: "0",
-                    width: "150px",
-                    height: "150px",
-                    border: "1px dashed lightgray",
-                    borderRadius: "8px",
+              <Box
+                sx={{
+                  width: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    mb: 2,
                   }}
-                />
+                >
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt="Câble inox"
+                    style={{
+                      left: "0",
+                      width: "150px",
+                      height: "150px",
+                      border: "2px dashed lightgray",
+                      borderRadius: "8px",
+                    }}
+                  />
+                </Box>
                 <List>
-                  {ListItemStockDetail.map((stockDetail, index) => (
+                  {stockDetails.map((stockDetail, index) => (
                     <ListItemRow key={index} {...stockDetail} />
                   ))}
                 </List>
@@ -188,7 +193,7 @@ export default function TabsProductGlobal() {
             Détails Supplémentaires
           </Typography>
           <List>
-            {ListItemAddDetail.map((addDetail, index) => (
+            {additionalDetails.map((addDetail, index) => (
               <ListItemRow key={index} {...addDetail} />
             ))}
           </List>
