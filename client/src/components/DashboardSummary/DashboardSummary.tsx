@@ -1,7 +1,7 @@
 import {
   useCountDistinctCategoriesQuery,
   useTotalStockProductQuery,
-  useGetEnCoursDeliveryStatsQuery,
+  useGetInprogressDeliveryStatsQuery,
 } from "../../generated/graphql-types";
 import { Box, Typography, Stack, Divider } from "@mui/material";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
@@ -25,7 +25,7 @@ export default function DashboardSummary() {
     data: deliveryStatsData,
     loading: deliveryStatsLoading,
     error: deliveryStatsError,
-  } = useGetEnCoursDeliveryStatsQuery();
+  } = useGetInprogressDeliveryStatsQuery();
 
   if (categoryCountLoading || totalStockLoading || deliveryStatsLoading)
     return (
@@ -182,7 +182,7 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
-                    {deliveryStatsData?.getEnCoursDeliveryStats
+                    {deliveryStatsData?.getInProgressDeliveryStats
                       .countDeliveries ?? 0}
                   </Typography>
                   <Typography
@@ -201,8 +201,8 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
-                    {deliveryStatsData?.getEnCoursDeliveryStats.totalProducts ??
-                      0}
+                    {deliveryStatsData?.getInProgressDeliveryStats
+                      .totalProducts ?? 0}
                   </Typography>
                   <Typography
                     variant="body2"

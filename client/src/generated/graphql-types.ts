@@ -60,8 +60,8 @@ export type Employee = {
   supplier: Supplier;
 };
 
-export type EnCoursDeliveryStats = {
-  __typename?: "EnCoursDeliveryStats";
+export type InProgressDeliveryStats = {
+  __typename?: "InProgressDeliveryStats";
   countDeliveries: Scalars["Int"]["output"];
   totalProducts: Scalars["Int"]["output"];
 };
@@ -145,7 +145,7 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
-  getEnCoursDeliveryStats: EnCoursDeliveryStats;
+  getInProgressDeliveryStats: InProgressDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
@@ -246,14 +246,14 @@ export type GetOrderDetailsQuery = {
   }>;
 };
 
-export type GetEnCoursDeliveryStatsQueryVariables = Exact<{
+export type GetInprogressDeliveryStatsQueryVariables = Exact<{
   [key: string]: never;
 }>;
 
-export type GetEnCoursDeliveryStatsQuery = {
+export type GetInprogressDeliveryStatsQuery = {
   __typename?: "Query";
-  getEnCoursDeliveryStats: {
-    __typename?: "EnCoursDeliveryStats";
+  getInProgressDeliveryStats: {
+    __typename?: "InProgressDeliveryStats";
     countDeliveries: number;
     totalProducts: number;
   };
@@ -645,9 +645,9 @@ export type GetOrderDetailsQueryResult = Apollo.QueryResult<
   GetOrderDetailsQuery,
   GetOrderDetailsQueryVariables
 >;
-export const GetEnCoursDeliveryStatsDocument = gql`
-  query GetEnCoursDeliveryStats {
-    getEnCoursDeliveryStats {
+export const GetInprogressDeliveryStatsDocument = gql`
+  query GetInprogressDeliveryStats {
+    getInProgressDeliveryStats {
       countDeliveries
       totalProducts
     }
@@ -655,50 +655,50 @@ export const GetEnCoursDeliveryStatsDocument = gql`
 `;
 
 /**
- * __useGetEnCoursDeliveryStatsQuery__
+ * __useGetInprogressDeliveryStatsQuery__
  *
- * To run a query within a React component, call `useGetEnCoursDeliveryStatsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetEnCoursDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetInprogressDeliveryStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInprogressDeliveryStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetEnCoursDeliveryStatsQuery({
+ * const { data, loading, error } = useGetInprogressDeliveryStatsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetEnCoursDeliveryStatsQuery(
+export function useGetInprogressDeliveryStatsQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
 }
-export function useGetEnCoursDeliveryStatsLazyQuery(
+export function useGetInprogressDeliveryStatsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
 }
-export function useGetEnCoursDeliveryStatsSuspenseQuery(
+export function useGetInprogressDeliveryStatsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        GetEnCoursDeliveryStatsQuery,
-        GetEnCoursDeliveryStatsQueryVariables
+        GetInprogressDeliveryStatsQuery,
+        GetInprogressDeliveryStatsQueryVariables
       >,
 ) {
   const options =
@@ -706,22 +706,22 @@ export function useGetEnCoursDeliveryStatsSuspenseQuery(
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
   return Apollo.useSuspenseQuery<
-    GetEnCoursDeliveryStatsQuery,
-    GetEnCoursDeliveryStatsQueryVariables
-  >(GetEnCoursDeliveryStatsDocument, options);
+    GetInprogressDeliveryStatsQuery,
+    GetInprogressDeliveryStatsQueryVariables
+  >(GetInprogressDeliveryStatsDocument, options);
 }
-export type GetEnCoursDeliveryStatsQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsQuery
+export type GetInprogressDeliveryStatsQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsQuery
 >;
-export type GetEnCoursDeliveryStatsLazyQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsLazyQuery
+export type GetInprogressDeliveryStatsLazyQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsLazyQuery
 >;
-export type GetEnCoursDeliveryStatsSuspenseQueryHookResult = ReturnType<
-  typeof useGetEnCoursDeliveryStatsSuspenseQuery
+export type GetInprogressDeliveryStatsSuspenseQueryHookResult = ReturnType<
+  typeof useGetInprogressDeliveryStatsSuspenseQuery
 >;
-export type GetEnCoursDeliveryStatsQueryResult = Apollo.QueryResult<
-  GetEnCoursDeliveryStatsQuery,
-  GetEnCoursDeliveryStatsQueryVariables
+export type GetInprogressDeliveryStatsQueryResult = Apollo.QueryResult<
+  GetInprogressDeliveryStatsQuery,
+  GetInprogressDeliveryStatsQueryVariables
 >;
 export const AllProductsDocument = gql`
   query AllProducts {

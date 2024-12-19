@@ -32,7 +32,7 @@ class ProductDetails {
 }
 
 @ObjectType()
-class EnCoursDeliveryStats {
+class InProgressDeliveryStats {
   @Field(() => Int)
   countDeliveries: number;
 
@@ -47,7 +47,7 @@ export class OrderResolver {
   async getOrderDetails(): Promise<OrderDetails[]> {
     const orders = await Order.find({
       relations: [
-        "orderProduct", // Corrected from "orderProducts"
+        "orderProduct",
         "orderProduct.product",
         "orderProduct.product.supplier",
       ],
@@ -75,11 +75,11 @@ export class OrderResolver {
   }
 
   // Query to get stats for "en cours" deliveries
-  @Query(() => EnCoursDeliveryStats)
-  async getEnCoursDeliveryStats(): Promise<EnCoursDeliveryStats> {
+  @Query(() => InProgressDeliveryStats)
+  async getInProgressDeliveryStats(): Promise<InProgressDeliveryStats> {
     const deliveries = await Order.find({
       where: { status: "en cours" },
-      relations: ["orderProduct"], // Use "orderProduct", not "orderProducts"
+      relations: ["orderProduct"],
     });
 
     // Calculate stats

@@ -102,9 +102,6 @@ export default function OrdersDashboardPage() {
               paddingLeft: "10px",
               paddingRight: "10px",
               borderRadius: "5px 5px 0px 0px",
-              paddingTop: "15px",
-              paddingBottom: "15px",
-              background: "#FFF",
             }}
           >
             <Typography
@@ -129,7 +126,6 @@ export default function OrdersDashboardPage() {
                 type="submit"
                 sx={{
                   height: "40px",
-                  fontWeight: "bold",
                 }}
               >
                 Ajouter une commande
