@@ -178,7 +178,11 @@ export default function AdminHomePage() {
             </Button>
           </Box>
         </Box>
-        <DashboardList columns={columns} data={dataGridUser} />
+        <DashboardList
+          columns={columns}
+          data={dataGridUser}
+          withSummary={false}
+        />
 
         {/* Modal for Creating a User */}
         <ModalForm
