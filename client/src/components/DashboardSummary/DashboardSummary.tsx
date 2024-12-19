@@ -1,6 +1,7 @@
 import {
   useCountDistinctCategoriesQuery,
   useTotalStockProductQuery,
+  useGetInprogressDeliveryStatsQuery,
 } from "../../generated/graphql-types";
 import { Box, Typography, Stack, Divider } from "@mui/material";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
@@ -20,8 +21,13 @@ export default function DashboardSummary() {
     loading: totalStockLoading,
     error: totalStockError,
   } = useTotalStockProductQuery();
+  const {
+    data: deliveryStatsData,
+    loading: deliveryStatsLoading,
+    error: deliveryStatsError,
+  } = useGetInprogressDeliveryStatsQuery();
 
-  if (categoryCountLoading || totalStockLoading)
+  if (categoryCountLoading || totalStockLoading || deliveryStatsLoading)
     return (
       <Typography
         variant="h5"
@@ -36,7 +42,7 @@ export default function DashboardSummary() {
       </Typography>
     );
 
-  if (categoryCountError || totalStockError)
+  if (categoryCountError || totalStockError || deliveryStatsError)
     return (
       <Typography
         variant="h5"
@@ -51,7 +57,7 @@ export default function DashboardSummary() {
       </Typography>
     );
 
-  if (categoryCountData || totalStockData)
+  if (categoryCountData || totalStockData || deliveryStatsData)
     return (
       <Box
         sx={{
@@ -176,8 +182,8 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
-                    {/* Donnée écrite en brut en provisoire en attendant d'avoir réalisé les fonctions avec les valeurs minimums */}
-                    2
+                    {deliveryStatsData?.getInProgressDeliveryStats
+                      .countDeliveries ?? 0}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -195,8 +201,8 @@ export default function DashboardSummary() {
                       fontWeight: "bold",
                     }}
                   >
-                    {/* Donnée écrite en brut en provisoire en attendant d'avoir réalisé les fonctions avec les valeurs minimums */}
-                    12
+                    {deliveryStatsData?.getInProgressDeliveryStats
+                      .totalProducts ?? 0}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -210,7 +216,7 @@ export default function DashboardSummary() {
               </Stack>
             </Stack>
 
-            {/* third category */}
+            {/* fourth category */}
             <Stack
               spacing={2}
               sx={{

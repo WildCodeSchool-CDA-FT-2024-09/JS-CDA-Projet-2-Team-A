@@ -5,3 +5,9 @@ export const CREATE_USER = gql`
     createUser(body: $body)
   }
 `;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout
+  }
+`;
