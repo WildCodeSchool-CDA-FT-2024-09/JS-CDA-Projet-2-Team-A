@@ -5,8 +5,9 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from "typeorm";
-import { User } from "./user.entities";
 import { ObjectType, Field, Int } from "type-graphql";
+import { MessageStatus } from "./message_status.entities";
+import { User } from "./user.entities";
 
 @ObjectType()
 @Entity("message")
@@ -27,10 +28,9 @@ export class Message extends BaseEntity {
   @Column({ type: "timestamp" })
   created_at: Date;
 
-  // statuts possibles : "En attente" | "Lu" | "Archivé"
-  @Field()
-  @Column()
-  message_status: string;
+  @Field(() => MessageStatus)
+  @ManyToOne(() => MessageStatus, (MessageStatus) => MessageStatus.status)
+  status: MessageStatus;
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.messages)

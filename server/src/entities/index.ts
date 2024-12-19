@@ -6,6 +6,8 @@ import { User } from "./user.entities";
 import { Message } from "./message.entities";
 import { Order } from "./order.entities";
 import { OrderProduct } from "./order_product.entities";
+import { MessageStatus } from "./message_status.entities";
+import { OrderStatus } from "./order_status.entities";
 
 export {
   Product,
@@ -14,7 +16,9 @@ export {
   Role,
   User,
   Message,
+  MessageStatus,
   Order,
+  OrderStatus,
   OrderProduct,
 };
 
@@ -25,6 +29,8 @@ export const entities = [
   Role,
   User,
   Message,
+  MessageStatus,
   Order,
+  OrderStatus,
   OrderProduct,
 ];
