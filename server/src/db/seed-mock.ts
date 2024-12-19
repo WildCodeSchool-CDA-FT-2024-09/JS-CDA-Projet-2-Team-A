@@ -8,6 +8,8 @@ import {
   Message,
   Order,
   OrderProduct,
+  OrderStatus,
+  MessageStatus,
 } from "../entities";
 import * as argon2 from "argon2";
 import employeeByProduct from "../../data/mock/employee_product.json";
@@ -89,6 +91,15 @@ type OrderProductType = {
   product_id: number;
   quantity: number;
 };
+
+// Récupération d'un tableau des statuts de commandes uniques.
+const orderStatuses: string[] = [
+  ...new Set(orders.map((order) => order.order_status)),
+];
+// Récupération d'un tableau des statuts de tickets uniques.
+const messagesStatuses: string[] = [
+  ...new Set(messages.map((message) => message.message_status)),
+];
 
 (async () => {
   await AppDataSource.initialize();
@@ -193,6 +204,15 @@ type OrderProductType = {
       })
     );
 
+    const savedMessageStatuses: MessageStatus[] = await Promise.all(
+      messagesStatuses.map(async (messageStatus: string) => {
+        const status = new MessageStatus();
+
+        status.status = messageStatus;
+        return await status.save();
+      })
+    );
+
     await Promise.all(
       messages.map(async (messageEl: MessageType) => {
         const message = new Message();
@@ -200,7 +220,10 @@ type OrderProductType = {
         message.title = messageEl.title;
         message.message = messageEl.message;
         message.created_at = new Date(messageEl.created_at);
-        message.message_status = messageEl.message_status;
+        message.status = savedMessageStatuses.find(
+          (messageStatusEl) =>
+            messageStatusEl.status === messageEl.message_status
+        ) as MessageStatus;
 
         message.user = savedUsers.find(
           (user) => user.id === messageEl.user_id
@@ -210,13 +233,24 @@ type OrderProductType = {
       })
     );
 
+    const savedOrderStatus: OrderStatus[] = await Promise.all(
+      orderStatuses.map(async (status: string) => {
+        const orderStatus = new OrderStatus();
+
+        orderStatus.status = status;
+        return await orderStatus.save();
+      })
+    );
+
     const savedOrders = await Promise.all(
       orders.map(async (orderEl: OrderType) => {
         const order = new Order();
 
-        order.status = orderEl.order_status;
         order.created_at = new Date(orderEl.created_at);
         order.orderProduct = [];
+        order.status = savedOrderStatus.find(
+          (OrderStatusEl) => OrderStatusEl.status === orderEl.order_status
+        ) as OrderStatus;
         order.supplier = savedSuppliers.find(
           (supplier) => supplier.id === orderEl.supplier_id
         ) as Supplier;
