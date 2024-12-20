@@ -1,12 +1,13 @@
 import { ReactElement } from "react";
 import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
-import { Message } from "../../generated/graphql-types.ts";
 
 export default function Ticket({
   data,
+  role,
 }: {
-  data: Pick<Message, "title" | "message" | "message_status">;
+  data: { id: number; title: string; message: string; status: string };
+  role: boolean;
 }): ReactElement {
   const capitalize = (str: string): string =>
     str ? str[0].toUpperCase() + str.slice(1) : "";
@@ -50,18 +51,20 @@ export default function Ticket({
           alignItems: "flex-end",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            height: "fit-content",
-            width: "fit-content",
-            textTransform: "none",
-            fontSize: "0.7em",
-            lineHeight: "1",
-          }}
-        >
-          Modifier le statut
-        </Button>
+        {role && (
+          <Button
+            variant="outlined"
+            sx={{
+              height: "fit-content",
+              width: "fit-content",
+              textTransform: "none",
+              fontSize: "0.7em",
+              lineHeight: "1",
+            }}
+          >
+            Modifier le statut
+          </Button>
+        )}
         <Typography
           variant="body2"
           sx={{
@@ -70,7 +73,7 @@ export default function Ticket({
             color: "gray",
           }}
         >
-          {data.message_status}
+          {data.status}
         </Typography>
       </Grid>
     </Grid>

@@ -2,12 +2,9 @@ import { ReactElement } from "react";
 import { Box, Typography } from "@mui/material";
 import Ticket from "./Ticket.tsx";
 import TicketSkeleton from "./TicketSkeleton.tsx";
-import {
-  Message,
-  useGetAllMessagesQuery,
-} from "../../generated/graphql-types.ts";
+import { useGetAllMessagesQuery } from "../../generated/graphql-types.ts";
 
-export default function TicketsList(): ReactElement {
+export default function TicketsList({ role }: { role: string }): ReactElement {
   const { data, loading, error } = useGetAllMessagesQuery();
 
   if (error) {
@@ -41,23 +38,18 @@ export default function TicketsList(): ReactElement {
       }}
     >
       {data!.getAllMessages.length > 0 ? (
-        data!.getAllMessages.map(
-          (
-            ticket: Pick<
-              Message,
-              "id" | "title" | "message" | "message_status"
-            >,
-          ) => (
-            <Ticket
-              key={ticket.id}
-              data={{
-                title: ticket.title,
-                message: ticket.message,
-                message_status: ticket.message_status,
-              }}
-            />
-          ),
-        )
+        data!.getAllMessages.map((ticket) => (
+          <Ticket
+            key={ticket.id}
+            data={{
+              id: ticket.id,
+              title: ticket.title,
+              message: ticket.message,
+              status: ticket.status.status,
+            }}
+            role={role === "achat"}
+          />
+        ))
       ) : (
         <Typography variant="body2">Aucun tickets pour le moment.</Typography>
       )}
