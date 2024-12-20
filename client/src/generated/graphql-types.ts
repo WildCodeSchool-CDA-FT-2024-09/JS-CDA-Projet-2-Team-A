@@ -71,9 +71,16 @@ export type Message = {
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
   message: Scalars["String"]["output"];
-  message_status: Scalars["String"]["output"];
+  status: MessageStatus;
   title: Scalars["String"]["output"];
   user: User;
+};
+
+export type MessageStatus = {
+  __typename?: "MessageStatus";
+  id: Scalars["Int"]["output"];
+  messages?: Maybe<Array<Message>>;
+  status: Scalars["String"]["output"];
 };
 
 export type Mutation = {
@@ -91,7 +98,7 @@ export type Order = {
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
   orderProduct: Array<OrderProduct>;
-  status: Scalars["String"]["output"];
+  status: OrderStatus;
   supplier: Supplier;
 };
 
@@ -100,7 +107,7 @@ export type OrderDetails = {
   created_at: Scalars["DateTimeISO"]["output"];
   id: Scalars["Int"]["output"];
   products: Array<ProductDetails>;
-  status: Scalars["String"]["output"];
+  status: OrderStatus;
 };
 
 export type OrderProduct = {
@@ -109,6 +116,13 @@ export type OrderProduct = {
   order: Order;
   product: Product;
   quantity: Scalars["Float"]["output"];
+};
+
+export type OrderStatus = {
+  __typename?: "OrderStatus";
+  id: Scalars["Int"]["output"];
+  orders?: Maybe<Array<Order>>;
+  status: Scalars["String"]["output"];
 };
 
 export type Product = {
@@ -233,7 +247,7 @@ export type GetAllMessagesQuery = {
     id: number;
     title: string;
     message: string;
-    message_status: string;
+    status: { __typename?: "MessageStatus"; status: string };
   }>;
 };
 
@@ -244,15 +258,15 @@ export type GetOrderDetailsQuery = {
   getOrderDetails: Array<{
     __typename?: "OrderDetails";
     id: number;
-    status: string;
     created_at: Date;
     products: Array<{
       __typename?: "ProductDetails";
       productName: string;
-      supplierName: string;
       quantity: number;
+      supplierName: string;
       expectedDelivery: Date;
     }>;
+    status: { __typename?: "OrderStatus"; status: string };
   }>;
 };
 
@@ -568,7 +582,9 @@ export const GetAllMessagesDocument = gql`
       id
       title
       message
-      message_status
+      status {
+        status
+      }
     }
   }
 `;
@@ -646,13 +662,15 @@ export const GetOrderDetailsDocument = gql`
   query GetOrderDetails {
     getOrderDetails {
       id
-      status
       created_at
       products {
         productName
-        supplierName
         quantity
+        supplierName
         expectedDelivery
+      }
+      status {
+        status
       }
     }
   }

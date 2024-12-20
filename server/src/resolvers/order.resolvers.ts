@@ -1,13 +1,14 @@
 import { Resolver, Query, Int, ObjectType, Field } from "type-graphql";
 import { Order } from "../entities/order.entities";
+import { OrderStatus } from "../entities/order_status.entities";
 
 @ObjectType()
 class OrderDetails {
   @Field(() => Int)
   id: number;
 
-  @Field()
-  status: string;
+  @Field(() => OrderStatus)
+  status: OrderStatus;
 
   @Field()
   created_at: Date;
@@ -50,6 +51,7 @@ export class OrderResolver {
         "orderProduct",
         "orderProduct.product",
         "orderProduct.product.supplier",
+        "status",
       ],
     });
 
@@ -60,7 +62,6 @@ export class OrderResolver {
       products: order.orderProduct.map((orderProduct) => {
         const product = orderProduct.product;
         const supplier = product.supplier;
-
         const expectedDelivery = new Date(order.created_at);
         expectedDelivery.setDate(expectedDelivery.getDate() + supplier.delay);
 
@@ -74,15 +75,22 @@ export class OrderResolver {
     }));
   }
 
-  // Query to get stats for "en cours" deliveries
   @Query(() => InProgressDeliveryStats)
   async getInProgressDeliveryStats(): Promise<InProgressDeliveryStats> {
+    // First find the "en livraison" status entity
+    const orderStatus = await OrderStatus.findOne({
+      where: { status: "En livraison" },
+    });
+
+    if (!orderStatus) {
+      throw new Error("OrderStatus 'en livraison' not found");
+    }
+
     const deliveries = await Order.find({
-      where: { status: "en cours" },
+      where: { status: orderStatus },
       relations: ["orderProduct"],
     });
 
-    // Calculate stats
     const countDeliveries = deliveries.length;
 
     const totalProducts = deliveries.reduce((sum, delivery) => {

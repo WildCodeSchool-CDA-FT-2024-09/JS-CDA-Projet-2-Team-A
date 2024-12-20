@@ -6,7 +6,7 @@ import { Message } from "../entities";
 export default class MessageResolver {
   @Query(() => [Message])
   async getAllMessages(): Promise<Message[]> {
-    const messages: Message[] = await Message.find();
+    const messages: Message[] = await Message.find({ relations: ["status"] });
     if (!messages) {
       throw new GraphQLError("Impossible de récupérer les tickets.");
     }
