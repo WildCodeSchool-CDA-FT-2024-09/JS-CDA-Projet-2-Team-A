@@ -132,7 +132,11 @@ export default function OrdersDashboardPage() {
               </Button>
             </Box>
           </Box>
-          <DashboardList columns={columns} data={dataGridOrders} />
+          <DashboardList
+            columns={columns}
+            data={dataGridOrders}
+            withSummary={true}
+          />
         </Box>
       </Box>
     );
