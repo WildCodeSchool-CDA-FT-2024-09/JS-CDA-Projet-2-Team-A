@@ -67,7 +67,7 @@ type UserType = {
   name: string;
   email: string;
   password: string;
-  role: number;
+  role: string;
   activationDate: string;
   isActive: boolean;
 };
@@ -196,7 +196,9 @@ const messagesStatuses: string[] = [
         user.activationDate = new Date(userEl.activationDate);
         user.isActive = userEl.isActive;
 
-        user.role = savedRoles.find((role) => role.id === userEl.role) as Role;
+        user.role = savedRoles.find(
+          (role) => role.role === userEl.role
+        ) as Role;
         user.activationDate = new Date(userEl.activationDate);
         user.isActive = true;
 
