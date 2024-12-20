@@ -38,7 +38,7 @@ export class User extends BaseEntity {
   isActive: boolean;
 
   @Field(() => Role, { nullable: false })
-  @ManyToOne(() => Role, (role) => role.id)
+  @ManyToOne(() => Role, (role) => role.role)
   role: Role;
 
   @Field(() => [Message], { nullable: true })
