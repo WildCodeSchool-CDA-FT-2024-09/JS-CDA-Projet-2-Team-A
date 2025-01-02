@@ -144,8 +144,15 @@ export default function ProductDetail() {
           open={openModal}
           onClose={() => setOpenModal(false)}
           onSubmit={handleProductSubmit}
+          mode="edit"
+          showImageField={true}
           title="Modification du produit"
           fields={[
+            {
+              name: "imageUrl",
+              label: "URL de l'image",
+              defaultValue: data?.productById?.image ?? "",
+            },
             {
               name: "product",
               label: "Nom du produit",
@@ -187,12 +194,6 @@ export default function ProductDetail() {
               label: "Stock",
               type: "number",
               defaultValue: data?.productById?.stock ?? 0,
-            },
-            {
-              name: "imageUrl",
-              label: "URL de l'image",
-              type: "text",
-              defaultValue: data?.productById?.image ?? "",
             },
             {
               name: "supplierId",

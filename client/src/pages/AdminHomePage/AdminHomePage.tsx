@@ -189,6 +189,8 @@ export default function AdminHomePage() {
           open={openModal}
           onClose={() => setOpenModal(false)}
           onSubmit={handleUserSubmit}
+          mode="add"
+          showImageField={false}
           title="Ajouter un utilisateur"
           fields={[
             {
