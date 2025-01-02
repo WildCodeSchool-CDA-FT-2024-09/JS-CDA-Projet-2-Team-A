@@ -1,5 +1,41 @@
 import { Product } from "../entities/product.entities";
-import { Resolver, Query, Arg, Int } from "type-graphql";
+import { Supplier } from "../entities/supplier.entities";
+import {
+  Resolver,
+  Query,
+  Arg,
+  Int,
+  Mutation,
+  InputType,
+  Field,
+} from "type-graphql";
+
+@InputType()
+class UpdateProductInput {
+  @Field(() => String, { nullable: true })
+  product?: string;
+
+  @Field(() => String, { nullable: true })
+  description?: string;
+
+  @Field(() => String, { nullable: true })
+  category?: string;
+
+  @Field(() => String, { nullable: true })
+  material?: string;
+
+  @Field(() => String, { nullable: true })
+  color?: string;
+
+  @Field(() => Int, { nullable: true })
+  min_quantity?: number;
+
+  @Field(() => Int, { nullable: true })
+  stock?: number;
+
+  @Field(() => Int, { nullable: true })
+  supplierId?: number;
+}
 
 @Resolver(Product)
 export default class ProductResolver {
@@ -41,6 +77,37 @@ export default class ProductResolver {
         employee: true,
       },
     });
+
+    return product;
+  }
+
+  @Mutation(() => Product, { nullable: true })
+  async updateProduct(
+    @Arg("id", () => Int) id: number,
+    @Arg("data", () => UpdateProductInput) data: UpdateProductInput
+  ): Promise<Product | null> {
+    const product = await Product.findOne({ where: { id } });
+
+    if (!product) {
+      throw new Error("Produit introuvable.");
+    }
+
+    if (data.supplierId) {
+      const supplier = await Supplier.findOne({
+        where: { id: data.supplierId },
+      });
+      if (!supplier) {
+        throw new Error("Fournisseur introuvable.");
+      }
+      product.supplier = supplier;
+    }
+
+    Object.assign(product, {
+      ...data,
+      supplierId: undefined,
+    });
+
+    await product.save();
 
     return product;
   }

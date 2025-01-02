@@ -1,12 +1,19 @@
 import { Box, Typography, Button } from "@mui/material";
-import TabsProductGlobal from "../TabsProduct/TabsProduct";
 import { useProductByIdQuery } from "../../generated/graphql-types";
+import TabsProductGlobal from "../TabsProduct/TabsProduct";
+// import ModalForm from "../modalForm/Modalform";
 
 export default function ProductDetail() {
-  const productByIdId = 1;
+  // const [openModal, setOpenModal] = useState(false);
+  // const [openSnackbar, setOpenSnackbar] = useState(false);
+  // const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const productByIdId = 1; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
   const { data, loading, error } = useProductByIdQuery({
     variables: { productByIdId },
   });
+
+  // const [updateProduct] = useUpdateProductMutation();
 
   if (loading)
     return (
