@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -31,6 +31,16 @@ export default function ModalForm<T>({
   fields,
 }: ModalFormProps<T>) {
   const [formData, setFormData] = useState<T>({} as T);
+
+  useEffect(() => {
+    if (open) {
+      const initialData = fields.reduce((acc, field) => {
+        acc[field.name] = (field.defaultValue ?? "") as T[keyof T];
+        return acc;
+      }, {} as T);
+      setFormData(initialData);
+    }
+  }, [open, fields]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
