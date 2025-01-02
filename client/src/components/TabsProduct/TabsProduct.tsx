@@ -191,7 +191,7 @@ export default function TabsProductGlobal({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "end",
-                // gap: "200px",
+                gap: "200px",
               }}
             >
               <Box
@@ -228,8 +228,8 @@ export default function TabsProductGlobal({
                     }}
                   >
                     <img
-                      src={image}
-                      alt="Câble inox"
+                      src={image || "/image-placeholder.svg"}
+                      alt={category}
                       style={{
                         left: "0",
                         width: "150px",
