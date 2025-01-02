@@ -27,8 +27,8 @@ export default function ProductDetail() {
     color: string;
     min_quantity: number;
     stock: number;
-    imageUrl: string;
-    supplierId?: number;
+    image?: string | File | null;
+    supplier?: number;
   }) => {
     try {
       await updateProduct({
@@ -147,10 +147,11 @@ export default function ProductDetail() {
           mode="edit"
           showImageField={true}
           title="Modification du produit"
+          imageFieldName="image"
           fields={[
             {
-              name: "imageUrl",
-              label: "URL de l'image",
+              name: "image",
+              label: "Image de la catégorie",
               defaultValue: data?.productById?.image ?? "",
             },
             {
@@ -196,7 +197,7 @@ export default function ProductDetail() {
               defaultValue: data?.productById?.stock ?? 0,
             },
             {
-              name: "supplierId",
+              name: "supplier",
               label: "ID du fournisseur",
               type: "number",
               defaultValue: data?.productById?.supplier?.id ?? 0,

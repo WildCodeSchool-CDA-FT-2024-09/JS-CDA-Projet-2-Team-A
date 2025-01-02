@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { uploadImage } from "../../services/uplaodService";
 
 interface ModalFormProps<T> {
   open: boolean;
@@ -29,7 +30,7 @@ interface ModalFormProps<T> {
   imageFieldName?: keyof T;
 }
 
-export default function ModalForm<T>({
+export default function ModalForm<T extends { image?: string | File | null }>({
   open,
   onClose,
   onSubmit,
@@ -37,11 +38,14 @@ export default function ModalForm<T>({
   title,
   fields,
   showImageField = false,
-  imageFieldName = "imageUrl",
+  imageFieldName = "image",
 }: ModalFormProps<T>) {
-  const [formData, setFormData] = useState<T>({} as T);
-  const [image, setImage] = useState<File | null>(null);
+  const [formData, setFormData] = useState<
+    T & { image?: string | File | null }
+  >({} as T);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // * Initializing form and image data
   useEffect(() => {
     if (open) {
       const initialData = fields.reduce((acc, field) => {
@@ -49,9 +53,15 @@ export default function ModalForm<T>({
         return acc;
       }, {} as T);
       setFormData(initialData);
-    }
-  }, [open, fields]);
 
+      // * Default image review
+      const defaultImage = fields.find((field) => field.name === imageFieldName)
+        ?.defaultValue as string | undefined;
+      setImagePreview(defaultImage || null);
+    }
+  }, [open, fields, imageFieldName]);
+
+  // * Managing changes in text fields
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -60,15 +70,16 @@ export default function ModalForm<T>({
     }));
   };
 
+  // * Image upload management
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       try {
-        setImage(file);
-        const imageUrl = await uploadImage(file);
+        const uploadedImageUrl = await uploadImage(file);
+        setImagePreview(uploadedImageUrl);
         setFormData((prevData) => ({
           ...prevData,
-          [imageFieldName as keyof T]: imageUrl,
+          [imageFieldName as keyof T]: uploadedImageUrl as T[keyof T],
         }));
       } catch (error) {
         console.error("Erreur lors du téléchargement de l'image :", error);
@@ -76,10 +87,15 @@ export default function ModalForm<T>({
     }
   };
 
+  // * Form submission
   const handleFormSubmit = () => {
-    onSubmit({ ...formData, image });
+    const formDataToSubmit = {
+      ...formData,
+      image: formData.image instanceof File ? formData.image : null,
+    };
+    onSubmit(formDataToSubmit);
     setFormData({} as T);
-    setImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -113,9 +129,9 @@ export default function ModalForm<T>({
                         overflow: "hidden",
                       }}
                     >
-                      {image ? (
+                      {imagePreview ? (
                         <img
-                          src={URL.createObjectURL(image)}
+                          src={imagePreview}
                           alt="Prévisualisation"
                           style={{
                             maxWidth: "100%",
