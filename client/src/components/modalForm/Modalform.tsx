@@ -60,10 +60,19 @@ export default function ModalForm<T>({
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImage(file);
+      try {
+        setImage(file);
+        const imageUrl = await uploadImage(file);
+        setFormData((prevData) => ({
+          ...prevData,
+          [imageFieldName as keyof T]: imageUrl,
+        }));
+      } catch (error) {
+        console.error("Erreur lors du téléchargement de l'image :", error);
+      }
     }
   };
 

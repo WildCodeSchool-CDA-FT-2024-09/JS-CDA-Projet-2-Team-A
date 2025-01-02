@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use("/upload", uploadRoutes);
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.info(`🚀  Uploads ready at: http://localhost:${PORT}`)
