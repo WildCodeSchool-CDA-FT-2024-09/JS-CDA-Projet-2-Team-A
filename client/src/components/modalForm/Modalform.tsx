@@ -18,6 +18,7 @@ interface ModalFormProps<T> {
     name: keyof T;
     label: string;
     type?: string;
+    defaultValue?: string | number;
     options?: { value: string; label: string }[];
   }[];
 }

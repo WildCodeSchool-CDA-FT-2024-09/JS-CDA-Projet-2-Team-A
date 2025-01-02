@@ -1,19 +1,53 @@
+import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { useProductByIdQuery } from "../../generated/graphql-types";
+import {
+  useProductByIdQuery,
+  useUpdateProductMutation,
+} from "../../generated/graphql-types";
 import TabsProductGlobal from "../TabsProduct/TabsProduct";
-// import ModalForm from "../modalForm/Modalform";
+import ModalForm from "../modalForm/Modalform";
 
 export default function ProductDetail() {
-  // const [openModal, setOpenModal] = useState(false);
-  // const [openSnackbar, setOpenSnackbar] = useState(false);
-  // const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const productByIdId = 1; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
-  const { data, loading, error } = useProductByIdQuery({
+  const { data, loading, error, refetch } = useProductByIdQuery({
     variables: { productByIdId },
   });
 
-  // const [updateProduct] = useUpdateProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
+
+  const handleProductSubmit = async (formData: {
+    product: string;
+    description: string;
+    category: string;
+    material: string;
+    color: string;
+    min_quantity: number;
+    stock: number;
+    imageUrl: string;
+    supplierId?: number;
+  }) => {
+    try {
+      await updateProduct({
+        variables: {
+          id: productByIdId,
+          data: formData,
+        },
+      });
+      setSnackbarMessage("Produit modifié avec succès !");
+      setOpenSnackbar(true);
+      setOpenModal(false);
+      await refetch();
+    } catch {
+      setSnackbarMessage(
+        "Une erreur est survenur lors de la modification du produit.",
+      );
+      setOpenSnackbar(true);
+    }
+  };
 
   if (loading)
     return (
@@ -44,6 +78,9 @@ export default function ProductDetail() {
         Une erreur s'est produite lors du chargement des données.
       </Typography>
     );
+
+  console.info(snackbarMessage);
+  console.info(openSnackbar);
 
   if (data)
     return (
@@ -80,10 +117,13 @@ export default function ProductDetail() {
             sx={{
               height: "40px",
             }}
+            onClick={() => setOpenModal(true)}
           >
             Modifier
           </Button>
         </Box>
+
+        {/* * Product Detail */}
         <TabsProductGlobal
           product={data?.productById?.product ?? ""}
           description={data?.productById?.description ?? ""}
@@ -97,6 +137,70 @@ export default function ProductDetail() {
           phone_employee={data?.productById?.employee?.phone_number ?? ""}
           stock={data?.productById?.stock ?? 0}
           image={data?.productById?.image ?? ""}
+        />
+
+        {/* Modal for product modification */}
+        <ModalForm
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSubmit={handleProductSubmit}
+          title="Modification du produit"
+          fields={[
+            {
+              name: "product",
+              label: "Nom du produit",
+              type: "text",
+              defaultValue: data?.productById?.product ?? "",
+            },
+            {
+              name: "description",
+              label: "Description",
+              type: "text",
+              defaultValue: data?.productById?.description ?? "",
+            },
+            {
+              name: "category",
+              label: "Catégorie",
+              type: "text",
+              defaultValue: data?.productById?.category ?? "",
+            },
+            {
+              name: "material",
+              label: "Matériau",
+              type: "text",
+              defaultValue: data?.productById?.material ?? "",
+            },
+            {
+              name: "color",
+              label: "Couleur",
+              type: "text",
+              defaultValue: data?.productById?.color ?? "",
+            },
+            {
+              name: "min_quantity",
+              label: "Quantité minimale",
+              type: "number",
+              defaultValue: data?.productById?.min_quantity ?? 0,
+            },
+            {
+              name: "stock",
+              label: "Stock",
+              type: "number",
+              defaultValue: data?.productById?.stock ?? 0,
+            },
+            {
+              name: "imageUrl",
+              label: "URL de l'image",
+              type: "text",
+              defaultValue: data?.productById?.image ?? "",
+            },
+            {
+              name: "supplierId",
+              label: "ID du fournisseur",
+              type: "number",
+              defaultValue: data?.productById?.supplier?.id ?? 0,
+            },
+          ]}
         />
       </Box>
     );
