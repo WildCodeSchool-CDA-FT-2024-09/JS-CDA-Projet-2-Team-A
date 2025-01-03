@@ -99,6 +99,7 @@ export default function TicketsList({ role }: { role: string }): ReactElement {
         open={openModal}
         onClose={() => setOpenModal(false)}
         onSubmit={handleStatusUpdate}
+        mode="edit"
         title="Modifier le statut du ticket"
         fields={[
           {

@@ -88,6 +88,7 @@ export type Mutation = {
   createUser: Scalars["String"]["output"];
   logout: Scalars["String"]["output"];
   updateMessageStatus: Scalars["String"]["output"];
+  updateProduct?: Maybe<Product>;
 };
 
 export type MutationCreateUserArgs = {
@@ -96,6 +97,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationUpdateMessageStatusArgs = {
   body: UpdateStatusBody;
+};
+
+export type MutationUpdateProductArgs = {
+  data: UpdateProductInput;
+  id: Scalars["Int"]["input"];
 };
 
 export type Order = {
@@ -139,7 +145,7 @@ export type Product = {
   description: Scalars["String"]["output"];
   employee: Employee;
   id: Scalars["Int"]["output"];
-  image: Scalars["String"]["output"];
+  image?: Maybe<Scalars["String"]["output"]>;
   material?: Maybe<Scalars["String"]["output"]>;
   min_quantity: Scalars["Float"]["output"];
   orderProduct?: Maybe<Array<OrderProduct>>;
@@ -205,6 +211,18 @@ export type Supplier = {
   products?: Maybe<Array<Product>>;
 };
 
+export type UpdateProductInput = {
+  category?: InputMaybe<Scalars["String"]["input"]>;
+  color?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  material?: InputMaybe<Scalars["String"]["input"]>;
+  min_quantity?: InputMaybe<Scalars["Int"]["input"]>;
+  product?: InputMaybe<Scalars["String"]["input"]>;
+  stock?: InputMaybe<Scalars["Int"]["input"]>;
+  supplierId?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type User = {
   __typename?: "User";
   activationDate: Scalars["DateTimeISO"]["output"];
@@ -236,6 +254,28 @@ export type UpdateMessageStatusMutationVariables = Exact<{
 export type UpdateMessageStatusMutation = {
   __typename?: "Mutation";
   updateMessageStatus: string;
+};
+
+export type UpdateProductMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+  data: UpdateProductInput;
+}>;
+
+export type UpdateProductMutation = {
+  __typename?: "Mutation";
+  updateProduct?: {
+    __typename?: "Product";
+    id: number;
+    product: string;
+    description: string;
+    category: string;
+    material?: string | null;
+    color?: string | null;
+    image?: string | null;
+    min_quantity: number;
+    stock: number;
+    supplier: { __typename?: "Supplier"; id: number; name: string };
+  } | null;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -359,7 +399,7 @@ export type ProductByIdQuery = {
     __typename?: "Product";
     id: number;
     product: string;
-    image: string;
+    image?: string | null;
     material?: string | null;
     min_quantity: number;
     category: string;
@@ -488,6 +528,69 @@ export type UpdateMessageStatusMutationResult =
 export type UpdateMessageStatusMutationOptions = Apollo.BaseMutationOptions<
   UpdateMessageStatusMutation,
   UpdateMessageStatusMutationVariables
+>;
+export const UpdateProductDocument = gql`
+  mutation UpdateProduct($id: Int!, $data: UpdateProductInput!) {
+    updateProduct(id: $id, data: $data) {
+      id
+      product
+      description
+      category
+      material
+      color
+      image
+      min_quantity
+      stock
+      supplier {
+        id
+        name
+      }
+    }
+  }
+`;
+export type UpdateProductMutationFn = Apollo.MutationFunction<
+  UpdateProductMutation,
+  UpdateProductMutationVariables
+>;
+
+/**
+ * __useUpdateProductMutation__
+ *
+ * To run a mutation, you first call `useUpdateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProductMutation, { data, loading, error }] = useUpdateProductMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProductMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateProductMutation,
+    UpdateProductMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateProductMutation,
+    UpdateProductMutationVariables
+  >(UpdateProductDocument, options);
+}
+export type UpdateProductMutationHookResult = ReturnType<
+  typeof useUpdateProductMutation
+>;
+export type UpdateProductMutationResult =
+  Apollo.MutationResult<UpdateProductMutation>;
+export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProductMutation,
+  UpdateProductMutationVariables
 >;
 export const CreateUserDocument = gql`
   mutation CreateUser($body: CreateUserInput!) {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -104,6 +105,12 @@ export default function TabsProductGlobal({
     variables: { productByIdId },
   });
 
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   const mainDetails = [
     { label: "Nom :", value: product || "-" },
     { label: "Description :", value: description || "-" },
@@ -169,7 +176,11 @@ export default function TabsProductGlobal({
             borderColor: "divider",
           }}
         >
-          <Tabs aria-label="basic tabs example">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
             <Tab label="Aperçu" {...a11yProps(0)} />
           </Tabs>
         </Box>
@@ -191,7 +202,7 @@ export default function TabsProductGlobal({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "end",
-                // gap: "200px",
+                gap: "200px",
               }}
             >
               <Box
@@ -228,8 +239,8 @@ export default function TabsProductGlobal({
                     }}
                   >
                     <img
-                      src={image}
-                      alt="Câble inox"
+                      src={image || "/image-placeholder.svg"}
+                      alt={category}
                       style={{
                         left: "0",
                         width: "150px",
