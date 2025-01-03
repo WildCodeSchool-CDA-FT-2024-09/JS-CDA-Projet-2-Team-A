@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -104,6 +105,12 @@ export default function TabsProductGlobal({
     variables: { productByIdId },
   });
 
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   const mainDetails = [
     { label: "Nom :", value: product || "-" },
     { label: "Description :", value: description || "-" },
@@ -169,7 +176,11 @@ export default function TabsProductGlobal({
             borderColor: "divider",
           }}
         >
-          <Tabs aria-label="basic tabs example">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
             <Tab label="Aperçu" {...a11yProps(0)} />
           </Tabs>
         </Box>

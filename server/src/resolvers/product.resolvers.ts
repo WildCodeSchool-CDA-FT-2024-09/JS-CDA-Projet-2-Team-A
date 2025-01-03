@@ -27,6 +27,9 @@ class UpdateProductInput {
   @Field(() => String, { nullable: true })
   color?: string;
 
+  @Field({ nullable: true })
+  image?: string;
+
   @Field(() => Int, { nullable: true })
   min_quantity?: number;
 
@@ -100,6 +103,10 @@ export default class ProductResolver {
         throw new Error("Fournisseur introuvable.");
       }
       product.supplier = supplier;
+    }
+
+    if (data.image) {
+      product.image = data.image;
     }
 
     Object.assign(product, {

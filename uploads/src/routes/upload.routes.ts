@@ -33,8 +33,6 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-console.info("je suis upload :", upload)
-
 router.post("/", upload.single("file"), (req: Request, res: Response): void => {
   if (!req.file) {
     res.status(400).send({ message: "Aucun fichier importé ou type de fichier incorrect." });
