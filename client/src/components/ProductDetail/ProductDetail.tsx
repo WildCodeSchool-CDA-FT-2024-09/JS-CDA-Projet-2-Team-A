@@ -31,7 +31,7 @@ export default function ProductDetail() {
     min_quantity: number;
     stock: number;
     image?: File | null | undefined;
-    supplier?: number;
+    supplierId?: number;
   }) => {
     try {
       let imagePath: string | undefined = undefined;
@@ -45,7 +45,11 @@ export default function ProductDetail() {
       await updateProduct({
         variables: {
           id: productByIdId,
-          data: { ...formData, image: imagePath },
+          data: {
+            ...formData,
+            image: imagePath,
+            supplierId: formData.supplierId,
+          },
         },
       });
       setSnackbarMessage("Produit modifié avec succès !");
@@ -204,9 +208,10 @@ export default function ProductDetail() {
               type: "number",
               defaultValue: data?.productById?.stock ?? 0,
             },
+            // TODO : Remplacer par le nom des fournisseurs, une fois que la page "Fournisseur" sera créé.
             {
-              name: "supplier",
-              label: "ID du fournisseur",
+              name: "supplierId",
+              label: "Nom du fournisseur",
               type: "number",
               defaultValue: data?.productById?.supplier?.id ?? 0,
             },

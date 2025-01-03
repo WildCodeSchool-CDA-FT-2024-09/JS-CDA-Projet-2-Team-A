@@ -92,6 +92,7 @@ export default class ProductResolver {
     const product = await Product.findOne({ where: { id } });
 
     if (!product) {
+      console.error("Produit introuvable :", id);
       throw new Error("Produit introuvable.");
     }
 
@@ -105,14 +106,7 @@ export default class ProductResolver {
       product.supplier = supplier;
     }
 
-    if (data.image) {
-      product.image = data.image;
-    }
-
-    Object.assign(product, {
-      ...data,
-      supplierId: undefined,
-    });
+    Object.assign(product, data);
 
     await product.save();
 
