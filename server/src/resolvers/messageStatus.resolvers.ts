@@ -3,7 +3,7 @@ import { GraphQLError } from "graphql";
 import { MessageStatus } from "../entities";
 
 @Resolver(MessageStatus)
-export default class MessageStatusesResolver {
+export default class MessageStatusResolver {
   @Query(() => [MessageStatus])
   async getAllMessageStatuses(): Promise<MessageStatus[]> {
     const statuses: MessageStatus[] = await MessageStatus.find();

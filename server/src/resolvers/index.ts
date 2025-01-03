@@ -4,7 +4,7 @@ import ProductResolver from "./product.resolvers";
 import RoleResolver from "./role.resolvers";
 import { OrderResolver } from "./order.resolvers";
 import MessageResolver from "./message.resolvers";
-import MessageStatusesResolver from "./messageStatus.resolvers";
+import MessageStatusResolver from "./messageStatus.resolvers";
 import SupplierResolver from "./supplier.resolvers";
 
 // Export individual resolvers
@@ -14,7 +14,7 @@ export {
   RoleResolver,
   OrderResolver,
   MessageResolver,
-  MessageStatusesResolver,
+  MessageStatusResolver,
   SupplierResolver,
 };
 
@@ -25,6 +25,6 @@ export const resolvers: NonEmptyArray<Function> = [
   RoleResolver,
   OrderResolver,
   MessageResolver,
-  MessageStatusesResolver,
+  MessageStatusResolver,
   SupplierResolver,
 ];
