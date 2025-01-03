@@ -57,9 +57,7 @@ export default class MessageResolver {
       return `Statut du ticket ${getMessage.title} modifié avec succès.`;
     } catch (error) {
       if (!(error instanceof GraphQLError)) {
-        throw new GraphQLError(
-          "Une erreur inconnue est survenue. Veuillez réessayer."
-        );
+        throw new GraphQLError("Une erreur est survenue. Veuillez réessayer.");
       }
       throw error;
     }
