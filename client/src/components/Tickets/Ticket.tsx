@@ -1,14 +1,20 @@
-import { ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
+import { useMessageContext } from "../../contexts/MessageContext.tsx";
 
 export default function Ticket({
-  data,
+  setOpenModal,
+  id,
   role,
 }: {
-  data: { id: number; title: string; message: string; status: string };
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  id: number;
   role: boolean;
 }): ReactElement {
+  const { getMessageById, setIdForModal } = useMessageContext();
+  const data = getMessageById(id);
+
   const capitalize = (str: string): string =>
     str ? str[0].toUpperCase() + str.slice(1) : "";
   return (
@@ -54,6 +60,10 @@ export default function Ticket({
         {role && (
           <Button
             variant="outlined"
+            onClick={() => {
+              setOpenModal(true);
+              setIdForModal(id);
+            }}
             sx={{
               height: "fit-content",
               width: "fit-content",

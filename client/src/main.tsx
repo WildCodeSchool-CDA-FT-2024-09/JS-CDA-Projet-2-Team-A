@@ -15,6 +15,7 @@ import SuppliersPage from "./pages/SuppliersPage/SuppliersPage.tsx";
 import ProductPage from "./pages/ProductPage/ProductPage.tsx";
 import "./index.css";
 import OrderPage from "./pages/OrderPage/OrderPage.tsx";
+import { MessageProvider } from "./contexts/MessageContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -78,7 +79,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
       <UserProvider>
-        <RouterProvider router={router} />
+        <MessageProvider>
+          <RouterProvider router={router} />
+        </MessageProvider>
       </UserProvider>
     </ApolloProvider>
   </StrictMode>,
