@@ -27,7 +27,7 @@ class UpdateProductInput {
   @Field(() => String, { nullable: true })
   color?: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   image?: string;
 
   @Field(() => Int, { nullable: true })

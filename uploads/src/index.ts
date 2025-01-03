@@ -13,7 +13,6 @@ const uploadDir = process.env.UPLOAD_DIR || "./uploads";
 app.use("/uploads", express.static(path.resolve(uploadDir)));
 
 app.use((req, res, next) => {
-  console.log(`[UPLOADS] ${req.method} ${req.url}`);
   next();
 });
 

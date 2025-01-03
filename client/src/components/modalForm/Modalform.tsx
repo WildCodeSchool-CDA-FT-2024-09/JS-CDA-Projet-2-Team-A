@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { uploadImage } from "../../services/uplaodService";
 
 interface ModalFormProps<T> {
   open: boolean;
@@ -30,7 +29,7 @@ interface ModalFormProps<T> {
   imageFieldName?: keyof T;
 }
 
-export default function ModalForm<T extends { image?: string | File | null }>({
+export default function ModalForm<T extends Record<string, unknown>>({
   open,
   onClose,
   onSubmit,
@@ -70,20 +69,15 @@ export default function ModalForm<T extends { image?: string | File | null }>({
     }));
   };
 
-  // * Image upload management
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      try {
-        const uploadedImageUrl = await uploadImage(file);
-        setImagePreview(uploadedImageUrl);
-        setFormData((prevData) => ({
-          ...prevData,
-          [imageFieldName as keyof T]: uploadedImageUrl as T[keyof T],
-        }));
-      } catch (error) {
-        console.error("Erreur lors du téléchargement de l'image :", error);
-      }
+      const fileUrl = URL.createObjectURL(file);
+      setImagePreview(fileUrl);
+      setFormData((prevData) => ({
+        ...prevData,
+        [imageFieldName as keyof T]: file,
+      }));
     }
   };
 
@@ -91,9 +85,9 @@ export default function ModalForm<T extends { image?: string | File | null }>({
   const handleFormSubmit = () => {
     const formDataToSubmit = {
       ...formData,
-      image: formData.image instanceof File ? formData.image : null,
+      image: formData.image instanceof File ? formData.image : undefined,
     };
-    onSubmit(formDataToSubmit);
+    onSubmit(formDataToSubmit as T & { image?: File | null | undefined });
     setFormData({} as T);
     setImagePreview(null);
   };

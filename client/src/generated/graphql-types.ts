@@ -209,6 +209,7 @@ export type UpdateProductInput = {
   category?: InputMaybe<Scalars["String"]["input"]>;
   color?: InputMaybe<Scalars["String"]["input"]>;
   description?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["String"]["input"]>;
   material?: InputMaybe<Scalars["String"]["input"]>;
   min_quantity?: InputMaybe<Scalars["Int"]["input"]>;
   product?: InputMaybe<Scalars["String"]["input"]>;

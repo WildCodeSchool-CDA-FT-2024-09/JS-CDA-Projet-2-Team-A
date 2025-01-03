@@ -4,6 +4,7 @@ import {
   useProductByIdQuery,
   useUpdateProductMutation,
 } from "../../generated/graphql-types";
+import { uploadImage } from "../../services/uplaodService";
 import TabsProductGlobal from "../TabsProduct/TabsProduct";
 import ModalForm from "../modalForm/Modalform";
 
@@ -11,6 +12,8 @@ export default function ProductDetail() {
   const [openModal, setOpenModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  console.info(openSnackbar, snackbarMessage);
 
   const productByIdId = 1; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
   const { data, loading, error, refetch } = useProductByIdQuery({
@@ -27,14 +30,22 @@ export default function ProductDetail() {
     color: string;
     min_quantity: number;
     stock: number;
-    image?: string | File | null;
+    image?: File | null | undefined;
     supplier?: number;
   }) => {
     try {
+      let imagePath: string | undefined = undefined;
+
+      if (formData.image instanceof File) {
+        imagePath = await uploadImage(formData.image);
+      } else if (typeof formData.image === "string") {
+        imagePath = formData.image;
+      }
+
       await updateProduct({
         variables: {
           id: productByIdId,
-          data: formData,
+          data: { ...formData, image: imagePath },
         },
       });
       setSnackbarMessage("Produit modifié avec succès !");
@@ -78,9 +89,6 @@ export default function ProductDetail() {
         Une erreur s'est produite lors du chargement des données.
       </Typography>
     );
-
-  console.info(snackbarMessage);
-  console.info(openSnackbar);
 
   if (data)
     return (
