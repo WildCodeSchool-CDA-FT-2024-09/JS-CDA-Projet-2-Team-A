@@ -17,9 +17,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, "../../uploads");;
-// app.use("/uploads", express.static(uploadDir));
-
 app.use("/upload", uploadRoutes);
 
 const PORT = process.env.PORT;
