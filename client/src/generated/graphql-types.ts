@@ -145,7 +145,7 @@ export type Product = {
   description: Scalars["String"]["output"];
   employee: Employee;
   id: Scalars["Int"]["output"];
-  image: Scalars["String"]["output"];
+  image?: Maybe<Scalars["String"]["output"]>;
   material?: Maybe<Scalars["String"]["output"]>;
   min_quantity: Scalars["Float"]["output"];
   orderProduct?: Maybe<Array<OrderProduct>>;
@@ -271,7 +271,7 @@ export type UpdateProductMutation = {
     category: string;
     material?: string | null;
     color?: string | null;
-    image: string;
+    image?: string | null;
     min_quantity: number;
     stock: number;
     supplier: { __typename?: "Supplier"; id: number; name: string };
@@ -399,7 +399,7 @@ export type ProductByIdQuery = {
     __typename?: "Product";
     id: number;
     product: string;
-    image: string;
+    image?: string | null;
     material?: string | null;
     min_quantity: number;
     category: string;

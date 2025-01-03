@@ -4,7 +4,7 @@ import {
   useProductByIdQuery,
   useUpdateProductMutation,
 } from "../../generated/graphql-types";
-import { uploadImage } from "../../services/uplaodService";
+import { uploadImage } from "../../services/uploadService";
 import TabsProductGlobal from "../TabsProduct/TabsProduct";
 import ModalForm from "../modalForm/Modalform";
 
@@ -56,7 +56,7 @@ export default function ProductDetail() {
       await refetch();
     } catch {
       setSnackbarMessage(
-        "Une erreur est survenur lors de la modification du produit.",
+        "Une erreur est survenue lors de la modification du produit.",
       );
       setOpenSnackbar(true);
     }

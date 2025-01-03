@@ -153,10 +153,6 @@ export default function ModalForm<T extends Record<string, unknown>>({
                         justifyContent: "center",
                       }}
                     >
-                      <Typography style={{ color: "#666" }}>
-                        Drag une image ici
-                      </Typography>
-                      <Typography style={{ color: "#666" }}>ou</Typography>
                       <Button variant="contained" component="label">
                         Importer une image
                         <input
