@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
 import {
   useProductByIdQuery,
   useUpdateProductMutation,
@@ -13,9 +13,7 @@ export default function ProductDetail() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  console.info(openSnackbar, snackbarMessage);
-
-  const productByIdId = 1; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
+  const productByIdId = 2; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
   const { data, loading, error, refetch } = useProductByIdQuery({
     variables: { productByIdId },
   });
@@ -217,6 +215,27 @@ export default function ProductDetail() {
             },
           ]}
         />
+
+        {/* Snackbar for Success/Error Feedback */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ marginTop: "2rem" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={snackbarMessage.includes("Erreur") ? "error" : "success"}
+            sx={{
+              width: "25rem",
+              fontSize: "1.125rem",
+              padding: "1rem",
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     );
 }
