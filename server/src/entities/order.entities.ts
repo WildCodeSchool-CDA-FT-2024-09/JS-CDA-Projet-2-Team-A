@@ -1,16 +1,16 @@
 import {
   BaseEntity,
-  Column,
   OneToMany,
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { OrderProduct } from "./order_product.entities";
 import { OrderStatus } from "./order_status.entities";
 import { Supplier } from "./supplier.entities";
-import { GraphQLDate } from "graphql-scalars";
+//import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("order")
@@ -19,8 +19,8 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => GraphQLDate)
-  @Column({ type: "date" })
+  @Field(() => String)
+  @CreateDateColumn()
   created_at: Date;
 
   @Field(() => OrderStatus)

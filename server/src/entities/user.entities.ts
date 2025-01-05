@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -9,7 +10,7 @@ import {
 import { Role } from "./role.entities";
 import { Message } from "./message.entities";
 import { ObjectType, Field, Int } from "type-graphql";
-import { GraphQLDate } from "graphql-scalars";
+//import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("user")
@@ -30,8 +31,8 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Field(() => GraphQLDate)
-  @Column({ type: "date" })
+  @Field(() => String)
+  @CreateDateColumn()
   activationDate: Date;
 
   @Field()

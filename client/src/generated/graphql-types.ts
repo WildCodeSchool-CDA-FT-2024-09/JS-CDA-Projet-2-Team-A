@@ -68,7 +68,7 @@ export type InProgressDeliveryStats = {
 
 export type Message = {
   __typename?: "Message";
-  created_at: Scalars["DateTimeISO"]["output"];
+  created_at: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   message: Scalars["String"]["output"];
   status: MessageStatus;
@@ -95,7 +95,7 @@ export type MutationCreateUserArgs = {
 
 export type Order = {
   __typename?: "Order";
-  created_at: Scalars["DateTimeISO"]["output"];
+  created_at: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   orderProduct: Array<OrderProduct>;
   status: OrderStatus;
@@ -201,7 +201,7 @@ export type Supplier = {
 
 export type User = {
   __typename?: "User";
-  activationDate: Scalars["DateTimeISO"]["output"];
+  activationDate: Scalars["String"]["output"];
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   isActive: Scalars["Boolean"]["output"];
@@ -390,7 +390,7 @@ export type AllUsersQuery = {
     __typename?: "User";
     name: string;
     email: string;
-    activationDate: Date;
+    activationDate: string;
     isActive: boolean;
     role: { __typename?: "Role"; role: string };
   }>;

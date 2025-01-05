@@ -4,11 +4,12 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { MessageStatus } from "./message_status.entities";
 import { User } from "./user.entities";
-import { GraphQLDate } from "graphql-scalars";
+//import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("message")
@@ -25,8 +26,8 @@ export class Message extends BaseEntity {
   @Column()
   message: string;
 
-  @Field(() => GraphQLDate)
-  @Column({ type: "date" })
+  @Field(() => String)
+  @CreateDateColumn()
   created_at: Date;
 
   @Field(() => MessageStatus)
