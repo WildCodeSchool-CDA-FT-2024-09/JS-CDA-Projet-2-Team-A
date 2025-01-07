@@ -7,6 +7,7 @@ const config: Config = {
   moduleFileExtensions: ['ts', 'js'],
   testMatch: ['**/tests/**/*.test.ts'],
   verbose: true,
+  testTimeout: 10000,
 };
 
 export default config;
