@@ -30,8 +30,6 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  //@Field()
-  //@Column({ type: "timestamp" })
   @Field(() => GraphQLDate)
   @Column({ type: "date" })
   activationDate: Date;

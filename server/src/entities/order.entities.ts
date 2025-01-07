@@ -19,8 +19,6 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  //@Field()
-  //@Column({ type: "timestamp" })
   @Field(() => GraphQLDate)
   @Column({ type: "date" })
   created_at: Date;

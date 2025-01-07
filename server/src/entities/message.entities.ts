@@ -25,8 +25,6 @@ export class Message extends BaseEntity {
   @Column()
   message: string;
 
-  //@Field()
-  //@Column({ type: "timestamp" })
   @Field(() => GraphQLDate)
   @Column({ type: "date" })
   created_at: Date;
