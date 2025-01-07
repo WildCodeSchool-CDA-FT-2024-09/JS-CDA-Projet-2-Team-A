@@ -14,22 +14,28 @@ const AUTHENTICATE = gql`
 `;
 
 let schema: GraphQLSchema;
+let context: { res: { setHeader: jest.Mock } };
+
+const createContext = () => ({
+  res: {
+    setHeader: jest.fn(),
+  },
+});
 
 describe("authenticate query", () => {
   beforeAll(async () => {
     schema = await getSchema();
   });
 
+  beforeEach(async () => {
+    jest.clearAllMocks();
+    context = createContext();
+  });
+
   it("should return error if user not found", async () => {
     const input = {
       email: "inexistant@mockmail.com",
       password: "anything",
-    };
-
-    const context = {
-      res: {
-        setHeader: jest.fn(),
-      },
     };
 
     const result = await graphql({
@@ -51,12 +57,6 @@ describe("authenticate query", () => {
       password: "wrong_password",
     };
 
-    const context = {
-      res: {
-        setHeader: jest.fn(),
-      },
-    };
-
     const result = await graphql({
       schema,
       source: print(AUTHENTICATE),
@@ -74,12 +74,6 @@ describe("authenticate query", () => {
     const input = {
       email: "gcasseldine2@example.com",
       password: "gD9{0eo?1",
-    };
-
-    const context = {
-      res: {
-        setHeader: jest.fn(),
-      },
     };
 
     const result = await graphql({
