@@ -10,6 +10,7 @@ import { ObjectType, Field, Int } from "type-graphql";
 import { OrderProduct } from "./order_product.entities";
 import { OrderStatus } from "./order_status.entities";
 import { Supplier } from "./supplier.entities";
+import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("order")
@@ -18,8 +19,10 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
-  @Column({ type: "timestamp" })
+  //@Field()
+  //@Column({ type: "timestamp" })
+  @Field(() => GraphQLDate)
+  @Column({ type: "date" })
   created_at: Date;
 
   @Field(() => OrderStatus)

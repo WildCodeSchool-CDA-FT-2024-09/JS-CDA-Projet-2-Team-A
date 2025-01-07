@@ -9,6 +9,7 @@ import {
 import { Role } from "./role.entities";
 import { Message } from "./message.entities";
 import { ObjectType, Field, Int } from "type-graphql";
+import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("user")
@@ -29,8 +30,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Field()
-  @Column({ type: "timestamp" })
+  //@Field()
+  //@Column({ type: "timestamp" })
+  @Field(() => GraphQLDate)
+  @Column({ type: "date" })
   activationDate: Date;
 
   @Field()

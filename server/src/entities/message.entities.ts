@@ -8,6 +8,7 @@ import {
 import { ObjectType, Field, Int } from "type-graphql";
 import { MessageStatus } from "./message_status.entities";
 import { User } from "./user.entities";
+import { GraphQLDate } from "graphql-scalars";
 
 @ObjectType()
 @Entity("message")
@@ -24,8 +25,10 @@ export class Message extends BaseEntity {
   @Column()
   message: string;
 
-  @Field()
-  @Column({ type: "timestamp" })
+  //@Field()
+  //@Column({ type: "timestamp" })
+  @Field(() => GraphQLDate)
+  @Column({ type: "date" })
   created_at: Date;
 
   @Field(() => MessageStatus)
