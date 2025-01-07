@@ -5,8 +5,8 @@ import { app } from "../index"
 describe("Upload Route Test", () => {
   it("should successfully upload a valid image file", async () => {
     const res = await request(app)
-      .post("/") // * Chemin de la route d'upload
-      .attach("file", path.resolve(__dirname, "./test_file/image.jpg")); // * Exemple de fichier conforme
+      .post("/upload") // * Chemin de la route d'upload
+      .attach("file", path.resolve(__dirname, "./test_files/image.jpg")); // * Exemple de fichier conforme
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Fichier importé avec succès.");
@@ -15,15 +15,15 @@ describe("Upload Route Test", () => {
 
   it("should reject an unsupported file type", async () => {
     const res = await request(app)
-      .post("/")
-      .attach("file", path.resolve(__dirname, "./test_file/document.pdf")); //* Exemple de fichier non conforme
+      .post("/upload")
+      .attach("file", path.resolve(__dirname, "./test_files/document.pdf")); //* Exemple de fichier non conforme
 
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty("message", "Type de fichier non supporté.");
   });
 
   it("should reject a request without a file", async () => {
-    const res = await request(app).post("/"); // * Requête sans fichier
+    const res = await request(app).post("/upload"); // * Requête sans fichier
 
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("message", "Aucun fichier n'a été importé.");

@@ -23,7 +23,7 @@ const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true); // * Acceptation du fichier si les conditions sont respectées
   } else {
-    cb(new Error("Type de fichier non supporté. Seuls les formats .png, .jpg et .jpeg sont autorisés."));
+    cb(new Error("Type de fichier non supporté."));
   }
 }
 
@@ -35,7 +35,7 @@ const upload = multer({
 
 router.post("/", upload.single("file"), (req: Request, res: Response): void => {
   if (!req.file) {
-    res.status(400).send({ message: "Aucun fichier importé ou type de fichier incorrect." });
+    res.status(400).send({ message: "Aucun fichier n'a été importé." });
     return;
   }
 
