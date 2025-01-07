@@ -6,7 +6,11 @@ const router = Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads"));
+    const uploadDir = process.env.UPLOAD_DIR;
+    if (!uploadDir) {
+      throw new Error("La variable d'environnement UPLOAD_DIR doit être définie !");
+    }
+    cb(null, path.resolve(uploadDir));
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -23,13 +27,11 @@ const fileFilter = (req: Express.Request, file: Express.Multer.File, cb: multer.
   }
 }
 
-const upload = multer({ 
+const upload = multer({
   storage,
   fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 }
- });
-
-console.info("je suis upload :", upload)
+});
 
 router.post("/", upload.single("file"), (req: Request, res: Response): void => {
   if (!req.file) {

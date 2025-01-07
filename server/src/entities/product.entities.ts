@@ -38,9 +38,9 @@ export class Product extends BaseEntity {
   @Column()
   category: string;
 
-  @Field()
-  @Column()
-  image: string;
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  image?: string;
 
   @Field()
   @Column()

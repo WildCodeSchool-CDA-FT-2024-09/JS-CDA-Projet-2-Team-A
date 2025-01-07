@@ -32,7 +32,9 @@ export class Message extends BaseEntity {
   created_at: Date;
 
   @Field(() => MessageStatus)
-  @ManyToOne(() => MessageStatus, (MessageStatus) => MessageStatus.status)
+  @ManyToOne(() => MessageStatus, (MessageStatus) => MessageStatus.status, {
+    eager: true,
+  })
   status: MessageStatus;
 
   @Field(() => User)

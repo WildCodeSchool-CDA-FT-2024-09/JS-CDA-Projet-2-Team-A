@@ -87,10 +87,21 @@ export type Mutation = {
   __typename?: "Mutation";
   createUser: Scalars["String"]["output"];
   logout: Scalars["String"]["output"];
+  updateMessageStatus: Scalars["String"]["output"];
+  updateProduct?: Maybe<Product>;
 };
 
 export type MutationCreateUserArgs = {
   body: CreateUserInput;
+};
+
+export type MutationUpdateMessageStatusArgs = {
+  body: UpdateStatusBody;
+};
+
+export type MutationUpdateProductArgs = {
+  data: UpdateProductInput;
+  id: Scalars["Int"]["input"];
 };
 
 export type Order = {
@@ -134,7 +145,7 @@ export type Product = {
   description: Scalars["String"]["output"];
   employee: Employee;
   id: Scalars["Int"]["output"];
-  image: Scalars["String"]["output"];
+  image?: Maybe<Scalars["String"]["output"]>;
   material?: Maybe<Scalars["String"]["output"]>;
   min_quantity: Scalars["Float"]["output"];
   orderProduct?: Maybe<Array<OrderProduct>>;
@@ -157,6 +168,7 @@ export type Query = {
   allUsers: Array<User>;
   authenticate: AuthResponse;
   countDistinctCategories: Scalars["Float"]["output"];
+  getAllMessageStatuses: Array<MessageStatus>;
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
@@ -199,6 +211,18 @@ export type Supplier = {
   products?: Maybe<Array<Product>>;
 };
 
+export type UpdateProductInput = {
+  category?: InputMaybe<Scalars["String"]["input"]>;
+  color?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  material?: InputMaybe<Scalars["String"]["input"]>;
+  min_quantity?: InputMaybe<Scalars["Int"]["input"]>;
+  product?: InputMaybe<Scalars["String"]["input"]>;
+  stock?: InputMaybe<Scalars["Int"]["input"]>;
+  supplierId?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type User = {
   __typename?: "User";
   activationDate: Scalars["DateTimeISO"]["output"];
@@ -216,6 +240,42 @@ export type WhoAmIResponse = {
   login: Scalars["String"]["output"];
   name: Scalars["String"]["output"];
   role: Scalars["String"]["output"];
+};
+
+export type UpdateStatusBody = {
+  id: Scalars["Float"]["input"];
+  status: Scalars["String"]["input"];
+};
+
+export type UpdateMessageStatusMutationVariables = Exact<{
+  body: UpdateStatusBody;
+}>;
+
+export type UpdateMessageStatusMutation = {
+  __typename?: "Mutation";
+  updateMessageStatus: string;
+};
+
+export type UpdateProductMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+  data: UpdateProductInput;
+}>;
+
+export type UpdateProductMutation = {
+  __typename?: "Mutation";
+  updateProduct?: {
+    __typename?: "Product";
+    id: number;
+    product: string;
+    description: string;
+    category: string;
+    material?: string | null;
+    color?: string | null;
+    image?: string | null;
+    min_quantity: number;
+    stock: number;
+    supplier: { __typename?: "Supplier"; id: number; name: string };
+  } | null;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -236,6 +296,19 @@ export type GetAllRolesQueryVariables = Exact<{ [key: string]: never }>;
 export type GetAllRolesQuery = {
   __typename?: "Query";
   getAllRoles: Array<{ __typename?: "Role"; id: number; role: string }>;
+};
+
+export type GetAllMessageStatusesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetAllMessageStatusesQuery = {
+  __typename?: "Query";
+  getAllMessageStatuses: Array<{
+    __typename?: "MessageStatus";
+    id: number;
+    status: string;
+  }>;
 };
 
 export type GetAllMessagesQueryVariables = Exact<{ [key: string]: never }>;
@@ -326,7 +399,7 @@ export type ProductByIdQuery = {
     __typename?: "Product";
     id: number;
     product: string;
-    image: string;
+    image?: string | null;
     material?: string | null;
     min_quantity: number;
     category: string;
@@ -408,6 +481,117 @@ export type WhoAmIQuery = {
   };
 };
 
+export const UpdateMessageStatusDocument = gql`
+  mutation UpdateMessageStatus($body: updateStatusBody!) {
+    updateMessageStatus(body: $body)
+  }
+`;
+export type UpdateMessageStatusMutationFn = Apollo.MutationFunction<
+  UpdateMessageStatusMutation,
+  UpdateMessageStatusMutationVariables
+>;
+
+/**
+ * __useUpdateMessageStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateMessageStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMessageStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMessageStatusMutation, { data, loading, error }] = useUpdateMessageStatusMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useUpdateMessageStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateMessageStatusMutation,
+    UpdateMessageStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateMessageStatusMutation,
+    UpdateMessageStatusMutationVariables
+  >(UpdateMessageStatusDocument, options);
+}
+export type UpdateMessageStatusMutationHookResult = ReturnType<
+  typeof useUpdateMessageStatusMutation
+>;
+export type UpdateMessageStatusMutationResult =
+  Apollo.MutationResult<UpdateMessageStatusMutation>;
+export type UpdateMessageStatusMutationOptions = Apollo.BaseMutationOptions<
+  UpdateMessageStatusMutation,
+  UpdateMessageStatusMutationVariables
+>;
+export const UpdateProductDocument = gql`
+  mutation UpdateProduct($id: Int!, $data: UpdateProductInput!) {
+    updateProduct(id: $id, data: $data) {
+      id
+      product
+      description
+      category
+      material
+      color
+      image
+      min_quantity
+      stock
+      supplier {
+        id
+        name
+      }
+    }
+  }
+`;
+export type UpdateProductMutationFn = Apollo.MutationFunction<
+  UpdateProductMutation,
+  UpdateProductMutationVariables
+>;
+
+/**
+ * __useUpdateProductMutation__
+ *
+ * To run a mutation, you first call `useUpdateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProductMutation, { data, loading, error }] = useUpdateProductMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProductMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateProductMutation,
+    UpdateProductMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateProductMutation,
+    UpdateProductMutationVariables
+  >(UpdateProductDocument, options);
+}
+export type UpdateProductMutationHookResult = ReturnType<
+  typeof useUpdateProductMutation
+>;
+export type UpdateProductMutationResult =
+  Apollo.MutationResult<UpdateProductMutation>;
+export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProductMutation,
+  UpdateProductMutationVariables
+>;
 export const CreateUserDocument = gql`
   mutation CreateUser($body: CreateUserInput!) {
     createUser(body: $body)
@@ -575,6 +759,84 @@ export type GetAllRolesSuspenseQueryHookResult = ReturnType<
 export type GetAllRolesQueryResult = Apollo.QueryResult<
   GetAllRolesQuery,
   GetAllRolesQueryVariables
+>;
+export const GetAllMessageStatusesDocument = gql`
+  query getAllMessageStatuses {
+    getAllMessageStatuses {
+      id
+      status
+    }
+  }
+`;
+
+/**
+ * __useGetAllMessageStatusesQuery__
+ *
+ * To run a query within a React component, call `useGetAllMessageStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMessageStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMessageStatusesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMessageStatusesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetAllMessageStatusesQuery,
+    GetAllMessageStatusesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetAllMessageStatusesQuery,
+    GetAllMessageStatusesQueryVariables
+  >(GetAllMessageStatusesDocument, options);
+}
+export function useGetAllMessageStatusesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAllMessageStatusesQuery,
+    GetAllMessageStatusesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetAllMessageStatusesQuery,
+    GetAllMessageStatusesQueryVariables
+  >(GetAllMessageStatusesDocument, options);
+}
+export function useGetAllMessageStatusesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetAllMessageStatusesQuery,
+        GetAllMessageStatusesQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetAllMessageStatusesQuery,
+    GetAllMessageStatusesQueryVariables
+  >(GetAllMessageStatusesDocument, options);
+}
+export type GetAllMessageStatusesQueryHookResult = ReturnType<
+  typeof useGetAllMessageStatusesQuery
+>;
+export type GetAllMessageStatusesLazyQueryHookResult = ReturnType<
+  typeof useGetAllMessageStatusesLazyQuery
+>;
+export type GetAllMessageStatusesSuspenseQueryHookResult = ReturnType<
+  typeof useGetAllMessageStatusesSuspenseQuery
+>;
+export type GetAllMessageStatusesQueryResult = Apollo.QueryResult<
+  GetAllMessageStatusesQuery,
+  GetAllMessageStatusesQueryVariables
 >;
 export const GetAllMessagesDocument = gql`
   query GetAllMessages {

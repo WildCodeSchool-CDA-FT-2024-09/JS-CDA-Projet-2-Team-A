@@ -35,7 +35,7 @@ export default function TicketsPage(): ReactElement {
           {role === "achat" ? "Modifier ticket" : "Nouveau ticket"}
         </Button>
       </Box>
-      <TicketsList />
+      <TicketsList role={role} />
     </Box>
   );
 }

@@ -1,13 +1,20 @@
-import { ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import Grid from "@mui/material/Grid2";
 import { Button, Typography } from "@mui/material";
-import { Message } from "../../generated/graphql-types.ts";
+import { useMessageContext } from "../../contexts/MessageContext.tsx";
 
 export default function Ticket({
-  data,
+  setOpenModal,
+  id,
+  role,
 }: {
-  data: Pick<Message, "title" | "message" | "message_status">;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  id: number;
+  role: boolean;
 }): ReactElement {
+  const { getMessageById, setIdForModal } = useMessageContext();
+  const data = getMessageById(id);
+
   const capitalize = (str: string): string =>
     str ? str[0].toUpperCase() + str.slice(1) : "";
   return (
@@ -50,18 +57,24 @@ export default function Ticket({
           alignItems: "flex-end",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            height: "fit-content",
-            width: "fit-content",
-            textTransform: "none",
-            fontSize: "0.7em",
-            lineHeight: "1",
-          }}
-        >
-          Modifier le statut
-        </Button>
+        {role && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenModal(true);
+              setIdForModal(id);
+            }}
+            sx={{
+              height: "fit-content",
+              width: "fit-content",
+              textTransform: "none",
+              fontSize: "0.7em",
+              lineHeight: "1",
+            }}
+          >
+            Modifier le statut
+          </Button>
+        )}
         <Typography
           variant="body2"
           sx={{
@@ -70,7 +83,7 @@ export default function Ticket({
             color: "gray",
           }}
         >
-          {data.message_status}
+          {data.status}
         </Typography>
       </Grid>
     </Grid>
