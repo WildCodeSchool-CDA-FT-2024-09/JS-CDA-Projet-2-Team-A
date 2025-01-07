@@ -13,8 +13,6 @@ const {
 
 const sync = ENV === "dev";
 
-console.info(NODE_ENV);
-
 const dataSourceOptions: DataSourceOptions =
   NODE_ENV === "test"
     ? {
