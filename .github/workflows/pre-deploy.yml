@@ -42,18 +42,18 @@ jobs:
 
         # build an push the newly created image
       - uses: docker/build-push-action@v2
-        name: Build and push product
+        name: Build and push server
         with:
-          context: ./api/product
-          file: ./api/product/dockerfile
+          context: ./server
+          file: ./server/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_SERVER_IMAGE_NAME }}:latest
 
       # build an push the newly created image
       - uses: docker/build-push-action@v2
-        name: Build and push upload
+        name: Build and push uploads
         with:
-          context: ./api/uploadimage
-          file: ./api/uploadimage/Dockerfile
+          context: ./uploads
+          file: ./uploads/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_UPLOAD_IMAGE_NAME }}:latest
