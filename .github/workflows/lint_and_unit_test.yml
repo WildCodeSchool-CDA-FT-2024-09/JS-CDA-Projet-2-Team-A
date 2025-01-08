@@ -1,0 +1,42 @@
+name: test
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+    branches: [dev]
+
+jobs:
+  test:
+    name: Run static and unit test on front & back
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache dependencies
+        id: cache-nextjob
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./node_modules
+            ./server/node_modules
+            ./client/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install all packages
+        run: npm run full_install
+
+      - name: Run linter on all folder
+        run: npm run lint-staged
+
+      - name: Run unit tests in client
+        run: npm run unit-tests-client
+
+      - name: Run unit test in server
+        run: npm run unit-tests-server
+
+      - name: Run unit test in uploads
+        run: npm run unit-tests-uploads

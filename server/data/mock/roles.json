@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "role": "achat"
+  },
+  {
+    "id": 2,
+    "role": "approvisionnement"
+  },
+  {
+    "id": 3,
+    "role": "atelier"
+  },
+  {
+    "id": 4,
+    "role": "admin"
+  }
+]
