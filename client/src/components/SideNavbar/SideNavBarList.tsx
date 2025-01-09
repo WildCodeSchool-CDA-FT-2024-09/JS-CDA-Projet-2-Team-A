@@ -24,12 +24,29 @@ export default function SideNavBarList({
   const { setUser } = useUser();
 
   const fullLogout = () => {
-    logout();
-    setUser({
-      name: "",
-      login: "",
-      role: "",
-    });
+    logout()
+      .then((response) => {
+        if (response.errors && response.errors.length > 0) {
+          console.error(
+            "Erreur GraphQL lors de la déconnexion : ",
+            response.errors,
+          );
+          return;
+        }
+
+        setUser({
+          name: "",
+          login: "",
+          role: "",
+        });
+      })
+
+      .catch((error) => {
+        console.error(
+          "Une erreur est survenue lors de la déconnexion : ",
+          error,
+        );
+      });
   };
 
   let listItemProps = {};
