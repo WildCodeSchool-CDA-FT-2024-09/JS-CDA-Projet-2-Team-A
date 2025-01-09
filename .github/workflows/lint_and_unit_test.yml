@@ -7,12 +7,12 @@ on:
 
 jobs:
   test:
-    name: Run integration on front & back
+    name: Run static and unit test on front & back
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
-        uses : actions/checkout@v3
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -26,17 +26,17 @@ jobs:
             ./client/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install packages at root
-        run: npm run unit-tests
+      - name: Install all packages
+        run: npm run full_install
 
-      - name: Install packages in frontend
-        run: npm run unit-tests
+      - name: Run linter on all folder
+        run: npm run lint-staged
 
-      - name: Run tests in front
-        run: npm run unit-tests
+      - name: Run unit tests in client
+        run: npm run unit-tests-client
 
-      - name: Install packages in backend
-        run: npm run unit-tests
+      - name: Run unit test in server
+        run: npm run unit-tests-server
 
-      - name: Run tests in back
-        run: npm run unit-tests
+      - name: Run unit test in uploads
+        run: npm run unit-tests-uploads

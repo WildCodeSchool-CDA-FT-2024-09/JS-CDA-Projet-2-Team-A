@@ -10,7 +10,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint \"*/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write '*/**/*.{js,jsx,ts,tsx}'",
-    "codegen": "graphql-codegen --config codegen.ts --verbose"
+    "codegen": "graphql-codegen --config codegen.ts --verbose",
+    "unit-test": "echo 'TODO: Run Unit Tests on client'"
   },
   "dependencies": {
     "@apollo/client": "^3.12.0",
