@@ -28,6 +28,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  Date: { input: Date; output: Date };
   DateTimeISO: { input: Date; output: Date };
 };
 
@@ -37,6 +38,10 @@ export type AuthResponse = {
   name: Scalars["String"]["output"];
   role: Scalars["String"]["output"];
   token: Scalars["String"]["output"];
+};
+
+export type CreateOrderInput = {
+  orderSelection: Array<OrderItem>;
 };
 
 export type CreateUserInput = {
@@ -68,7 +73,7 @@ export type InProgressDeliveryStats = {
 
 export type Message = {
   __typename?: "Message";
-  created_at: Scalars["DateTimeISO"]["output"];
+  created_at: Scalars["Date"]["output"];
   id: Scalars["Int"]["output"];
   message: Scalars["String"]["output"];
   status: MessageStatus;
@@ -85,10 +90,15 @@ export type MessageStatus = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createOrder: Scalars["String"]["output"];
   createUser: Scalars["String"]["output"];
   logout: Scalars["String"]["output"];
   updateMessageStatus: Scalars["String"]["output"];
   updateProduct?: Maybe<Product>;
+};
+
+export type MutationCreateOrderArgs = {
+  body: CreateOrderInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -106,7 +116,7 @@ export type MutationUpdateProductArgs = {
 
 export type Order = {
   __typename?: "Order";
-  created_at: Scalars["DateTimeISO"]["output"];
+  created_at: Scalars["Date"]["output"];
   id: Scalars["Int"]["output"];
   orderProduct: Array<OrderProduct>;
   status: OrderStatus;
@@ -119,6 +129,11 @@ export type OrderDetails = {
   id: Scalars["Int"]["output"];
   products: Array<ProductDetails>;
   status: OrderStatus;
+};
+
+export type OrderItem = {
+  productId: Scalars["Int"]["input"];
+  quantity: Scalars["Int"]["input"];
 };
 
 export type OrderProduct = {
@@ -225,7 +240,7 @@ export type UpdateProductInput = {
 
 export type User = {
   __typename?: "User";
-  activationDate: Scalars["DateTimeISO"]["output"];
+  activationDate: Scalars["Date"]["output"];
   email: Scalars["String"]["output"];
   id: Scalars["Int"]["output"];
   isActive: Scalars["Boolean"]["output"];
@@ -254,6 +269,15 @@ export type UpdateMessageStatusMutationVariables = Exact<{
 export type UpdateMessageStatusMutation = {
   __typename?: "Mutation";
   updateMessageStatus: string;
+};
+
+export type CreateOrderMutationVariables = Exact<{
+  body: CreateOrderInput;
+}>;
+
+export type CreateOrderMutation = {
+  __typename?: "Mutation";
+  createOrder: string;
 };
 
 export type UpdateProductMutationVariables = Exact<{
@@ -528,6 +552,54 @@ export type UpdateMessageStatusMutationResult =
 export type UpdateMessageStatusMutationOptions = Apollo.BaseMutationOptions<
   UpdateMessageStatusMutation,
   UpdateMessageStatusMutationVariables
+>;
+export const CreateOrderDocument = gql`
+  mutation CreateOrder($body: CreateOrderInput!) {
+    createOrder(body: $body)
+  }
+`;
+export type CreateOrderMutationFn = Apollo.MutationFunction<
+  CreateOrderMutation,
+  CreateOrderMutationVariables
+>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateOrderMutation,
+    CreateOrderMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(
+    CreateOrderDocument,
+    options,
+  );
+}
+export type CreateOrderMutationHookResult = ReturnType<
+  typeof useCreateOrderMutation
+>;
+export type CreateOrderMutationResult =
+  Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<
+  CreateOrderMutation,
+  CreateOrderMutationVariables
 >;
 export const UpdateProductDocument = gql`
   mutation UpdateProduct($id: Int!, $data: UpdateProductInput!) {
