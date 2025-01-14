@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
 import {
   useProductByIdQuery,
@@ -13,7 +14,10 @@ export default function ProductDetail() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const productByIdId = 2; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
+  // const productByIdId = 2; // TODO : A remplacer de manière dynamique après l'implémentation de la fonctionnalité de navigation pour arriver sur la page produit
+  const { id } = useParams<{ id: string }>();
+  const productByIdId = parseInt(id || "0", 10);
+
   const { data, loading, error, refetch } = useProductByIdQuery({
     variables: { productByIdId },
   });

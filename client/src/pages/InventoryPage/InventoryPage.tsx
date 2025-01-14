@@ -47,7 +47,10 @@ export default function InventoryPage() {
 
   const handleModifyClick = () => {
     if (selectedRowId) {
-      navigate(`/inventory/${selectedRowId}`);
+      const selectedProdruct = data?.allProducts[selectedRowId - 1];
+      if (selectedProdruct) {
+        navigate(`/achat/produit/${selectedRowId}`);
+      }
     } else {
       setSnackbarMessage("Veuillez sélectionner un produit à modifier.");
       setOpenSnackbar(true);
@@ -144,7 +147,7 @@ export default function InventoryPage() {
                 }}
                 onClick={handleModifyClick}
               >
-                Modifier un produit
+                Afficher le produit
               </Button>
             </Box>
           </Box>
