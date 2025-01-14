@@ -1,8 +1,16 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Alert, Snackbar } from "@mui/material";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
 export default function InventoryPage() {
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const navigate = useNavigate();
+
   const { data, loading, error } = useAllProductsQuery();
 
   const columns = [
@@ -30,6 +38,24 @@ export default function InventoryPage() {
       status: "En cours de calcul", // TODO : Affichage provisoire.
       supplier: product.supplier?.name,
     })) || [];
+
+  const handleRowSelection = (selectionModel: GridRowSelectionModel) => {
+    setSelectedRowId(
+      selectionModel.length ? parseInt(selectionModel[0] as string, 10) : null,
+    );
+  };
+
+  const handleModifyClick = () => {
+    if (selectedRowId) {
+      const selectedProdruct = data?.allProducts[selectedRowId - 1];
+      if (selectedProdruct) {
+        navigate(`/achat/produit/${selectedRowId}`);
+      }
+    } else {
+      setSnackbarMessage("Veuillez sélectionner un produit à modifier.");
+      setOpenSnackbar(true);
+    }
+  };
 
   if (loading)
     return (
@@ -119,8 +145,9 @@ export default function InventoryPage() {
                 sx={{
                   height: "40px",
                 }}
+                onClick={handleModifyClick}
               >
-                Modifier un produit
+                Afficher le produit
               </Button>
             </Box>
           </Box>
@@ -128,8 +155,30 @@ export default function InventoryPage() {
             columns={columns}
             data={dataGridProduct}
             withSummary={true}
+            onRowSelectionModelChange={handleRowSelection}
           />
         </Box>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ marginTop: "1rem" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity="error"
+            sx={{
+              width: "30rem",
+              fontSize: "14px",
+              padding: "1rem",
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     );
 }
