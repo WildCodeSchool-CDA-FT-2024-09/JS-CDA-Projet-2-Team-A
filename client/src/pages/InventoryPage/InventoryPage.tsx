@@ -4,7 +4,7 @@ import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
 import { Box, Typography, Button, Alert, Snackbar, Chip } from "@mui/material";
-import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { GridRowSelectionModel, GridRenderCellParams } from "@mui/x-data-grid";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -30,7 +30,7 @@ export default function InventoryPage() {
       headerName: "Etat",
       flex: 1,
       maxWidth: 200,
-      renderCell: (params) => params.row.status,
+      renderCell: (params: GridRenderCellParams) => params.row.status,
     },
     { field: "supplier", headerName: "Fournisseur", flex: 1 },
   ];
