@@ -102,6 +102,14 @@ export default function InventoryPage() {
       };
     }) || [];
 
+  const lowStockCount = dataGridProduct.filter(
+    (product) => product.status.props.icon.type === ReportProblemOutlinedIcon,
+  ).length;
+
+  const outOfStockCount = dataGridProduct.filter(
+    (product) => product.status.props.icon.type === CloseOutlinedIcon,
+  ).length;
+
   const handleRowSelection = (selectionModel: GridRowSelectionModel) => {
     setSelectedRowId(
       selectionModel.length ? parseInt(selectionModel[0] as string, 10) : null,
@@ -159,7 +167,10 @@ export default function InventoryPage() {
           gap: "20px",
         }}
       >
-        <DashboardSummary />
+        <DashboardSummary
+          lowStockCount={lowStockCount}
+          outOfStockCount={outOfStockCount}
+        />
         <Box
           sx={{
             borderRadius: "5px",

@@ -9,7 +9,15 @@ import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
-export default function DashboardSummary() {
+interface DashboardSummaryProps {
+  lowStockCount: number;
+  outOfStockCount: number;
+}
+
+export default function DashboardSummary({
+  lowStockCount,
+  outOfStockCount,
+}: DashboardSummaryProps) {
   const {
     data: categoryCountData,
     loading: categoryCountLoading,
@@ -233,18 +241,18 @@ export default function DashboardSummary() {
               <Stack direction="row" spacing={10}>
                 <Stack spacing={2}>
                   <Typography sx={{ color: "#5D6679", fontWeight: "bold" }}>
-                    2
+                    {lowStockCount}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#5D6679" }}>
-                    Catégories
+                    Stock faible
                   </Typography>
                 </Stack>
                 <Stack spacing={2}>
                   <Typography sx={{ color: "#5D6679", fontWeight: "bold" }}>
-                    12
+                    {outOfStockCount}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "#5D6679" }}>
-                    Produits
+                    En rupture
                   </Typography>
                 </Stack>
               </Stack>
