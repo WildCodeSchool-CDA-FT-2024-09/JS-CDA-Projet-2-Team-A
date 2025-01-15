@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
-import { Box, Typography, Button, Alert, Snackbar } from "@mui/material";
+import { Box, Typography, Button, Alert, Snackbar, Chip } from "@mui/material";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 export default function InventoryPage() {
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -21,23 +25,82 @@ export default function InventoryPage() {
     { field: "description", headerName: "Description", flex: 1 },
     { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
     { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
-    { field: "status", headerName: "Etat", flex: 1, maxWidth: 200 },
+    {
+      field: "status",
+      headerName: "Etat",
+      flex: 1,
+      maxWidth: 200,
+      renderCell: (params) => params.row.status,
+    },
     { field: "supplier", headerName: "Fournisseur", flex: 1 },
   ];
 
+  const chipStatus = [
+    {
+      id: 1,
+      name: "En stock",
+      component: (
+        <Chip
+          label="En stock"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<DoneOutlinedIcon />}
+        />
+      ),
+    },
+    {
+      id: 2,
+      name: "Stock faible",
+      component: (
+        <Chip
+          label="Stock faible"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<ReportProblemOutlinedIcon />}
+        />
+      ),
+    },
+    {
+      id: 3,
+      name: "En rupture",
+      component: (
+        <Chip
+          label="En rupture"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<CloseOutlinedIcon />}
+        />
+      ),
+    },
+  ];
+
   const dataGridProduct =
-    data?.allProducts?.map((product, index) => ({
-      id: index + 1,
-      category: product.category,
-      product: product.product,
-      material: product.material,
-      color: product.color,
-      description: product.description,
-      minimal: product.min_quantity,
-      stock: product.stock,
-      status: "En cours de calcul", // TODO : Affichage provisoire.
-      supplier: product.supplier?.name,
-    })) || [];
+    data?.allProducts?.map((product, index) => {
+      let status;
+      if (product.stock > product.min_quantity) {
+        status = chipStatus[0];
+      } else if (product.stock > 0 && product.stock <= product.min_quantity) {
+        status = chipStatus[1];
+      } else {
+        status = chipStatus[2];
+      }
+
+      return {
+        id: index + 1,
+        category: product.category,
+        product: product.product,
+        material: product.material,
+        color: product.color,
+        description: product.description,
+        minimal: product.min_quantity,
+        stock: product.stock,
+        status: status.component,
+        supplier: product.supplier?.name,
+      };
+    }) || [];
 
   const handleRowSelection = (selectionModel: GridRowSelectionModel) => {
     setSelectedRowId(
