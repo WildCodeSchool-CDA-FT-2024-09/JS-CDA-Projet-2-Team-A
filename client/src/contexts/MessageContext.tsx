@@ -26,7 +26,7 @@ interface MessageContextType {
   messages: MessageInContext[] | undefined;
   loadingMessages: boolean;
   errorMessages: Error | undefined;
-  refetch: () => void;
+  refetchAllMessages: () => void;
   updateMessageStatusMutation: UpdateMessageStatusMutationFn;
   updateValidation: UpdateMessageStatusMutation | undefined | null;
   updateError: Error | undefined;
@@ -48,7 +48,7 @@ export const MessageProvider = ({
     data,
     loading: loadingMessages,
     error: errorMessages,
-    refetch,
+    refetch: refetchAllMessages,
   } = useGetAllMessagesQuery();
   const [
     updateMessageStatusMutation,
@@ -82,7 +82,7 @@ export const MessageProvider = ({
         messages,
         loadingMessages,
         errorMessages,
-        refetch,
+        refetchAllMessages,
         updateMessageStatusMutation,
         updateValidation,
         updateError,
