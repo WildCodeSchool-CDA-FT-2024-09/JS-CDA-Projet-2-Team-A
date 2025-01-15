@@ -22,7 +22,7 @@ export const allLinks: {
 }[] = [
   {
     name: "Inventaire",
-    url: "inventaire",
+    url: "",
     icon: <ChecklistOutlinedIcon />,
     role: ["achat", "approvisionnement", "atelier"],
   },
