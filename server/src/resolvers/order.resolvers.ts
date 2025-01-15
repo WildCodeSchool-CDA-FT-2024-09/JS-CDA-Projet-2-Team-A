@@ -87,7 +87,7 @@ export class OrderResolver {
     return orders.map((order) => ({
       id: order.id,
       status: order.status,
-      created_at: order.created_at,
+      created_at: new Date(order.created_at),
       products: order.orderProduct.map((orderProduct) => {
         const product = orderProduct.product;
         const supplier = product.supplier;
