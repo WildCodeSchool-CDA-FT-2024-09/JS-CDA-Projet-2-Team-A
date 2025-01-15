@@ -340,6 +340,7 @@ export type GetAllMessagesQuery = {
     id: number;
     title: string;
     message: string;
+    createdAt: Date;
     status: { __typename?: "MessageStatus"; status: string };
   }>;
 };
@@ -911,6 +912,7 @@ export const GetAllMessagesDocument = gql`
     getAllMessages {
       id
       title
+      createdAt: created_at
       message
       status {
         status

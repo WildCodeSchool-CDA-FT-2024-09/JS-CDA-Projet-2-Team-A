@@ -94,7 +94,7 @@ export default function TicketsPage(): ReactElement {
         fields={[
           {
             name: "title",
-            label: "Titre du message (4-50 caractères)",
+            label: "Titre du message (4-30 caractères)",
           },
           {
             name: "text",

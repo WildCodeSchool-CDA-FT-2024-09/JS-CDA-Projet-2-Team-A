@@ -18,6 +18,7 @@ import {
 
 // Typage d'un ticket
 type MessageInContext = Pick<Message, "id" | "title" | "message"> & {
+  createdAt: string;
   status: string;
 };
 
@@ -61,6 +62,7 @@ export const MessageProvider = ({
     return data?.getAllMessages.map((message) => ({
       id: message.id,
       title: message.title,
+      createdAt: new Date(message.createdAt).toLocaleDateString("fr-FR"),
       message: message.message,
       status: message.status.status,
     }));
@@ -72,7 +74,13 @@ export const MessageProvider = ({
    */
   const getMessageById = (
     id: number,
-  ): { id: number; title: string; message: string; status: string } => {
+  ): {
+    id: number;
+    title: string;
+    createdAt: string;
+    message: string;
+    status: string;
+  } => {
     return messages!.find((message) => message.id === id)!;
   };
 

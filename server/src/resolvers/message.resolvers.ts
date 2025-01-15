@@ -38,7 +38,7 @@ class newMessageBody {
   @MinLength(4, {
     message: `Titre trop court, la longueur minimale est de $constraint1 caractères.`,
   })
-  @MaxLength(50, {
+  @MaxLength(30, {
     message: `Titre trop long, la longueur maximale est de $constraint1 caractères.`,
   })
   title: string;
@@ -71,7 +71,9 @@ class updateStatusBody {
 export default class MessageResolver {
   @Query(() => [Message])
   async getAllMessages(): Promise<Message[]> {
-    const messages: Message[] = await Message.find();
+    const messages: Message[] = await Message.find({
+      order: { created_at: "DESC" },
+    });
     if (!messages) {
       throw new GraphQLError("Impossible de récupérer les tickets.");
     }
