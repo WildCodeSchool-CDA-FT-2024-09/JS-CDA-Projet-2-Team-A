@@ -187,6 +187,7 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
+  getAllSuppliersWithProducts: Array<Supplier>;
   getInProgressDeliveryStats: InProgressDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
   productById?: Maybe<Product>;
@@ -461,6 +462,29 @@ export type SuppliersWithEmployeesQuery = {
       phone_number: string;
       email: string;
     }>;
+  }>;
+};
+
+export type SuppliersWithProductsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SuppliersWithProductsQuery = {
+  __typename?: "Query";
+  getAllSuppliersWithProducts: Array<{
+    __typename?: "Supplier";
+    id: number;
+    name: string;
+    logo: string;
+    delay: number;
+    products?: Array<{
+      __typename?: "Product";
+      id: number;
+      product: string;
+      description: string;
+      image?: string | null;
+      stock: number;
+    }> | null;
   }>;
 };
 
@@ -1575,6 +1599,93 @@ export type SuppliersWithEmployeesSuspenseQueryHookResult = ReturnType<
 export type SuppliersWithEmployeesQueryResult = Apollo.QueryResult<
   SuppliersWithEmployeesQuery,
   SuppliersWithEmployeesQueryVariables
+>;
+export const SuppliersWithProductsDocument = gql`
+  query SuppliersWithProducts {
+    getAllSuppliersWithProducts {
+      id
+      name
+      logo
+      delay
+      products {
+        id
+        product
+        description
+        image
+        stock
+      }
+    }
+  }
+`;
+
+/**
+ * __useSuppliersWithProductsQuery__
+ *
+ * To run a query within a React component, call `useSuppliersWithProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSuppliersWithProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSuppliersWithProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSuppliersWithProductsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
+}
+export function useSuppliersWithProductsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
+}
+export function useSuppliersWithProductsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        SuppliersWithProductsQuery,
+        SuppliersWithProductsQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
+}
+export type SuppliersWithProductsQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsQuery
+>;
+export type SuppliersWithProductsLazyQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsLazyQuery
+>;
+export type SuppliersWithProductsSuspenseQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsSuspenseQuery
+>;
+export type SuppliersWithProductsQueryResult = Apollo.QueryResult<
+  SuppliersWithProductsQuery,
+  SuppliersWithProductsQueryVariables
 >;
 export const AuthenticateDocument = gql`
   query Authenticate($credentials: Credentials!) {
