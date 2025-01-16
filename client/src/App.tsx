@@ -5,29 +5,9 @@ import Box from "@mui/material/Box";
 import SideNavBar from "./components/SideNavbar/SideNavBar.tsx";
 import TopBar from "./components/TopBar/TopBar.tsx";
 import { useUser } from "./contexts/UserContext.tsx";
-import { useEffect } from "react";
-import { useWhoAmIQuery } from "./generated/graphql-types";
 
 export default function App() {
-  const {
-    data: loggedUserData,
-    error: loggedUserError,
-    loading,
-  } = useWhoAmIQuery({
-    variables: {},
-  });
-
-  const { user, setUser } = useUser();
-
-  useEffect(() => {
-    if (!loggedUserError && loggedUserData) {
-      setUser({
-        name: loggedUserData!.whoAmI.name,
-        login: loggedUserData!.whoAmI.login,
-        role: loggedUserData!.whoAmI.role,
-      });
-    }
-  }, [loggedUserData, loggedUserError, setUser]);
+  const { user, loading } = useUser();
 
   if (loading) {
     return <Box>Chargement...</Box>;

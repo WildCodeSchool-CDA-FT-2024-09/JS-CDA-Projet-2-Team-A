@@ -1,4 +1,12 @@
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import { useWhoAmIQuery } from "../generated/graphql-types";
 
 interface User {
   name: string;
@@ -9,6 +17,7 @@ interface User {
 type UserContextType = {
   user: User;
   setUser: (user: User) => void;
+  loading: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -23,9 +32,25 @@ export const UserProvider: FC<{ children: ReactNode }> = ({
     login: "",
     role: "",
   });
+  const {
+    data: loggedUserData,
+    error: loggedUserError,
+    loading,
+  } = useWhoAmIQuery({
+    variables: {},
+  });
+  useEffect(() => {
+    if (!loggedUserError && loggedUserData) {
+      setUser({
+        name: loggedUserData!.whoAmI.name,
+        login: loggedUserData!.whoAmI.login,
+        role: loggedUserData!.whoAmI.role,
+      });
+    }
+  }, [loggedUserData, loggedUserError]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
