@@ -1,0 +1,258 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DashboardList from "../../components/DashboardList/DashboardList";
+import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
+import { useAllProductsQuery } from "../../generated/graphql-types";
+import { Box, Typography, Button, Alert, Snackbar, Chip } from "@mui/material";
+import { GridRowSelectionModel, GridRenderCellParams } from "@mui/x-data-grid";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
+export default function InventoryPage() {
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const navigate = useNavigate();
+
+  const { data, loading, error } = useAllProductsQuery();
+
+  const columns = [
+    { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
+    { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
+    { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
+    { field: "color", headerName: "Couleur", flex: 1, maxWidth: 150 },
+    { field: "description", headerName: "Description", flex: 1 },
+    { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
+    { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
+    {
+      field: "status",
+      headerName: "Etat",
+      flex: 1,
+      maxWidth: 200,
+      renderCell: (params: GridRenderCellParams) => params.row.status,
+    },
+    { field: "supplier", headerName: "Fournisseur", flex: 1 },
+  ];
+
+  const chipStatus = [
+    {
+      id: 1,
+      name: "En stock",
+      component: (
+        <Chip
+          label="En stock"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<DoneOutlinedIcon />}
+        />
+      ),
+    },
+    {
+      id: 2,
+      name: "Stock faible",
+      component: (
+        <Chip
+          label="Stock faible"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<ReportProblemOutlinedIcon />}
+        />
+      ),
+    },
+    {
+      id: 3,
+      name: "En rupture",
+      component: (
+        <Chip
+          label="En rupture"
+          variant="outlined"
+          size="small"
+          color="success"
+          icon={<CloseOutlinedIcon />}
+        />
+      ),
+    },
+  ];
+
+  const dataGridProduct =
+    data?.allProducts?.map((product, index) => {
+      let status;
+      if (product.stock > product.min_quantity) {
+        status = chipStatus[0];
+      } else if (product.stock > 0 && product.stock <= product.min_quantity) {
+        status = chipStatus[1];
+      } else {
+        status = chipStatus[2];
+      }
+
+      return {
+        id: index + 1,
+        category: product.category,
+        product: product.product,
+        material: product.material,
+        color: product.color,
+        description: product.description,
+        minimal: product.min_quantity,
+        stock: product.stock,
+        status: status.component,
+        supplier: product.supplier?.name,
+      };
+    }) || [];
+
+  const lowStockCount = dataGridProduct.filter(
+    (product) => product.status.props.icon.type === ReportProblemOutlinedIcon,
+  ).length;
+
+  const outOfStockCount = dataGridProduct.filter(
+    (product) => product.status.props.icon.type === CloseOutlinedIcon,
+  ).length;
+
+  const handleRowSelection = (selectionModel: GridRowSelectionModel) => {
+    setSelectedRowId(
+      selectionModel.length ? parseInt(selectionModel[0] as string, 10) : null,
+    );
+  };
+
+  const handleModifyClick = () => {
+    if (selectedRowId) {
+      const selectedProdruct = data?.allProducts[selectedRowId - 1];
+      if (selectedProdruct) {
+        navigate(`/achat/produit/${selectedRowId}`);
+      }
+    } else {
+      setSnackbarMessage("Veuillez sélectionner un produit à modifier.");
+      setOpenSnackbar(true);
+    }
+  };
+
+  if (loading)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
+      >
+        Le site il est tout pété c'est trop long à charger là !!
+      </Typography>
+    );
+
+  if (error)
+    return (
+      <Typography
+        variant="h5"
+        component="h2"
+        sx={{
+          mt: 3,
+          mb: 3,
+          color: "#383E49",
+        }}
+      >
+        Le site il est tout pété, et en plus c'est bourré d'erreurs !!
+      </Typography>
+    );
+
+  if (data)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <DashboardSummary
+          lowStockCount={lowStockCount}
+          outOfStockCount={outOfStockCount}
+        />
+        <Box
+          sx={{
+            borderRadius: "5px",
+            background: "#FFF",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              borderRadius: "5px 5px 0px 0px",
+            }}
+          >
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{
+                mt: 3,
+                mb: 3,
+                color: "#383E49",
+              }}
+            >
+              Liste des produits
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+              }}
+            >
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{
+                  height: "40px",
+                }}
+              >
+                Ajouter un produit
+              </Button>
+              <Button
+                variant="outlined"
+                type="submit"
+                sx={{
+                  height: "40px",
+                }}
+                onClick={handleModifyClick}
+              >
+                Afficher le produit
+              </Button>
+            </Box>
+          </Box>
+          <DashboardList
+            columns={columns}
+            data={dataGridProduct}
+            withSummary={true}
+            onRowSelectionModelChange={handleRowSelection}
+          />
+        </Box>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ marginTop: "1rem" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity="error"
+            sx={{
+              width: "30rem",
+              fontSize: "14px",
+              padding: "1rem",
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+    );
+}

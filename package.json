@@ -1,0 +1,45 @@
+{
+  "name": "stockmanage",
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "scripts": {
+    "unit-tests-client": "cd client && npm run unit-test",
+    "unit-tests-server": "cd server && npm run unit-test",
+    "unit-tests-uploads": "cd uploads && npm run unit-test",
+    "full_install": "npm i && cd ./client && npm i && cd ../server && npm i && cd ../uploads && npm i",
+    "test": " concurrently \"npm run test-front\" \"npm run test-back\" ",
+    "dev": " concurrently \"npm run dev-front\" \"npm run dev-back\" ",
+    "lint": "eslint --fix --ignore-path .gitignore",
+    "dev-front": "npm run dev --prefix client",
+    "dev-back": "npm run dev --prefix server",
+    "lint-client": "npm run lint --prefix client",
+    "lint-server": "npm run lint --prefix server",
+    "lint-uploads": "npm run lint --prefix uploads",
+    "test-front": "npm run test --prefix client",
+    "test-back": "npm run test --prefix server",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "server/**/*.{js,ts}": [
+      "npm run lint-server",
+      "npm run format --prefix server"
+    ],
+    "client/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint-client",
+      "npm run format --prefix client"
+    ],
+    "uploads/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint-uploads",
+      "npm run format --prefix uploads"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
+  }
+}

@@ -1,0 +1,172 @@
+[
+  {
+    "product": "Coffee Cup 12oz 5342cd",
+    "material": "Plastic",
+    "color": "Crimson",
+    "category": "Landscaping & Irrigation",
+    "image": "adhésif.png",
+    "description": "maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra",
+    "stock": 46,
+    "supplier": 1
+  },
+  {
+    "product": "Glaze - Clear",
+    "material": "Steel",
+    "color": "Orange",
+    "category": "Doors, Frames & Hardware",
+    "image": "câble.png",
+    "description": "leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam",
+    "stock": 75,
+    "supplier": 1
+  },
+  {
+    "product": "Tea - Honey Green Tea",
+    "material": "Vinyl",
+    "color": "Turquoise",
+    "category": "Overhead Doors",
+    "image": "câble.png",
+    "description": "orci mauris lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh",
+    "stock": 76,
+    "supplier": 1
+  },
+  {
+    "product": "Salmon - Atlantic, No Skin",
+    "material": "Plexiglass",
+    "color": "Mauv",
+    "category": "Drilled Shafts",
+    "image": "feretprofilé.png",
+    "description": "proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing",
+    "stock": 55,
+    "supplier": 2
+  },
+  {
+    "product": "Sobe - Lizard Fuel",
+    "material": "Aluminum",
+    "color": "Blue",
+    "category": "Roofing (Asphalt)",
+    "image": "câble.png",
+    "description": "euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a",
+    "stock": 42,
+    "supplier": 2
+  },
+  {
+    "product": "Soup Campbells Mexicali Tortilla",
+    "material": "Aluminum",
+    "color": "Red",
+    "category": "Termite Control",
+    "image": "feretprofilé.png",
+    "description": "tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante",
+    "stock": 39,
+    "supplier": 3
+  },
+  {
+    "product": "Pants Custom Dry Clean",
+    "material": "Steel",
+    "color": "Purple",
+    "category": "Fire Sprinkler System",
+    "image": "adhésif.png",
+    "description": "erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi",
+    "stock": 37,
+    "supplier": 3
+  },
+  {
+    "product": "Sauce - Alfredo",
+    "material": "Granite",
+    "color": "Crimson",
+    "category": "Fire Protection",
+    "image": "feretprofilé.png",
+    "description": "cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel accumsan tellus",
+    "stock": 87,
+    "supplier": 3
+  },
+  {
+    "product": "Canada Dry",
+    "material": "Granite",
+    "color": "Goldenrod",
+    "category": "Framing (Steel)",
+    "image": "adhésif.png",
+    "description": "aenean fermentum donec ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend",
+    "stock": 22,
+    "supplier": 4
+  },
+  {
+    "product": "Kellogs Cereal In A Cup",
+    "material": "Glass",
+    "color": "Puce",
+    "category": "Masonry",
+    "image": "câble.png",
+    "description": "luctus nec molestie sed justo pellentesque viverra pede ac diam",
+    "stock": 95,
+    "supplier": 4
+  },
+  {
+    "product": "Oil - Coconut",
+    "material": "Aluminum",
+    "color": "Purple",
+    "category": "Roofing (Metal)",
+    "image": "feretprofilé.png",
+    "description": "faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel",
+    "stock": 42,
+    "supplier": 5
+  },
+  {
+    "product": "Spoon - Soup, Plastic",
+    "material": "Aluminum",
+    "color": "Blue",
+    "category": "Granite Surfaces",
+    "image": "feretprofilé.png",
+    "description": "lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam",
+    "stock": 82,
+    "supplier": 6
+  },
+  {
+    "product": "Wine - White, French Cross",
+    "material": "Glass",
+    "color": "Pink",
+    "category": "Masonry & Precast",
+    "image": "adhésif.png",
+    "description": "tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec",
+    "stock": 54,
+    "supplier": 7
+  },
+  {
+    "product": "Ginger - Pickled",
+    "material": "Aluminum",
+    "color": "Crimson",
+    "category": "Doors, Frames & Hardware",
+    "image": "adhésif.png",
+    "description": "ante nulla justo aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse",
+    "stock": 18,
+    "supplier": 8
+  },
+  {
+    "product": "Wine - Prosecco Valdobienne",
+    "material": "Vinyl",
+    "color": "Puce",
+    "category": "Masonry",
+    "image": "adhésif.png",
+    "description": "erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec semper sapien a libero nam",
+    "stock": 29,
+    "supplier": 8
+  },
+  {
+    "product": "Lettuce - Iceberg",
+    "material": "Granite",
+    "color": "Orange",
+    "category": "Masonry & Precast",
+    "image": "câble.png",
+    "description": "ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis",
+    "stock": 53,
+    "supplier": 9
+  },
+  {
+    "product": "Pepper - Paprika, Spanish",
+    "material": "Steel",
+    "color": "Khaki",
+    "category": "Electrical",
+    "image": "câble.png",
+    "description": "morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus",
+    "stock": 89,
+    "supplier": 10
+  }
+]
