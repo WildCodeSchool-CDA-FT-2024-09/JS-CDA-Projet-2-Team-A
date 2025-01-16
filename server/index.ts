@@ -24,7 +24,9 @@ const { PORT, JWT_SECRET } = process.env;
   await AppDataSource.initialize();
   const schema = await buildSchema({
     resolvers: resolvers,
-    authChecker: ({ context }): boolean => {
+    authChecker: ({ context }, roles): boolean => {
+      if (roles.length > 0)
+        return roles.some((role) => context.loggedUser.role === role);
       if (context.loggedUser) return true;
       return false;
     },
@@ -32,6 +34,14 @@ const { PORT, JWT_SECRET } = process.env;
 
   const server = new ApolloServer({
     schema,
+    formatError: (formattedError, error) => {
+      if ((error as Error).message.startsWith("Access denied")) {
+        return {
+          message: "Vous n'êtes pas autorisé à effectuer cette action.",
+        };
+      }
+      return formattedError;
+    },
   });
   const { url } = await startStandaloneServer(server, {
     listen: { port: Number(PORT) },

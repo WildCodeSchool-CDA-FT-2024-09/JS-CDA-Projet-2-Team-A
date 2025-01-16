@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  CreateDateColumn,
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
 import { MessageStatus } from "./message_status.entities";
@@ -26,7 +27,7 @@ export class Message extends BaseEntity {
   message: string;
 
   @Field(() => GraphQLDate)
-  @Column({ type: "date" })
+  @CreateDateColumn({ type: "date" })
   created_at: Date;
 
   @Field(() => MessageStatus)

@@ -5,6 +5,7 @@ export const GET_ALL_MESSAGES = gql`
     getAllMessages {
       id
       title
+      createdAt: created_at
       message
       status {
         status
