@@ -9,7 +9,8 @@
     "format": "prettier --write '*/**/*.{js,ts}'",
     "seed-dev": "ts-node-dev ./src/db/seed-mock.ts",
     "create-schema": "npx ts-node ./node_modules/typeorm/cli.js schema:sync -d ./src/db/data-source.ts",
-    "unit-test": "echo 'TODO: Run Unit Tests on server'"
+    "unit-test": "echo 'TODO: Run Unit Tests on server'",
+    "predeploy": "npm run seed-dev && npm run dev"
   },
   "author": "",
   "license": "ISC",
