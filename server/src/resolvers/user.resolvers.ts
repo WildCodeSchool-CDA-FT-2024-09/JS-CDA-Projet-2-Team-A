@@ -7,6 +7,7 @@ import {
   Resolver,
   Ctx,
   Mutation,
+  Authorized,
 } from "type-graphql";
 import { User } from "../entities/user.entities";
 import { Role } from "../entities/role.entities";
@@ -119,17 +120,14 @@ export default class UserResolver {
           role: user.role.role,
         };
       } else {
-        throw new GraphQLError(
-          "Incorrect password: the specified password does not match the one stored for this user."
-        );
+        throw new GraphQLError("Les identifiants sont incorrects.");
       }
     } else {
-      throw new GraphQLError(
-        "User not found: no user with the specified email exists."
-      );
+      throw new GraphQLError("Les identifiants sont incorrects.");
     }
   }
 
+  @Authorized(["admin"])
   @Query(() => [User])
   async allUsers() {
     const users = await User.find({
@@ -141,6 +139,7 @@ export default class UserResolver {
     return users;
   }
 
+  @Authorized(["admin"])
   @Mutation(() => String)
   async createUser(@Arg("body") body: CreateUserInput): Promise<string> {
     try {
@@ -204,6 +203,7 @@ export default class UserResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => String)
   async logout(@Ctx() context: GraphQLContext): Promise<string> {
     const user = context.loggedUser;
