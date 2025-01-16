@@ -180,6 +180,7 @@ export type Query = {
   getAllSuppliersWithEmployees: Array<Supplier>;
   getInProgressDeliveryStats: InProgressDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
+  getSupplierName: Array<Supplier>;
   productById?: Maybe<Product>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
@@ -459,6 +460,13 @@ export type SuppliersWithEmployeesQuery = {
       email: string;
     }>;
   }>;
+};
+
+export type GetSupplierNameQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSupplierNameQuery = {
+  __typename?: "Query";
+  getSupplierName: Array<{ __typename?: "Supplier"; id: number; name: string }>;
 };
 
 export type AuthenticateQueryVariables = Exact<{
@@ -1573,6 +1581,84 @@ export type SuppliersWithEmployeesSuspenseQueryHookResult = ReturnType<
 export type SuppliersWithEmployeesQueryResult = Apollo.QueryResult<
   SuppliersWithEmployeesQuery,
   SuppliersWithEmployeesQueryVariables
+>;
+export const GetSupplierNameDocument = gql`
+  query GetSupplierName {
+    getSupplierName {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useGetSupplierNameQuery__
+ *
+ * To run a query within a React component, call `useGetSupplierNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSupplierNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSupplierNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSupplierNameQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSupplierNameQuery, GetSupplierNameQueryVariables>(
+    GetSupplierNameDocument,
+    options,
+  );
+}
+export function useGetSupplierNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >(GetSupplierNameDocument, options);
+}
+export function useGetSupplierNameSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSupplierNameQuery,
+        GetSupplierNameQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >(GetSupplierNameDocument, options);
+}
+export type GetSupplierNameQueryHookResult = ReturnType<
+  typeof useGetSupplierNameQuery
+>;
+export type GetSupplierNameLazyQueryHookResult = ReturnType<
+  typeof useGetSupplierNameLazyQuery
+>;
+export type GetSupplierNameSuspenseQueryHookResult = ReturnType<
+  typeof useGetSupplierNameSuspenseQuery
+>;
+export type GetSupplierNameQueryResult = Apollo.QueryResult<
+  GetSupplierNameQuery,
+  GetSupplierNameQueryVariables
 >;
 export const AuthenticateDocument = gql`
   query Authenticate($credentials: Credentials!) {
