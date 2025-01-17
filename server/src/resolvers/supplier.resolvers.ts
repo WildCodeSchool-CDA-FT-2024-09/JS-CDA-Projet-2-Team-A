@@ -17,4 +17,17 @@ export default class SupplierResolver {
     }
     return suppliers;
   }
+
+  @Query(() => [Supplier])
+  async getAllSuppliersWithProducts(): Promise<Supplier[]> {
+    const suppliers: Supplier[] = await Supplier.find({
+      relations: ["products"],
+    });
+    if (!suppliers) {
+      throw new GraphQLError(
+        "Impossible de récupérer les fournisseurs. Merci de réessayer plus tard."
+      );
+    }
+    return suppliers;
+  }
 }
