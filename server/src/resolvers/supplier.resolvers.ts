@@ -1,7 +1,8 @@
-import { Query, Resolver } from "type-graphql";
+import { Authorized, Query, Resolver } from "type-graphql";
 import { Supplier } from "../entities/supplier.entities";
 import { GraphQLError } from "graphql/index";
 
+@Authorized(["achat"])
 @Resolver(Supplier)
 export default class SupplierResolver {
   @Query(() => [Supplier])

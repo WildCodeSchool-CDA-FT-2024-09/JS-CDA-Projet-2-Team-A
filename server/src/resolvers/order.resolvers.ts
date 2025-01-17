@@ -1,4 +1,11 @@
-import { Resolver, Query, Int, ObjectType, Field } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Int,
+  ObjectType,
+  Field,
+  Authorized,
+} from "type-graphql";
 import { Order } from "../entities/order.entities";
 import { OrderStatus } from "../entities/order_status.entities";
 
@@ -41,6 +48,7 @@ class InProgressDeliveryStats {
   totalProducts: number;
 }
 
+@Authorized(["achat", "approvisionnement"])
 @Resolver()
 export class OrderResolver {
   // Query to get detailed order information including expected delivery dates
