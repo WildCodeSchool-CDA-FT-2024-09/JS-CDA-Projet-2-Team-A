@@ -8,6 +8,7 @@ import {
   Mutation,
   InputType,
   Field,
+  Authorized,
 } from "type-graphql";
 
 @InputType()
@@ -40,6 +41,7 @@ class UpdateProductInput {
   supplierId?: number;
 }
 
+@Authorized(["achat", "approvisionnement", "atelier"])
 @Resolver(Product)
 export default class ProductResolver {
   @Query(() => [Product])

@@ -7,9 +7,9 @@ import {
   Mutation,
   Arg,
   InputType,
+  Authorized,
 } from "type-graphql";
 import { GraphQLError } from "graphql";
-//import { GraphQLDate } from "graphql-scalars";
 import { Order } from "../entities/order.entities";
 import { OrderStatus } from "../entities/order_status.entities";
 import { OrderProduct } from "../entities/order_product.entities";
@@ -70,6 +70,7 @@ class OrderItem {
   quantity: number;
 }
 
+@Authorized(["achat", "approvisionnement"])
 @Resolver()
 export class OrderResolver {
   // Query to get detailed order information including expected delivery dates
@@ -133,6 +134,7 @@ export class OrderResolver {
     return { countDeliveries, totalProducts };
   }
 
+  @Authorized(["achat"])
   @Mutation(() => String)
   async createOrder(@Arg("body") body: CreateOrderInput): Promise<string> {
     const products = [];

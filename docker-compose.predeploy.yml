@@ -1,0 +1,77 @@
+services:
+  predeploy-db:
+    image: postgres
+    env_file: ./server/.env
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  predeploy-adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    container_name: adminer
+    restart: always
+    depends_on:
+      predeploy-db:
+        condition: service_healthy
+
+  predeploy-server:
+    image: scyanth/stockmanage_server
+    env_file: ./server/.env
+    command: npm run dev
+    restart: always
+    depends_on:
+      predeploy-db:
+        condition: service_healthy
+
+  predeploy-client:
+    image: scyanth/stockmanage_client
+    env_file: ./client/.env
+    command: npm run dev
+    restart: always
+
+  predeploy-uploads:
+    image: scyanth/stockmanage_uploads
+    env_file: ./uploads/.env
+    command: npm run dev
+    restart: always
+    depends_on:
+      - predeploy-db
+
+  predeploy-gateway:
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx.predeploy.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - predeploy-server
+      - predeploy-client
+      - predeploy-uploads
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--silent",
+          "--fail",
+          "http://predeploy-client:5173/",
+          "&&",
+          "curl",
+          "--silent",
+          "--fail",
+          "http://predeploy-server:8000/",
+          "&&",
+          "curl",
+          "--silent",
+          "--fail",
+          "http://predeploy-uploads:3002/",
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s

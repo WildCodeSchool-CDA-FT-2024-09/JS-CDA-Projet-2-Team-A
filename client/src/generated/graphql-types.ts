@@ -90,11 +90,16 @@ export type MessageStatus = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createMessage: Scalars["String"]["output"];
   createOrder: Scalars["String"]["output"];
   createUser: Scalars["String"]["output"];
   logout: Scalars["String"]["output"];
   updateMessageStatus: Scalars["String"]["output"];
   updateProduct?: Maybe<Product>;
+};
+
+export type MutationCreateMessageArgs = {
+  body: NewMessageBody;
 };
 
 export type MutationCreateOrderArgs = {
@@ -258,9 +263,23 @@ export type WhoAmIResponse = {
   role: Scalars["String"]["output"];
 };
 
+export type NewMessageBody = {
+  message: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
+};
+
 export type UpdateStatusBody = {
   id: Scalars["Float"]["input"];
   status: Scalars["String"]["input"];
+};
+
+export type CreateMessageMutationVariables = Exact<{
+  body: NewMessageBody;
+}>;
+
+export type CreateMessageMutation = {
+  __typename?: "Mutation";
+  createMessage: string;
 };
 
 export type UpdateMessageStatusMutationVariables = Exact<{
@@ -345,6 +364,7 @@ export type GetAllMessagesQuery = {
     id: number;
     title: string;
     message: string;
+    createdAt: Date;
     status: { __typename?: "MessageStatus"; status: string };
   }>;
 };
@@ -529,6 +549,54 @@ export type WhoAmIQuery = {
   };
 };
 
+export const CreateMessageDocument = gql`
+  mutation CreateMessage($body: newMessageBody!) {
+    createMessage(body: $body)
+  }
+`;
+export type CreateMessageMutationFn = Apollo.MutationFunction<
+  CreateMessageMutation,
+  CreateMessageMutationVariables
+>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateMessageMutation,
+    CreateMessageMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateMessageMutation,
+    CreateMessageMutationVariables
+  >(CreateMessageDocument, options);
+}
+export type CreateMessageMutationHookResult = ReturnType<
+  typeof useCreateMessageMutation
+>;
+export type CreateMessageMutationResult =
+  Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<
+  CreateMessageMutation,
+  CreateMessageMutationVariables
+>;
 export const UpdateMessageStatusDocument = gql`
   mutation UpdateMessageStatus($body: updateStatusBody!) {
     updateMessageStatus(body: $body)
@@ -939,6 +1007,7 @@ export const GetAllMessagesDocument = gql`
     getAllMessages {
       id
       title
+      createdAt: created_at
       message
       status {
         status
