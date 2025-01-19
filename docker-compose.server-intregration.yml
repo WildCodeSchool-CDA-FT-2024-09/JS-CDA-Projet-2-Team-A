@@ -12,6 +12,12 @@ services:
       timeout: 5s
       retries: 5
 
+  integration-redis:
+    image: redis
+    container_name: redis_cache
+    ports:
+      - 6379:6379
+
   integration-server:
     build: ./server
     environment:
