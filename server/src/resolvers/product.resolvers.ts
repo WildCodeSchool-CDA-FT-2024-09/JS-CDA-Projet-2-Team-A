@@ -41,6 +41,15 @@ class UpdateProductInput {
   supplierId?: string;
 }
 
+@InputType()
+class DisableProductInput {
+  @Field(() => String, { nullable: true })
+  commentary?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  active?: boolean;
+}
+
 @Authorized(["achat", "approvisionnement", "atelier"])
 @Resolver(Product)
 export default class ProductResolver {
@@ -122,6 +131,29 @@ export default class ProductResolver {
     }
 
     Object.assign(product, data);
+
+    await product.save();
+
+    return product;
+  }
+
+  @Mutation(() => Product, { nullable: true })
+  async disableProduct(
+    @Arg("id", () => Int) id: number,
+    @Arg("data", () => DisableProductInput) data: DisableProductInput
+  ): Promise<Product | null> {
+    const product = await Product.findOne({ where: { id } });
+
+    if (!product) {
+      throw new Error("Produit introuvable.");
+    }
+
+    if (data.commentary !== undefined) {
+      product.commentary = data.commentary;
+    }
+    if (data.active !== undefined) {
+      product.active = data.active;
+    }
 
     await product.save();
 
