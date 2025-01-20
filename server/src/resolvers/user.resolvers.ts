@@ -16,7 +16,14 @@ import { GraphQLError } from "graphql";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
 import { IncomingMessage, ServerResponse } from "http";
-import { IsString } from "class-validator";
+import {
+  IsEmail,
+  IsEnum,
+  IsString,
+  MaxLength,
+  MinLength,
+  validate,
+} from "class-validator";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
 
@@ -63,12 +70,27 @@ class AuthResponse {
 @InputType()
 class CreateUserInput {
   @Field()
+  @IsString()
+  @MinLength(3, {
+    message: `Nom trop court, la longueur minimale est de $constraint1 caractères.`,
+  })
+  @MaxLength(100, {
+    message: `Nom trop long, la longueur maximale est de $constraint1 caractères.`,
+  })
   name: string;
 
   @Field()
+  @IsEmail()
+  @MinLength(6, {
+    message: `E-mail trop court, la longueur minimale est de $constraint1 caractères.`,
+  })
+  @MaxLength(255, {
+    message: `E-mail trop long, la longueur maximale est de $constraint1 caractères.`,
+  })
   email: string;
 
   @Field()
+  @IsEnum(["achat", "approvisionnement", "atelier", "admin"])
   roleName: string;
 }
 
@@ -143,7 +165,14 @@ export default class UserResolver {
   @Authorized(["admin"])
   @Mutation(() => String)
   async createUser(@Arg("body") body: CreateUserInput): Promise<string> {
+    // Validation des données entrantes et gestion des erreurs.
+    const errors = await validate(body);
+    if (errors.length) {
+      throw new GraphQLError("Données entrantes erronées");
+    }
+
     const queryRunner = AppDataSource.createQueryRunner();
+
     try {
       await queryRunner.startTransaction();
 
