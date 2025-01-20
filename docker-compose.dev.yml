@@ -43,7 +43,6 @@ services:
     restart: always
     env_file: ./email/.env
 
-
   client:
     build: ./client
     volumes:
