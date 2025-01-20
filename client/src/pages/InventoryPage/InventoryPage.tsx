@@ -3,7 +3,15 @@ import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
 import { useAllProductsQuery } from "../../generated/graphql-types";
-import { Box, Typography, Button, Alert, Snackbar, Chip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Alert,
+  Snackbar,
+  Chip,
+  Switch,
+} from "@mui/material";
 import { GridRowSelectionModel, GridRenderCellParams } from "@mui/x-data-grid";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
@@ -33,6 +41,14 @@ export default function InventoryPage() {
       renderCell: (params: GridRenderCellParams) => params.row.status,
     },
     { field: "supplier", headerName: "Fournisseur", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: () => <Switch defaultChecked />,
+    },
   ];
 
   const chipStatus = [
