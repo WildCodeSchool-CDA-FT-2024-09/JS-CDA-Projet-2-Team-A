@@ -30,3 +30,12 @@ services:
     depends_on:
       integration-db:
         condition: service_healthy
+
+  integration-email:
+    build: ./email
+    command: npm run dev
+    restart: always
+    env_file: ./email/.env
+    depends_on:
+      integration-server:
+        condition: service_healthy

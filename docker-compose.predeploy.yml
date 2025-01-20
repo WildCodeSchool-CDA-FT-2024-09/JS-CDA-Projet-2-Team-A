@@ -34,6 +34,15 @@ services:
       predeploy-db:
         condition: service_healthy
 
+  predeploy-email:
+    build: ./email
+    command: npm run dev
+    restart: always
+    env_file: ./email/.env
+    depends_on:
+      predeploy-server:
+        condition: service_healthy
+
   predeploy-client:
     image: scyanth/stockmanage_client
     env_file: ./client/.env
