@@ -22,8 +22,7 @@ services:
   redis:
     image: redis
     container_name: redis_cache
-    ports:
-      - 6379:6379
+    restart: always
 
   server:
     build: ./server
@@ -43,9 +42,6 @@ services:
     command: npm run dev
     restart: always
     env_file: ./email/.env
-    depends_on:
-      server:
-        condition: service_healthy
 
   client:
     build: ./client
@@ -79,6 +75,7 @@ services:
       - server
       - client
       - uploads
+    restart: always
     healthcheck:
       test:
         [

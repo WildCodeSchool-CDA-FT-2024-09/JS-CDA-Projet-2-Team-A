@@ -15,8 +15,6 @@ services:
   integration-redis:
     image: redis
     container_name: redis_cache
-    ports:
-      - 6379:6379
 
   integration-server:
     build: ./server
@@ -36,6 +34,3 @@ services:
     command: npm run dev
     restart: always
     env_file: ./email/.env
-    depends_on:
-      integration-server:
-        condition: service_healthy
