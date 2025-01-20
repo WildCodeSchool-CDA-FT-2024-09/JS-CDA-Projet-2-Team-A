@@ -19,6 +19,12 @@ services:
       db:
         condition: service_healthy
 
+  redis:
+    image: redis
+    container_name: redis_cache
+    ports:
+      - 6379:6379
+
   server:
     build: ./server
     volumes:

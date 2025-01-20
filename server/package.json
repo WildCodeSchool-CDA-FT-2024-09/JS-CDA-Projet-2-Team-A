@@ -25,6 +25,7 @@
     "graphql-scalars": "^1.23.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
+    "redis": "^4.7.0",
     "reflect-metadata": "^0.2.2",
     "set-cookie-parser": "^2.7.1",
     "sqlite3": "^5.1.7",

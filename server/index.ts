@@ -3,6 +3,7 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { AppDataSource } from "./src/db/data-source";
 import { resolvers } from "./src/resolvers/index";
+import redisClient from "./redis.config";
 import "reflect-metadata";
 import "dotenv/config";
 import * as jwt from "jsonwebtoken";
@@ -22,6 +23,13 @@ const { PORT, JWT_SECRET } = process.env;
 
 (async () => {
   await AppDataSource.initialize();
+  try {
+    await redisClient.connect();
+    console.info("Connecté au cache Redis !");
+  } catch (error) {
+    console.error("Erreur de connexion au cache Redis :", error);
+    return;
+  }
   const schema = await buildSchema({
     resolvers: resolvers,
     authChecker: ({ context }, roles): boolean => {
