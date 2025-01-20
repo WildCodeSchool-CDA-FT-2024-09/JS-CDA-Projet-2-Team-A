@@ -147,7 +147,7 @@ export default function InventoryPage() {
           color: "#383E49",
         }}
       >
-        Le site il est tout pété c'est trop long à charger là !!
+        Chargement en cours...
       </Typography>
     );
 
@@ -162,7 +162,7 @@ export default function InventoryPage() {
           color: "#383E49",
         }}
       >
-        Le site il est tout pété, et en plus c'est bourré d'erreurs !!
+        Une erreur est survenue lors du chargement des données.
       </Typography>
     );
 
