@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
@@ -11,45 +11,22 @@ import {
   Snackbar,
   Chip,
   Switch,
+  Tooltip,
 } from "@mui/material";
 import { GridRowSelectionModel, GridRenderCellParams } from "@mui/x-data-grid";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 export default function InventoryPage() {
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [switchStates, setSwitchStates] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
 
   const { data, loading, error } = useAllProductsQuery();
-
-  const columns = [
-    { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
-    { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
-    { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
-    { field: "color", headerName: "Couleur", flex: 1, maxWidth: 150 },
-    { field: "description", headerName: "Description", flex: 1 },
-    { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
-    { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
-    {
-      field: "status",
-      headerName: "Etat",
-      flex: 1,
-      maxWidth: 200,
-      renderCell: (params: GridRenderCellParams) => params.row.status,
-    },
-    { field: "supplier", headerName: "Fournisseur", flex: 1 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 100,
-      sortable: false,
-      filterable: false,
-      renderCell: () => <Switch defaultChecked />,
-    },
-  ];
 
   const chipStatus = [
     {
@@ -125,6 +102,76 @@ export default function InventoryPage() {
         };
       })
       ?.sort((a, b) => a.priority - b.priority) || [];
+
+  useEffect(() => {
+    if (Object.keys(switchStates).length === 0 && dataGridProduct.length > 0) {
+      const initialStates = dataGridProduct.reduce(
+        (acc, product) => {
+          acc[product.id] = true; // Par défaut, tous les Switches sont activés
+          return acc;
+        },
+        {} as Record<number, boolean>,
+      );
+      setSwitchStates(initialStates);
+    }
+  }, [dataGridProduct, switchStates]);
+
+  const handleSwitchChange = (id: number) => {
+    setSwitchStates((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const columns = [
+    { field: "category", headerName: "Catégorie", flex: 1, maxWidth: 250 },
+    { field: "product", headerName: "Produit", flex: 1, maxWidth: 250 },
+    { field: "material", headerName: "Matériau", flex: 1, maxWidth: 150 },
+    { field: "color", headerName: "Couleur", flex: 1, maxWidth: 150 },
+    { field: "description", headerName: "Description", flex: 1 },
+    { field: "minimal", headerName: "Seuil", flex: 1, maxWidth: 150 },
+    { field: "stock", headerName: "Stock", flex: 1, maxWidth: 150 },
+    {
+      field: "status",
+      headerName: "Etat",
+      flex: 1,
+      maxWidth: 200,
+      renderCell: (params: GridRenderCellParams) => params.row.status,
+    },
+    { field: "supplier", headerName: "Fournisseur", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: (params: GridRenderCellParams) => {
+        const id = params.id as number;
+        const isChecked = switchStates[id] ?? true;
+
+        return (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: ".5px",
+            }}
+          >
+            <Switch
+              checked={isChecked}
+              onChange={() => handleSwitchChange(id)}
+            />
+            {!isChecked && (
+              <Tooltip title="Commentaire de désactivation">
+                <HelpOutlineOutlinedIcon color="info" />
+              </Tooltip>
+            )}
+          </Box>
+        );
+      },
+    },
+  ];
 
   const lowStockCount = dataGridProduct.filter(
     (product) => product.status.props.icon.type === ReportProblemOutlinedIcon,
