@@ -40,6 +40,10 @@ export type AuthResponse = {
   token: Scalars["String"]["output"];
 };
 
+export type CreateOrderInput = {
+  orderSelection: Array<OrderItem>;
+};
+
 export type CreateUserInput = {
   email: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
@@ -87,6 +91,7 @@ export type MessageStatus = {
 export type Mutation = {
   __typename?: "Mutation";
   createMessage: Scalars["String"]["output"];
+  createOrder: Scalars["String"]["output"];
   createUser: Scalars["String"]["output"];
   logout: Scalars["String"]["output"];
   updateMessageStatus: Scalars["String"]["output"];
@@ -95,6 +100,10 @@ export type Mutation = {
 
 export type MutationCreateMessageArgs = {
   body: NewMessageBody;
+};
+
+export type MutationCreateOrderArgs = {
+  body: CreateOrderInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -125,6 +134,11 @@ export type OrderDetails = {
   id: Scalars["Int"]["output"];
   products: Array<ProductDetails>;
   status: OrderStatus;
+};
+
+export type OrderItem = {
+  productId: Scalars["Int"]["input"];
+  quantity: Scalars["Int"]["input"];
 };
 
 export type OrderProduct = {
@@ -178,6 +192,7 @@ export type Query = {
   getAllMessages: Array<Message>;
   getAllRoles: Array<Role>;
   getAllSuppliersWithEmployees: Array<Supplier>;
+  getAllSuppliersWithProducts: Array<Supplier>;
   getInProgressDeliveryStats: InProgressDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
   getSupplierName: Array<Supplier>;
@@ -275,6 +290,15 @@ export type UpdateMessageStatusMutationVariables = Exact<{
 export type UpdateMessageStatusMutation = {
   __typename?: "Mutation";
   updateMessageStatus: string;
+};
+
+export type CreateOrderMutationVariables = Exact<{
+  body: CreateOrderInput;
+}>;
+
+export type CreateOrderMutation = {
+  __typename?: "Mutation";
+  createOrder: string;
 };
 
 export type UpdateProductMutationVariables = Exact<{
@@ -462,11 +486,27 @@ export type SuppliersWithEmployeesQuery = {
   }>;
 };
 
-export type GetSupplierNameQueryVariables = Exact<{ [key: string]: never }>;
+export type SuppliersWithProductsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
 
-export type GetSupplierNameQuery = {
+export type SuppliersWithProductsQuery = {
   __typename?: "Query";
-  getSupplierName: Array<{ __typename?: "Supplier"; id: number; name: string }>;
+  getAllSuppliersWithProducts: Array<{
+    __typename?: "Supplier";
+    id: number;
+    name: string;
+    logo: string;
+    delay: number;
+    products?: Array<{
+      __typename?: "Product";
+      id: number;
+      product: string;
+      description: string;
+      image?: string | null;
+      stock: number;
+    }> | null;
+  }>;
 };
 
 export type AuthenticateQueryVariables = Exact<{
@@ -605,6 +645,54 @@ export type UpdateMessageStatusMutationResult =
 export type UpdateMessageStatusMutationOptions = Apollo.BaseMutationOptions<
   UpdateMessageStatusMutation,
   UpdateMessageStatusMutationVariables
+>;
+export const CreateOrderDocument = gql`
+  mutation CreateOrder($body: CreateOrderInput!) {
+    createOrder(body: $body)
+  }
+`;
+export type CreateOrderMutationFn = Apollo.MutationFunction<
+  CreateOrderMutation,
+  CreateOrderMutationVariables
+>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateOrderMutation,
+    CreateOrderMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(
+    CreateOrderDocument,
+    options,
+  );
+}
+export type CreateOrderMutationHookResult = ReturnType<
+  typeof useCreateOrderMutation
+>;
+export type CreateOrderMutationResult =
+  Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<
+  CreateOrderMutation,
+  CreateOrderMutationVariables
 >;
 export const UpdateProductDocument = gql`
   mutation UpdateProduct($id: Int!, $data: UpdateProductInput!) {
@@ -1582,60 +1670,69 @@ export type SuppliersWithEmployeesQueryResult = Apollo.QueryResult<
   SuppliersWithEmployeesQuery,
   SuppliersWithEmployeesQueryVariables
 >;
-export const GetSupplierNameDocument = gql`
-  query GetSupplierName {
-    getSupplierName {
+export const SuppliersWithProductsDocument = gql`
+  query SuppliersWithProducts {
+    getAllSuppliersWithProducts {
       id
       name
+      logo
+      delay
+      products {
+        id
+        product
+        description
+        image
+        stock
+      }
     }
   }
 `;
 
 /**
- * __useGetSupplierNameQuery__
+ * __useSuppliersWithProductsQuery__
  *
- * To run a query within a React component, call `useGetSupplierNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSupplierNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSuppliersWithProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSuppliersWithProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetSupplierNameQuery({
+ * const { data, loading, error } = useSuppliersWithProductsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetSupplierNameQuery(
+export function useSuppliersWithProductsQuery(
   baseOptions?: Apollo.QueryHookOptions<
-    GetSupplierNameQuery,
-    GetSupplierNameQueryVariables
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetSupplierNameQuery, GetSupplierNameQueryVariables>(
-    GetSupplierNameDocument,
-    options,
-  );
+  return Apollo.useQuery<
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
 }
-export function useGetSupplierNameLazyQuery(
+export function useSuppliersWithProductsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetSupplierNameQuery,
-    GetSupplierNameQueryVariables
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
-    GetSupplierNameQuery,
-    GetSupplierNameQueryVariables
-  >(GetSupplierNameDocument, options);
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
 }
-export function useGetSupplierNameSuspenseQuery(
+export function useSuppliersWithProductsSuspenseQuery(
   baseOptions?:
     | Apollo.SkipToken
     | Apollo.SuspenseQueryHookOptions<
-        GetSupplierNameQuery,
-        GetSupplierNameQueryVariables
+        SuppliersWithProductsQuery,
+        SuppliersWithProductsQueryVariables
       >,
 ) {
   const options =
@@ -1643,22 +1740,22 @@ export function useGetSupplierNameSuspenseQuery(
       ? baseOptions
       : { ...defaultOptions, ...baseOptions };
   return Apollo.useSuspenseQuery<
-    GetSupplierNameQuery,
-    GetSupplierNameQueryVariables
-  >(GetSupplierNameDocument, options);
+    SuppliersWithProductsQuery,
+    SuppliersWithProductsQueryVariables
+  >(SuppliersWithProductsDocument, options);
 }
-export type GetSupplierNameQueryHookResult = ReturnType<
-  typeof useGetSupplierNameQuery
+export type SuppliersWithProductsQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsQuery
 >;
-export type GetSupplierNameLazyQueryHookResult = ReturnType<
-  typeof useGetSupplierNameLazyQuery
+export type SuppliersWithProductsLazyQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsLazyQuery
 >;
-export type GetSupplierNameSuspenseQueryHookResult = ReturnType<
-  typeof useGetSupplierNameSuspenseQuery
+export type SuppliersWithProductsSuspenseQueryHookResult = ReturnType<
+  typeof useSuppliersWithProductsSuspenseQuery
 >;
-export type GetSupplierNameQueryResult = Apollo.QueryResult<
-  GetSupplierNameQuery,
-  GetSupplierNameQueryVariables
+export type SuppliersWithProductsQueryResult = Apollo.QueryResult<
+  SuppliersWithProductsQuery,
+  SuppliersWithProductsQueryVariables
 >;
 export const AuthenticateDocument = gql`
   query Authenticate($credentials: Credentials!) {

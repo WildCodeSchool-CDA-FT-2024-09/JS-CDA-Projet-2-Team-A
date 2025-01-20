@@ -8,6 +8,7 @@ RUN npm ping
 RUN npm install
 
 COPY . .
+COPY redis.config.ts ./redis.config.ts
 
 EXPOSE 8000
 

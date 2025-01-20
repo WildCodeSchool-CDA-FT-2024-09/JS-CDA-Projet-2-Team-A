@@ -18,6 +18,24 @@ export const GET_SUPPLIERS_WITH_EMPLOYEES = gql`
   }
 `;
 
+export const GET_SUPPLIERS_WITH_PRODUCTS = gql`
+  query SuppliersWithProducts {
+    getAllSuppliersWithProducts {
+      id
+      name
+      logo
+      delay
+      products {
+        id
+        product
+        description
+        image
+        stock
+      }
+    }
+  }
+`;
+
 export const GET_SUPPLIERS_NAMES = gql`
   query GetSupplierName {
     getSupplierName {

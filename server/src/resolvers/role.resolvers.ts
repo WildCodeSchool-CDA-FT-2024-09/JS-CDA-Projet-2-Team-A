@@ -1,7 +1,8 @@
-import { Query, Resolver } from "type-graphql";
+import { Authorized, Query, Resolver } from "type-graphql";
 import { Role } from "../entities/role.entities";
 import { GraphQLError } from "graphql";
 
+@Authorized(["admin"])
 @Resolver(Role)
 export default class RoleResolver {
   @Query(() => [Role])
