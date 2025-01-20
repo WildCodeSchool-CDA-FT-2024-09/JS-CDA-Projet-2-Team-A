@@ -9,6 +9,7 @@ import {
   Mutation,
   Authorized,
 } from "type-graphql";
+import { AppDataSource } from "../db/data-source";
 import { User } from "../entities/user.entities";
 import { Role } from "../entities/role.entities";
 import { GraphQLError } from "graphql";
@@ -19,7 +20,7 @@ import { IsString } from "class-validator";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, MAIL_URL, LOGIN_PAGE_URL } = process.env;
 
 interface GraphQLContext {
   req: IncomingMessage;
@@ -142,7 +143,10 @@ export default class UserResolver {
   @Authorized(["admin"])
   @Mutation(() => String)
   async createUser(@Arg("body") body: CreateUserInput): Promise<string> {
+    const queryRunner = AppDataSource.createQueryRunner();
     try {
+      await queryRunner.startTransaction();
+
       // Step 1: Generate a cryptographically secure random password
       const passwordLength = 12;
       const randomPassword = this.generateRandomPassword(passwordLength);
@@ -173,9 +177,28 @@ export default class UserResolver {
       // Step 6: Save the user to the database
       await user.save();
 
-      // Step 7: Return the generated password (for use by the user or storing elsewhere)
-      return randomPassword;
+      const success = await fetch(`${MAIL_URL}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: user.email,
+          subject: "Première connexion",
+          firstname: user.name,
+          content: randomPassword,
+          loginUrl: LOGIN_PAGE_URL,
+        }),
+      });
+      if (success.status !== 200) {
+        throw new GraphQLError(
+          "Une erreur est survenue lors de l'envoi de l'e-mail."
+        );
+      }
+      await queryRunner.commitTransaction();
+      return success && "User created successfully.";
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw new GraphQLError(
         error instanceof Error ? error.message : "An error occurred",
         {
@@ -184,6 +207,8 @@ export default class UserResolver {
           },
         }
       );
+    } finally {
+      await queryRunner.release();
     }
   }
 
