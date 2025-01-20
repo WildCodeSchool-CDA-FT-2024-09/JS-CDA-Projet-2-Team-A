@@ -57,7 +57,7 @@ export default function InventoryPage() {
           label="Stock faible"
           variant="outlined"
           size="small"
-          color="success"
+          color="warning"
           icon={<ReportProblemOutlinedIcon />}
         />
       ),
@@ -70,7 +70,7 @@ export default function InventoryPage() {
           label="En rupture"
           variant="outlined"
           size="small"
-          color="success"
+          color="error"
           icon={<CloseOutlinedIcon />}
         />
       ),
@@ -78,29 +78,37 @@ export default function InventoryPage() {
   ];
 
   const dataGridProduct =
-    data?.allProducts?.map((product, index) => {
-      let status;
-      if (product.stock > product.min_quantity) {
-        status = chipStatus[0];
-      } else if (product.stock > 0 && product.stock <= product.min_quantity) {
-        status = chipStatus[1];
-      } else {
-        status = chipStatus[2];
-      }
+    data?.allProducts
+      ?.map((product, index) => {
+        const minQuantity = product.min_quantity ?? 0;
+        const stock = product.stock ?? 0;
+        let status, priority;
+        if (stock > minQuantity) {
+          status = chipStatus[0];
+          priority = 3;
+        } else if (stock > 0 && stock <= minQuantity) {
+          status = chipStatus[1];
+          priority = 2;
+        } else {
+          status = chipStatus[2];
+          priority = 1;
+        }
 
-      return {
-        id: index + 1,
-        category: product.category,
-        product: product.product,
-        material: product.material,
-        color: product.color,
-        description: product.description,
-        minimal: product.min_quantity,
-        stock: product.stock,
-        status: status.component,
-        supplier: product.supplier?.name,
-      };
-    }) || [];
+        return {
+          id: index + 1,
+          category: product.category,
+          product: product.product,
+          material: product.material,
+          color: product.color,
+          description: product.description,
+          minimal: minQuantity,
+          stock: stock,
+          status: status.component,
+          priority: priority,
+          supplier: product.supplier?.name,
+        };
+      })
+      ?.sort((a, b) => a.priority - b.priority) || [];
 
   const lowStockCount = dataGridProduct.filter(
     (product) => product.status.props.icon.type === ReportProblemOutlinedIcon,

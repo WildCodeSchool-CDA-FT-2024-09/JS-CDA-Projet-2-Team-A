@@ -80,7 +80,9 @@ export default function ProductDetail() {
       setOpenModal(false);
       await refetch();
     } catch {
-      setSnackbarMessage("ça fonctionne pas FDP");
+      setSnackbarMessage(
+        "Une erreur est survenue lors de la modification du produit",
+      );
       setOpenSnackbar(true);
     }
   };
