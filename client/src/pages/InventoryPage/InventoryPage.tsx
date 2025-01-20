@@ -99,6 +99,8 @@ export default function InventoryPage() {
           status: status.component,
           priority: priority,
           supplier: product.supplier?.name,
+          active: product.active,
+          commentary: product.commentary,
         };
       })
       ?.sort((a, b) => a.priority - b.priority) || [];
@@ -107,7 +109,7 @@ export default function InventoryPage() {
     if (Object.keys(switchStates).length === 0 && dataGridProduct.length > 0) {
       const initialStates = dataGridProduct.reduce(
         (acc, product) => {
-          acc[product.id] = true; // Par défaut, tous les Switches sont activés
+          acc[product.id] = product.active ?? true;
           return acc;
         },
         {} as Record<number, boolean>,
@@ -148,6 +150,7 @@ export default function InventoryPage() {
       renderCell: (params: GridRenderCellParams) => {
         const id = params.id as number;
         const isChecked = switchStates[id] ?? true;
+        const commentary = params.row.commentary;
 
         return (
           <Box
@@ -163,7 +166,7 @@ export default function InventoryPage() {
               onChange={() => handleSwitchChange(id)}
             />
             {!isChecked && (
-              <Tooltip title="Commentaire de désactivation">
+              <Tooltip title={commentary ?? "Aucun commentaire"}>
                 <HelpOutlineOutlinedIcon color="info" />
               </Tooltip>
             )}
