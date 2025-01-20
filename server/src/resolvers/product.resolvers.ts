@@ -37,7 +37,7 @@ class UpdateProductInput {
   stock?: number;
 
   @Field(() => Int, { nullable: true })
-  supplierId?: number;
+  supplierId?: string;
 }
 
 @Resolver(Product)
@@ -92,13 +92,12 @@ export default class ProductResolver {
     const product = await Product.findOne({ where: { id } });
 
     if (!product) {
-      console.error("Produit introuvable :", id);
       throw new Error("Produit introuvable.");
     }
 
     if (data.supplierId) {
       const supplier = await Supplier.findOne({
-        where: { id: data.supplierId },
+        where: { id: parseInt(data.supplierId) },
       });
       if (!supplier) {
         throw new Error("Fournisseur introuvable.");

@@ -61,7 +61,6 @@ export default function ProductDetail() {
           data: {
             ...formData,
             image: imagePath,
-            supplierId: formData.supplierId,
           },
         },
       });
@@ -70,9 +69,7 @@ export default function ProductDetail() {
       setOpenModal(false);
       await refetch();
     } catch {
-      setSnackbarMessage(
-        "Une erreur est survenue lors de la modification du produit.",
-      );
+      setSnackbarMessage("ça fonctionne pas FDP");
       setOpenSnackbar(true);
     }
   };
@@ -223,14 +220,13 @@ export default function ProductDetail() {
               type: "number",
               defaultValue: productByIdData?.productById?.stock ?? 0,
             },
-            // TODO : Remplacer par le nom des fournisseurs, une fois que la page "Fournisseur" sera créé.
             {
               name: "supplierId",
               label: "Nom du fournisseur",
               type: "select",
               options:
                 suppliersData?.getSupplierName.map((supplier) => ({
-                  value: supplier.id.toString(),
+                  value: supplier.id,
                   label: supplier.name,
                 })) ?? [],
               defaultValue: productByIdData?.productById?.supplier?.id ?? 0,
