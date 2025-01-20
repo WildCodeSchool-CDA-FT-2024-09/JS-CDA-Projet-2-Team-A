@@ -9,6 +9,8 @@ export const GET_ALL_PRODUCTS = gql`
       color
       description
       min_quantity
+      active
+      commentary
       stock
       supplier {
         name

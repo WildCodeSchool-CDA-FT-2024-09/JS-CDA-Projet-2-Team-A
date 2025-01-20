@@ -19,3 +19,13 @@ export const UPDATE_PRODUCT = gql`
     }
   }
 `;
+
+export const DISABLE_PRODUCT = gql`
+  mutation DisableProduct($data: DisableProductInput!, $id: Int!) {
+    disableProduct(data: $data, id: $id) {
+      active
+      commentary
+      id
+    }
+  }
+`;
