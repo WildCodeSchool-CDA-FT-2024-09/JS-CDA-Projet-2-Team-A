@@ -157,6 +157,7 @@ export default class UserResolver {
       relations: {
         role: true,
       },
+      order: { activationDate: "DESC" },
     });
 
     return users;
