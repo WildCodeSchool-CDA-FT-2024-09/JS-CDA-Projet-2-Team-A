@@ -35,3 +35,12 @@ export const GET_SUPPLIERS_WITH_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_SUPPLIERS_NAMES = gql`
+  query GetSupplierName {
+    getSupplierName {
+      id
+      name
+    }
+  }
+`;

@@ -46,11 +46,11 @@ export class Product extends BaseEntity {
   @Column()
   description: string;
 
-  @Field()
+  @Field(() => Int, { nullable: true })
   @Column()
   stock: number;
 
-  @Field()
+  @Field(() => Int, { nullable: true })
   @Column({ default: 10 })
   min_quantity: number;
 

@@ -167,10 +167,10 @@ export type Product = {
   id: Scalars["Int"]["output"];
   image?: Maybe<Scalars["String"]["output"]>;
   material?: Maybe<Scalars["String"]["output"]>;
-  min_quantity: Scalars["Float"]["output"];
+  min_quantity?: Maybe<Scalars["Int"]["output"]>;
   orderProduct?: Maybe<Array<OrderProduct>>;
   product: Scalars["String"]["output"];
-  stock: Scalars["Float"]["output"];
+  stock?: Maybe<Scalars["Int"]["output"]>;
   supplier: Supplier;
 };
 
@@ -195,6 +195,7 @@ export type Query = {
   getAllSuppliersWithProducts: Array<Supplier>;
   getInProgressDeliveryStats: InProgressDeliveryStats;
   getOrderDetails: Array<OrderDetails>;
+  getSupplierName: Array<Supplier>;
   productById?: Maybe<Product>;
   totalStockProduct: Scalars["Float"]["output"];
   whoAmI: WhoAmIResponse;
@@ -316,8 +317,8 @@ export type UpdateProductMutation = {
     material?: string | null;
     color?: string | null;
     image?: string | null;
-    min_quantity: number;
-    stock: number;
+    min_quantity?: number | null;
+    stock?: number | null;
     supplier: { __typename?: "Supplier"; id: number; name: string };
   } | null;
 };
@@ -412,8 +413,8 @@ export type AllProductsQuery = {
     material?: string | null;
     color?: string | null;
     description: string;
-    min_quantity: number;
-    stock: number;
+    min_quantity?: number | null;
+    stock?: number | null;
     supplier: { __typename?: "Supplier"; name: string };
   }>;
 };
@@ -446,11 +447,11 @@ export type ProductByIdQuery = {
     product: string;
     image?: string | null;
     material?: string | null;
-    min_quantity: number;
+    min_quantity?: number | null;
     category: string;
     color?: string | null;
     description: string;
-    stock: number;
+    stock?: number | null;
     employee: {
       __typename?: "Employee";
       id: number;
@@ -503,9 +504,16 @@ export type SuppliersWithProductsQuery = {
       product: string;
       description: string;
       image?: string | null;
-      stock: number;
+      stock?: number | null;
     }> | null;
   }>;
+};
+
+export type GetSupplierNameQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSupplierNameQuery = {
+  __typename?: "Query";
+  getSupplierName: Array<{ __typename?: "Supplier"; id: number; name: string }>;
 };
 
 export type AuthenticateQueryVariables = Exact<{
@@ -1755,6 +1763,84 @@ export type SuppliersWithProductsSuspenseQueryHookResult = ReturnType<
 export type SuppliersWithProductsQueryResult = Apollo.QueryResult<
   SuppliersWithProductsQuery,
   SuppliersWithProductsQueryVariables
+>;
+export const GetSupplierNameDocument = gql`
+  query GetSupplierName {
+    getSupplierName {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useGetSupplierNameQuery__
+ *
+ * To run a query within a React component, call `useGetSupplierNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSupplierNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSupplierNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSupplierNameQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSupplierNameQuery, GetSupplierNameQueryVariables>(
+    GetSupplierNameDocument,
+    options,
+  );
+}
+export function useGetSupplierNameLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >(GetSupplierNameDocument, options);
+}
+export function useGetSupplierNameSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        GetSupplierNameQuery,
+        GetSupplierNameQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken
+      ? baseOptions
+      : { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<
+    GetSupplierNameQuery,
+    GetSupplierNameQueryVariables
+  >(GetSupplierNameDocument, options);
+}
+export type GetSupplierNameQueryHookResult = ReturnType<
+  typeof useGetSupplierNameQuery
+>;
+export type GetSupplierNameLazyQueryHookResult = ReturnType<
+  typeof useGetSupplierNameLazyQuery
+>;
+export type GetSupplierNameSuspenseQueryHookResult = ReturnType<
+  typeof useGetSupplierNameSuspenseQuery
+>;
+export type GetSupplierNameQueryResult = Apollo.QueryResult<
+  GetSupplierNameQuery,
+  GetSupplierNameQueryVariables
 >;
 export const AuthenticateDocument = gql`
   query Authenticate($credentials: Credentials!) {
