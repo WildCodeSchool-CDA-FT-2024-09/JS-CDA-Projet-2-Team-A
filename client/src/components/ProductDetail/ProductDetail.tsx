@@ -41,8 +41,8 @@ export default function ProductDetail() {
     category: string;
     material: string;
     color: string;
-    min_quantity: number;
-    stock: number;
+    min_quantity: number | string;
+    stock: number | string;
     image?: File | null | undefined;
     supplierId?: number;
   }) => {
@@ -55,12 +55,23 @@ export default function ProductDetail() {
         imagePath = formData.image;
       }
 
+      const minQuantity = parseInt(formData.min_quantity as string, 10);
+      const stock = parseInt(formData.stock as string, 10);
+
+      if (isNaN(minQuantity) || isNaN(stock)) {
+        throw new Error(
+          "Les champs 'Quantité minimale' et 'Stock' doivent être des nombres.",
+        );
+      }
+
       await updateProduct({
         variables: {
           id: productByIdId,
           data: {
             ...formData,
             image: imagePath,
+            min_quantity: minQuantity,
+            stock: stock,
           },
         },
       });

@@ -107,6 +107,20 @@ export default class ProductResolver {
       product.supplier = supplier;
     }
 
+    if (data.min_quantity !== undefined) {
+      if (isNaN(data.min_quantity)) {
+        throw new Error("La quantité minimale doit être un nombre valide.");
+      }
+      product.min_quantity = data.min_quantity;
+    }
+
+    if (data.stock !== undefined) {
+      if (isNaN(data.stock)) {
+        throw new Error("Le stock doit être un nombre valide.");
+      }
+      product.stock = data.stock;
+    }
+
     Object.assign(product, data);
 
     await product.save();
