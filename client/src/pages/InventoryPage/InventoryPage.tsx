@@ -18,6 +18,7 @@ import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import DoNotDisturbOutlinedIcon from "@mui/icons-material/DoNotDisturbOutlined";
 
 export default function InventoryPage() {
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
@@ -68,6 +69,19 @@ export default function InventoryPage() {
         />
       ),
     },
+    {
+      id: 4,
+      name: "Hors catalogue",
+      component: (
+        <Chip
+          label="Hors catalogue"
+          variant="filled"
+          size="small"
+          color="default"
+          icon={<DoNotDisturbOutlinedIcon />}
+        />
+      ),
+    },
   ];
 
   const dataGridProduct =
@@ -75,8 +89,12 @@ export default function InventoryPage() {
       ?.map((product, index) => {
         const minQuantity = product.min_quantity ?? 0;
         const stock = product.stock ?? 0;
+
         let status, priority;
-        if (stock > minQuantity) {
+        if (product.active === false) {
+          status = chipStatus[3];
+          priority = 4;
+        } else if (stock > minQuantity) {
           status = chipStatus[0];
           priority = 3;
         } else if (stock > 0 && stock <= minQuantity) {
