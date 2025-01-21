@@ -67,14 +67,16 @@ export default function SideNavBarList({
             minWidth: "fit-content",
             maxWidth: "fit-content",
             marginRight: "15px",
-            color: pathname.includes(`${link.url}`) ? blue[500] : "inherit",
+            color:
+              pathname === `${baseUrl}/${link.url}` ? blue[500] : "inherit",
           }}
         ></ListItemIcon>
         <ListItemText
           primary={
             <Typography
               sx={{
-                color: pathname.includes(`${link.url}`) ? blue[500] : "inherit",
+                color:
+                  pathname === `${baseUrl}/${link.url}` ? blue[500] : "inherit",
               }}
             >
               {link.name}
