@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
-import { useAllProductsQuery } from "../../generated/graphql-types";
+import {
+  useAllProductsQuery,
+  useDisableProductMutation,
+} from "../../generated/graphql-types";
 import {
   Box,
   Typography,
@@ -13,6 +16,7 @@ import {
   Switch,
   Tooltip,
 } from "@mui/material";
+import ModalForm from "../../components/modalForm/Modalform";
 import { GridRowSelectionModel, GridRenderCellParams } from "@mui/x-data-grid";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined";
@@ -20,14 +24,32 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import DoNotDisturbOutlinedIcon from "@mui/icons-material/DoNotDisturbOutlined";
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface FormData {
+  commentary: string;
+}
+
 export default function InventoryPage() {
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [switchStates, setSwitchStates] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
 
-  const { data, loading, error } = useAllProductsQuery();
+  const {
+    data: allProductsData,
+    loading: allProductsLoading,
+    error: allProductError,
+  } = useAllProductsQuery();
+
+  const [disableProductMutation] = useDisableProductMutation();
 
   const chipStatus = [
     {
@@ -85,7 +107,7 @@ export default function InventoryPage() {
   ];
 
   const dataGridProduct =
-    data?.allProducts
+    allProductsData?.allProducts
       ?.map((product, index) => {
         const minQuantity = product.min_quantity ?? 0;
         const stock = product.stock ?? 0;
@@ -136,11 +158,46 @@ export default function InventoryPage() {
     }
   }, [dataGridProduct, switchStates]);
 
-  const handleSwitchChange = (id: number) => {
-    setSwitchStates((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const handleSwitchChange = (id: number, product: Product) => {
+    if (!switchStates[id]) {
+      setSwitchStates((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
+    } else {
+      setSelectedProduct(product);
+      setOpenModal(true);
+    }
+  };
+
+  const handleConfirmDisable = (formData: FormData) => {
+    if (selectedProduct) {
+      disableProductMutation({
+        variables: {
+          id: selectedProduct.id,
+          data: {
+            active: false,
+            commentary: formData.commentary || "Aucun commentaire.",
+          },
+        },
+      })
+        .then((res) => {
+          setSwitchStates((prev) => {
+            if (res.data?.disableProduct?.id !== undefined) {
+              return {
+                ...prev,
+                [`${res.data.disableProduct.id}`]:
+                  res.data.disableProduct.active,
+              };
+            }
+            return prev;
+          });
+          setOpenModal(false);
+        })
+        .catch((err) => {
+          console.error("Erreur lors de la mutation :", err);
+        });
+    }
   };
 
   const columns = [
@@ -181,7 +238,7 @@ export default function InventoryPage() {
           >
             <Switch
               checked={isChecked}
-              onChange={() => handleSwitchChange(id)}
+              onChange={() => handleSwitchChange(id, params.row)}
             />
             {!isChecked && (
               <Tooltip title={commentary ?? "Aucun commentaire"}>
@@ -210,7 +267,7 @@ export default function InventoryPage() {
 
   const handleModifyClick = () => {
     if (selectedRowId) {
-      const selectedProdruct = data?.allProducts[selectedRowId - 1];
+      const selectedProdruct = allProductsData?.allProducts[selectedRowId - 1];
       if (selectedProdruct) {
         navigate(`/achat/produit/${selectedRowId}`);
       }
@@ -220,7 +277,7 @@ export default function InventoryPage() {
     }
   };
 
-  if (loading)
+  if (allProductsLoading)
     return (
       <Typography
         variant="h5"
@@ -235,7 +292,7 @@ export default function InventoryPage() {
       </Typography>
     );
 
-  if (error)
+  if (allProductError)
     return (
       <Typography
         variant="h5"
@@ -250,7 +307,7 @@ export default function InventoryPage() {
       </Typography>
     );
 
-  if (data)
+  if (allProductsData)
     return (
       <Box
         sx={{
@@ -324,6 +381,24 @@ export default function InventoryPage() {
             onRowSelectionModelChange={handleRowSelection}
           />
         </Box>
+
+        {/* Modal for update active status */}
+        <ModalForm
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSubmit={handleConfirmDisable}
+          mode="edit"
+          title="Confirmer la désactivation"
+          showImageField={false}
+          fields={[
+            {
+              name: "commentary",
+              label: "Commentaire",
+              type: "textarea",
+              // placeholder: "Indiquez la raison de l'archivage de ce produit ...",
+            },
+          ]}
+        />
 
         {/* Snackbar */}
         <Snackbar
