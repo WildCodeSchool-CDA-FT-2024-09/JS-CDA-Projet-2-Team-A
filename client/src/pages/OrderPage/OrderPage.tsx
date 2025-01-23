@@ -1,52 +1,135 @@
+import React, { useState } from "react";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
-import { useGetOrderDetailsQuery } from "../../generated/graphql-types";
-import { Box, Typography, Button } from "@mui/material";
+import {
+  Product,
+  Supplier,
+  useCreateOrderMutation,
+  useGetOrderDetailsQuery,
+  useSuppliersWithProductsQuery,
+} from "../../generated/graphql-types";
+import {
+  Box,
+  Typography,
+  Button,
+  Snackbar,
+  Alert,
+  MenuItem,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  Input,
+} from "@mui/material";
+import {
+  columns,
+  dataGridOrdersFunction,
+  productsOfSupplier,
+} from "./OrderPageUtils.ts";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
+import { ApolloError } from "@apollo/client";
 
 export default function OrdersDashboardPage() {
-  const { data, loading, error } = useGetOrderDetailsQuery();
+  const [openModal, setOpenModal] = useState(false);
 
-  const columns = [
-    {
-      field: "orderReference",
-      headerName: "Référence de commande",
-      flex: 1,
-      maxWidth: 250,
-    },
-    { field: "supplier", headerName: "Fournisseur", flex: 1, maxWidth: 250 },
-    { field: "status", headerName: "Statut", flex: 1, maxWidth: 150 },
-    { field: "products", headerName: "Produits", flex: 1 },
-    { field: "created_at", headerName: "Création", flex: 1, maxWidth: 150 },
-    {
-      field: "total_quantity",
-      headerName: "Quantité Totale",
-      flex: 1,
-      maxWidth: 150,
-    },
-    {
-      field: "expectedDelivery",
-      headerName: "Date de Livraison",
-      flex: 1,
-      maxWidth: 200,
-    },
-  ];
+  // Pour gérer la sélection d'un fournisseur
+  const [supplierSelected, setSupplierSelected] = useState<
+    | {
+        id: number;
+        supplier: Supplier;
+        products: Product[];
+      }
+    | undefined
+  >(undefined);
+
+  // Pour faire apparaitre le tableau des produits à commander
+  const [orderTable, setOrderTable] = useState(false);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  // Pour gérer la commande en cours
+  const [order, setOrder] = useState<(Product & { quantity?: number })[]>([]);
+
+  const { data, refetch, loading, error } = useGetOrderDetailsQuery();
+  const { data: SuppliersProducts } = useSuppliersWithProductsQuery();
+  const [createOrderMutation] = useCreateOrderMutation();
 
   // Prepare data for the DataGrid
-  const dataGridOrders =
-    data?.getOrderDetails?.map((order) => ({
-      id: order.id,
-      orderReference: order.id,
-      supplier: order.products[0]?.supplierName,
-      status: order.status.status,
-      created_at: new Date(order.created_at).toLocaleDateString("fr-FR"), // Format date
-      products: order.products.map((p) => p.productName).join(", "), // Combine product names
-      total_quantity: order.products.reduce((sum, p) => sum + p.quantity, 0),
-      expectedDelivery: new Date(
-        Math.max(
-          ...order.products.map((p) => new Date(p.expectedDelivery).getTime()),
+  const dataGridOrders = dataGridOrdersFunction(data);
+
+  // Gère le changement du fournisseur via le select
+  const handleSupplierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const id = Number(e.target.value);
+
+    setSupplierSelected({
+      id,
+      supplier: SuppliersProducts?.getAllSuppliersWithProducts?.find(
+        (supplier) => supplier.id === id,
+      ) as Supplier,
+      products: productsOfSupplier(id, SuppliersProducts!),
+    });
+  };
+
+  const handleOrderSelection = (selection: GridRowSelectionModel) => {
+    const products = supplierSelected?.products.filter((product) =>
+      selection.includes(product.id),
+    );
+    setOrder(products as Product[]);
+  };
+
+  // Vérifie si la quantité est valide et la rajoute dans l'ordre de commande
+  const handleQuantityChange = (productId: number, value: string) => {
+    const parsedValue = Number(value);
+    if (!Number.isNaN(parsedValue) && parsedValue >= 0) {
+      setOrder((prevOrder) =>
+        prevOrder.map((product) =>
+          product.id === productId
+            ? { ...product, quantity: parsedValue }
+            : product,
         ),
-      ).toLocaleDateString("fr-FR"), // Use the latest expected delivery date
-    })) || [];
+      );
+    }
+  };
+
+  // Gère la création finale de la commande
+  const handleOrder = async () => {
+    try {
+      const orderSelection = order.map((product) => ({
+        productId: product.id,
+        quantity: product.quantity!,
+      }));
+      const response = await createOrderMutation({
+        variables: { body: { orderSelection } },
+      });
+      if (response?.data?.createOrder) {
+        setOpenSnackbar(true);
+        setSnackbarMessage(response.data.createOrder);
+        await refetch();
+        setOpenModal(false);
+        setSupplierSelected(undefined);
+        setOrderTable(false);
+        setOrder([]);
+      }
+    } catch (error) {
+      if (error instanceof ApolloError) {
+        setOpenSnackbar(true);
+        setSnackbarMessage(
+          error.graphQLErrors.map((e) => e.message).join("\n"),
+        );
+      }
+    }
+  };
+
+  // Gère l'annulation de la commande en cours dans la modale
+  const handleCancelOrder = () => {
+    setOpenModal(false);
+    setSupplierSelected(undefined);
+    setOrderTable(false);
+    setOrder([]);
+  };
 
   if (loading)
     return (
@@ -59,7 +142,7 @@ export default function OrdersDashboardPage() {
           color: "#383E49",
         }}
       >
-        Le site il est tout pété c'est trop long à charger là !!
+        Chargement en cours...
       </Typography>
     );
 
@@ -74,7 +157,7 @@ export default function OrdersDashboardPage() {
           color: "#383E49",
         }}
       >
-        Le site il est tout pété, et en plus c'est bourré d'erreurs !!
+        Chargement en cours...
       </Typography>
     );
 
@@ -87,7 +170,7 @@ export default function OrdersDashboardPage() {
           gap: "20px",
         }}
       >
-        <DashboardSummary />
+        <DashboardSummary lowStockCount={0} outOfStockCount={0} />
         <Box
           sx={{
             borderRadius: "5px",
@@ -113,7 +196,7 @@ export default function OrdersDashboardPage() {
                 color: "#383E49",
               }}
             >
-              Liste des commandes
+              {!orderTable ? "Liste des commandes" : "Création de commande"}
             </Typography>
             <Box
               sx={{
@@ -127,17 +210,134 @@ export default function OrdersDashboardPage() {
                 sx={{
                   height: "40px",
                 }}
+                onClick={
+                  supplierSelected
+                    ? () => {
+                        if (order.length) {
+                          setOpenModal(true);
+                        }
+                      }
+                    : () => setOrderTable(true)
+                }
               >
-                Ajouter une commande
+                {supplierSelected ? "Suivant" : "Ajouter une commande"}
               </Button>
             </Box>
           </Box>
-          <DashboardList
-            columns={columns}
-            data={dataGridOrders}
-            withSummary={true}
-          />
+          {!orderTable && (
+            <DashboardList
+              columns={columns[0]}
+              data={dataGridOrders}
+              withSummary={true}
+            />
+          )}
+          {orderTable && (
+            <>
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  select
+                  id="supplierId"
+                  name="supplier"
+                  label="Fournisseur"
+                  value={supplierSelected}
+                  onChange={handleSupplierChange}
+                  sx={{ m: 3, minWidth: "15rem", maxWidth: "fit-content" }}
+                >
+                  {SuppliersProducts?.getAllSuppliersWithProducts.map(
+                    (supplier) => (
+                      <MenuItem
+                        divider={true}
+                        value={supplier.id}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Typography variant={"h6"}>{supplier.name}</Typography>
+                        <Typography variant={"body1"}>
+                          délai moyen : {supplier.delay} jours
+                        </Typography>
+                      </MenuItem>
+                    ),
+                  )}
+                </TextField>
+                {supplierSelected && (
+                  <Typography
+                    variant="h5"
+                    component="h2"
+                    sx={{ alignSelf: "center", mt: 3, mb: 3, color: "#383E49" }}
+                  >
+                    {supplierSelected.supplier.description}
+                  </Typography>
+                )}
+              </Box>
+              {supplierSelected && (
+                <Box component="div" sx={{}}>
+                  <DashboardList
+                    columns={columns[1]}
+                    data={supplierSelected.products}
+                    onRowSelectionModelChange={handleOrderSelection}
+                  />
+                </Box>
+              )}
+            </>
+          )}
         </Box>
+        <Dialog open={openModal} onClose={() => setOpenModal(false)}>
+          <DialogTitle sx={{ alignSelf: "center" }}>
+            Choisissez les quantités à commander
+          </DialogTitle>
+          <DialogContent>
+            {order &&
+              order.map((product) => (
+                <Box key={product.id} sx={{ m: "2rem" }}>
+                  <DialogContentText>
+                    <strong>{product.product}</strong>, en stock :{" "}
+                    {product.stock}
+                  </DialogContentText>
+                  <Input
+                    name="quantity"
+                    placeholder="Quantités"
+                    type="number"
+                    value={product.quantity ?? ""}
+                    onChange={(e) =>
+                      handleQuantityChange(product.id, e.target.value)
+                    }
+                  />
+                </Box>
+              ))}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelOrder} color="primary">
+              Annuler
+            </Button>
+            <Button onClick={handleOrder} color="primary" variant="contained">
+              Commander
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar displaying feedback*/}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={snackbarMessage.includes("succès") ? 3000 : 7000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ marginTop: "2rem" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={snackbarMessage.includes("succès") ? "success" : "error"}
+            sx={{
+              width: "25rem",
+              fontSize: "1.125rem",
+              padding: "1rem",
+            }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     );
 }

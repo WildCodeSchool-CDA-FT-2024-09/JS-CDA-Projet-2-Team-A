@@ -148,13 +148,7 @@ export class OrderResolver {
 
       if (!product) {
         throw new GraphQLError(
-          `Product not found with id : ${orderItem.productId}`
-        );
-      }
-
-      if (product.stock < orderItem.quantity) {
-        throw new GraphQLError(
-          `Not enough stock for product with id : ${orderItem.productId}`
+          `Impossible de récupérer le produit avec l'id : ${orderItem.productId}`
         );
       }
 
@@ -162,7 +156,9 @@ export class OrderResolver {
         products.length > 0 &&
         products[0].supplier.id !== product.supplier.id
       ) {
-        throw new GraphQLError(`All products must be from the same supplier.`);
+        throw new GraphQLError(
+          `Tous les produits doivent être du même fournisseur.`
+        );
       }
 
       if (!supplier) {
@@ -187,13 +183,11 @@ export class OrderResolver {
       const product = (await Product.findOne({
         where: { id: orderItem.productId },
       })) as Product;
-      product.stock -= orderItem.quantity;
-      product.save();
       orderProduct.product = product;
       orderProduct.quantity = orderItem.quantity;
       await orderProduct.save();
     });
 
-    return `Order created successfully with id ${order.id}`;
+    return `Commande ${order.id} créée avec succès.`;
   }
 }
