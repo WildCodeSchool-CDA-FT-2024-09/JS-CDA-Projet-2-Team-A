@@ -496,7 +496,7 @@ export type SuppliersWithProductsQuery = {
     __typename?: "Supplier";
     id: number;
     name: string;
-    logo: string;
+    description: string;
     delay: number;
     products?: Array<{
       __typename?: "Product";
@@ -1682,7 +1682,7 @@ export const SuppliersWithProductsDocument = gql`
     getAllSuppliersWithProducts {
       id
       name
-      logo
+      description
       delay
       products {
         id

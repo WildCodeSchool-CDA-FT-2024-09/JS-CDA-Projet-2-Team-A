@@ -23,7 +23,7 @@ export const GET_SUPPLIERS_WITH_PRODUCTS = gql`
     getAllSuppliersWithProducts {
       id
       name
-      logo
+      description
       delay
       products {
         id
