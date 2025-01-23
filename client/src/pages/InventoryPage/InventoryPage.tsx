@@ -174,11 +174,14 @@ export default function InventoryPage() {
               ...prev,
               [disabledProduct.id]: disabledProduct.active,
             }));
+            setSnackbarMessage("Produit désactivé avec succès.");
+            setOpenSnackbar(true);
           }
           setOpenModal(false);
         })
-        .catch((err) => {
-          console.error("Erreur lors de la mutation :", err);
+        .catch(() => {
+          setSnackbarMessage("Erreur lors de la désactivation du produit.");
+          setOpenSnackbar(true);
         });
     }
   };
@@ -404,7 +407,7 @@ export default function InventoryPage() {
         >
           <Alert
             onClose={() => setOpenSnackbar(false)}
-            severity="error"
+            severity={snackbarMessage.includes("Erreur") ? "error" : "success"}
             sx={{
               width: "30rem",
               fontSize: "14px",
