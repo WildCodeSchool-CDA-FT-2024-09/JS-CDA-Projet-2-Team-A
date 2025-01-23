@@ -434,6 +434,7 @@ export type AllProductsQuery = {
   __typename?: "Query";
   allProducts: Array<{
     __typename?: "Product";
+    id: number;
     category: string;
     product: string;
     material?: string | null;
@@ -1342,6 +1343,7 @@ export type GetInprogressDeliveryStatsQueryResult = Apollo.QueryResult<
 export const AllProductsDocument = gql`
   query AllProducts {
     allProducts {
+      id
       category
       product
       material

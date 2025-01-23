@@ -30,10 +30,6 @@ interface Product {
   price: number;
 }
 
-interface FormData {
-  commentary: string;
-}
-
 export default function InventoryPage() {
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -108,7 +104,7 @@ export default function InventoryPage() {
 
   const dataGridProduct =
     allProductsData?.allProducts
-      ?.map((product, index) => {
+      ?.map((product) => {
         const minQuantity = product.min_quantity ?? 0;
         const stock = product.stock ?? 0;
 
@@ -128,7 +124,7 @@ export default function InventoryPage() {
         }
 
         return {
-          id: index + 1,
+          id: product.id,
           category: product.category,
           product: product.product,
           material: product.material,
@@ -158,19 +154,9 @@ export default function InventoryPage() {
     }
   }, [dataGridProduct, switchStates]);
 
-  const handleSwitchChange = (id: number, product: Product) => {
-    if (!switchStates[id]) {
-      setSwitchStates((prev) => ({
-        ...prev,
-        [id]: true,
-      }));
-    } else {
-      setSelectedProduct(product);
-      setOpenModal(true);
-    }
-  };
-
-  const handleConfirmDisable = (formData: FormData) => {
+  const handleConfirmDisable = (
+    formData: Record<string, unknown> & { commentary?: string },
+  ) => {
     if (selectedProduct) {
       disableProductMutation({
         variables: {
@@ -182,21 +168,30 @@ export default function InventoryPage() {
         },
       })
         .then((res) => {
-          setSwitchStates((prev) => {
-            if (res.data?.disableProduct?.id !== undefined) {
-              return {
-                ...prev,
-                [`${res.data.disableProduct.id}`]:
-                  res.data.disableProduct.active,
-              };
-            }
-            return prev;
-          });
+          const disabledProduct = res.data?.disableProduct;
+          if (disabledProduct?.id !== undefined) {
+            setSwitchStates((prev) => ({
+              ...prev,
+              [disabledProduct.id]: disabledProduct.active,
+            }));
+          }
           setOpenModal(false);
         })
         .catch((err) => {
           console.error("Erreur lors de la mutation :", err);
         });
+    }
+  };
+
+  const handleSwitchChange = (id: number, product: Product) => {
+    if (!switchStates[id]) {
+      setSwitchStates((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
+    } else {
+      setSelectedProduct(product);
+      setOpenModal(true);
     }
   };
 
@@ -395,7 +390,6 @@ export default function InventoryPage() {
               name: "commentary",
               label: "Commentaire",
               type: "textarea",
-              // placeholder: "Indiquez la raison de l'archivage de ce produit ...",
             },
           ]}
         />

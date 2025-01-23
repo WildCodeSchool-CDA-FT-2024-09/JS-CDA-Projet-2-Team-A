@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_ALL_PRODUCTS = gql`
   query AllProducts {
     allProducts {
+      id
       category
       product
       material
