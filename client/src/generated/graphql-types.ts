@@ -55,6 +55,11 @@ export type Credentials = {
   password: Scalars["String"]["input"];
 };
 
+export type DisableProductInput = {
+  active?: InputMaybe<Scalars["Boolean"]["input"]>;
+  commentary?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type Employee = {
   __typename?: "Employee";
   email: Scalars["String"]["output"];
@@ -93,6 +98,7 @@ export type Mutation = {
   createMessage: Scalars["String"]["output"];
   createOrder: Scalars["String"]["output"];
   createUser: Scalars["String"]["output"];
+  disableProduct?: Maybe<Product>;
   logout: Scalars["String"]["output"];
   updateMessageStatus: Scalars["String"]["output"];
   updateProduct?: Maybe<Product>;
@@ -108,6 +114,11 @@ export type MutationCreateOrderArgs = {
 
 export type MutationCreateUserArgs = {
   body: CreateUserInput;
+};
+
+export type MutationDisableProductArgs = {
+  data: DisableProductInput;
+  id: Scalars["Int"]["input"];
 };
 
 export type MutationUpdateMessageStatusArgs = {
@@ -323,6 +334,21 @@ export type UpdateProductMutation = {
   } | null;
 };
 
+export type DisableProductMutationVariables = Exact<{
+  data: DisableProductInput;
+  id: Scalars["Int"]["input"];
+}>;
+
+export type DisableProductMutation = {
+  __typename?: "Mutation";
+  disableProduct?: {
+    __typename?: "Product";
+    active: boolean;
+    commentary?: string | null;
+    id: number;
+  } | null;
+};
+
 export type CreateUserMutationVariables = Exact<{
   body: CreateUserInput;
 }>;
@@ -408,12 +434,15 @@ export type AllProductsQuery = {
   __typename?: "Query";
   allProducts: Array<{
     __typename?: "Product";
+    id: number;
     category: string;
     product: string;
     material?: string | null;
     color?: string | null;
     description: string;
     min_quantity?: number | null;
+    active: boolean;
+    commentary?: string | null;
     stock?: number | null;
     supplier: { __typename?: "Supplier"; name: string };
   }>;
@@ -763,6 +792,59 @@ export type UpdateProductMutationResult =
 export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
   UpdateProductMutation,
   UpdateProductMutationVariables
+>;
+export const DisableProductDocument = gql`
+  mutation DisableProduct($data: DisableProductInput!, $id: Int!) {
+    disableProduct(data: $data, id: $id) {
+      active
+      commentary
+      id
+    }
+  }
+`;
+export type DisableProductMutationFn = Apollo.MutationFunction<
+  DisableProductMutation,
+  DisableProductMutationVariables
+>;
+
+/**
+ * __useDisableProductMutation__
+ *
+ * To run a mutation, you first call `useDisableProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDisableProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [disableProductMutation, { data, loading, error }] = useDisableProductMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDisableProductMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DisableProductMutation,
+    DisableProductMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DisableProductMutation,
+    DisableProductMutationVariables
+  >(DisableProductDocument, options);
+}
+export type DisableProductMutationHookResult = ReturnType<
+  typeof useDisableProductMutation
+>;
+export type DisableProductMutationResult =
+  Apollo.MutationResult<DisableProductMutation>;
+export type DisableProductMutationOptions = Apollo.BaseMutationOptions<
+  DisableProductMutation,
+  DisableProductMutationVariables
 >;
 export const CreateUserDocument = gql`
   mutation CreateUser($body: CreateUserInput!) {
@@ -1261,12 +1343,15 @@ export type GetInprogressDeliveryStatsQueryResult = Apollo.QueryResult<
 export const AllProductsDocument = gql`
   query AllProducts {
     allProducts {
+      id
       category
       product
       material
       color
       description
       min_quantity
+      active
+      commentary
       stock
       supplier {
         name
