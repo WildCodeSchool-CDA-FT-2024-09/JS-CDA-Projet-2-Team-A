@@ -24,13 +24,25 @@ export const allLinks: {
     name: "Inventaire",
     url: "",
     icon: <ChecklistOutlinedIcon />,
-    role: ["achat", "approvisionnement", "atelier"],
+    role: ["achat", "atelier"],
   },
   {
     name: "Commandes",
     url: "commandes",
     icon: <Inventory2OutlinedIcon />,
-    role: ["achat", "approvisionnement"],
+    role: ["achat"],
+  },
+  {
+    name: "Commandes",
+    url: "",
+    icon: <Inventory2OutlinedIcon />,
+    role: ["approvisionnement"],
+  },
+  {
+    name: "Inventaire",
+    url: "inventaire",
+    icon: <ChecklistOutlinedIcon />,
+    role: ["approvisionnement"],
   },
   {
     name: "Fournisseurs",
@@ -52,7 +64,7 @@ export const allLinks: {
   },
   {
     name: "Utilisateurs",
-    url: "utilisateurs",
+    url: "",
     icon: <AccountCircleOutlinedIcon />,
     role: ["admin"],
   },
