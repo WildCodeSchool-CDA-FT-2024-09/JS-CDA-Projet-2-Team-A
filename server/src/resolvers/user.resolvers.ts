@@ -205,7 +205,7 @@ export default class UserResolver {
       user.activationDate = new Date();
 
       // Step 6: Save the user to the database
-      await user.save();
+      await queryRunner.manager.save(user);
 
       const success = await fetch(`${MAIL_URL}/send-email`, {
         method: "POST",

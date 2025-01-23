@@ -265,9 +265,10 @@ export default function InventoryPage() {
 
   const handleModifyClick = () => {
     if (selectedRowId) {
-      const selectedProdruct = allProductsData?.allProducts[selectedRowId - 1];
-      if (selectedProdruct) {
-        navigate(`/achat/produit/${selectedRowId}`);
+      const selectedProduct = allProductsData?.allProducts[selectedRowId - 1];
+      if (selectedProduct) {
+        const currentPath = window.location.pathname.replace(/\/$/, "");
+        navigate(`${currentPath}/produit/${selectedRowId}`);
       }
     } else {
       setSnackbarMessage("Veuillez sélectionner un produit à modifier.");
