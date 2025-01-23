@@ -21,6 +21,7 @@ export default class SupplierResolver {
   @Query(() => [Supplier])
   async getAllSuppliersWithProducts(): Promise<Supplier[]> {
     const suppliers: Supplier[] = await Supplier.find({
+      where: { active: true },
       relations: ["products"],
     });
     if (!suppliers) {
