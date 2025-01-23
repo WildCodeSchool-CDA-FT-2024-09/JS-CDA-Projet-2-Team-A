@@ -73,7 +73,6 @@ export default function SuppliersPage(): ReactElement {
               variant="contained"
               sx={{
                 height: "2.5rem",
-                textTransform: "none",
               }}
             >
               Nouveau fournisseur
