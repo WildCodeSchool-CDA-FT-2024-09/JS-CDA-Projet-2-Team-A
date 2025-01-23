@@ -30,4 +30,26 @@ export default class SupplierResolver {
     }
     return suppliers;
   }
+
+  @Query(() => [Supplier])
+  async getSupplierName(): Promise<Supplier[]> {
+    try {
+      const suppliers: Supplier[] = await Supplier.find({
+        select: ["id", "name"],
+      });
+
+      if (!suppliers || suppliers.length === 0) {
+        throw new GraphQLError(
+          "Aucun fournisseur trouvé. Merci de réessayer plus tard."
+        );
+      }
+
+      return suppliers;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des fournisseurs :", error);
+      throw new GraphQLError(
+        "une erreur est survenue lors de la récupération des fournisseurs."
+      );
+    }
+  }
 }

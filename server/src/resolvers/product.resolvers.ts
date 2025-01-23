@@ -38,7 +38,7 @@ class UpdateProductInput {
   stock?: number;
 
   @Field(() => Int, { nullable: true })
-  supplierId?: number;
+  supplierId?: string;
 }
 
 @Authorized(["achat", "approvisionnement", "atelier"])
@@ -94,18 +94,31 @@ export default class ProductResolver {
     const product = await Product.findOne({ where: { id } });
 
     if (!product) {
-      console.error("Produit introuvable :", id);
       throw new Error("Produit introuvable.");
     }
 
     if (data.supplierId) {
       const supplier = await Supplier.findOne({
-        where: { id: data.supplierId },
+        where: { id: parseInt(data.supplierId) },
       });
       if (!supplier) {
         throw new Error("Fournisseur introuvable.");
       }
       product.supplier = supplier;
+    }
+
+    if (data.min_quantity !== undefined) {
+      if (isNaN(data.min_quantity)) {
+        throw new Error("La quantité minimale doit être un nombre valide.");
+      }
+      product.min_quantity = data.min_quantity;
+    }
+
+    if (data.stock !== undefined) {
+      if (isNaN(data.stock)) {
+        throw new Error("Le stock doit être un nombre valide.");
+      }
+      product.stock = data.stock;
     }
 
     Object.assign(product, data);

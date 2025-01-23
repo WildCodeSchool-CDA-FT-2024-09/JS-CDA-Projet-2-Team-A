@@ -5,6 +5,9 @@ const getSchema = async () => {
   return await buildSchema({
     resolvers: resolvers,
     validate: true,
+    authChecker: () => {
+      return true;
+    },
   });
 };
 

@@ -4,6 +4,7 @@ import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
 import {
   useProductByIdQuery,
   useUpdateProductMutation,
+  useGetSupplierNameQuery,
 } from "../../generated/graphql-types";
 import { uploadImage } from "../../services/uploadService";
 import TabsProductGlobal from "../TabsProduct/TabsProduct";
@@ -17,9 +18,20 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const productByIdId = parseInt(id || "0", 10);
 
-  const { data, loading, error, refetch } = useProductByIdQuery({
+  const {
+    data: productByIdData,
+    loading: productByIdLoading,
+    error: productByIdError,
+    refetch,
+  } = useProductByIdQuery({
     variables: { productByIdId },
   });
+
+  const {
+    data: suppliersData,
+    loading: suppliersLoading,
+    error: suppliersError,
+  } = useGetSupplierNameQuery();
 
   const [updateProduct] = useUpdateProductMutation();
 
@@ -29,8 +41,8 @@ export default function ProductDetail() {
     category: string;
     material: string;
     color: string;
-    min_quantity: number;
-    stock: number;
+    min_quantity: number | string;
+    stock: number | string;
     image?: File | null | undefined;
     supplierId?: number;
   }) => {
@@ -43,13 +55,23 @@ export default function ProductDetail() {
         imagePath = formData.image;
       }
 
+      const minQuantity = parseInt(formData.min_quantity as string, 10);
+      const stock = parseInt(formData.stock as string, 10);
+
+      if (isNaN(minQuantity) || isNaN(stock)) {
+        throw new Error(
+          "Les champs 'Quantité minimale' et 'Stock' doivent être des nombres.",
+        );
+      }
+
       await updateProduct({
         variables: {
           id: productByIdId,
           data: {
             ...formData,
             image: imagePath,
-            supplierId: formData.supplierId,
+            min_quantity: minQuantity,
+            stock: stock,
           },
         },
       });
@@ -59,13 +81,13 @@ export default function ProductDetail() {
       await refetch();
     } catch {
       setSnackbarMessage(
-        "Une erreur est survenue lors de la modification du produit.",
+        "Une erreur est survenue lors de la modification du produit",
       );
       setOpenSnackbar(true);
     }
   };
 
-  if (loading)
+  if (productByIdLoading || suppliersLoading)
     return (
       <Typography
         variant="h5"
@@ -80,7 +102,7 @@ export default function ProductDetail() {
       </Typography>
     );
 
-  if (error)
+  if (productByIdError || suppliersError)
     return (
       <Typography
         variant="h5"
@@ -95,7 +117,7 @@ export default function ProductDetail() {
       </Typography>
     );
 
-  if (data)
+  if (productByIdData || suppliersData)
     return (
       <Box
         sx={{
@@ -122,7 +144,7 @@ export default function ProductDetail() {
               color: "#383E49",
             }}
           >
-            {data?.productById?.product}
+            {productByIdData?.productById?.product}
           </Typography>
           <Button
             variant="outlined"
@@ -138,18 +160,20 @@ export default function ProductDetail() {
 
         {/* * Product Detail */}
         <TabsProductGlobal
-          product={data?.productById?.product ?? ""}
-          description={data?.productById?.description ?? ""}
-          category={data?.productById?.category ?? ""}
-          material={data?.productById?.material ?? ""}
-          color={data?.productById?.color ?? ""}
-          min_quantity={data?.productById?.min_quantity ?? 0}
-          supplier={data?.productById?.supplier?.name ?? ""}
-          employee={data?.productById?.employee?.name ?? ""}
-          email_employee={data?.productById?.employee?.email ?? ""}
-          phone_employee={data?.productById?.employee?.phone_number ?? ""}
-          stock={data?.productById?.stock ?? 0}
-          image={data?.productById?.image ?? ""}
+          product={productByIdData?.productById?.product ?? ""}
+          description={productByIdData?.productById?.description ?? ""}
+          category={productByIdData?.productById?.category ?? ""}
+          material={productByIdData?.productById?.material ?? ""}
+          color={productByIdData?.productById?.color ?? ""}
+          min_quantity={productByIdData?.productById?.min_quantity ?? 0}
+          supplier={productByIdData?.productById?.supplier?.name ?? ""}
+          employee={productByIdData?.productById?.employee?.name ?? ""}
+          email_employee={productByIdData?.productById?.employee?.email ?? ""}
+          phone_employee={
+            productByIdData?.productById?.employee?.phone_number ?? ""
+          }
+          stock={productByIdData?.productById?.stock ?? 0}
+          image={productByIdData?.productById?.image ?? ""}
         />
 
         {/* Modal for product modification */}
@@ -165,56 +189,60 @@ export default function ProductDetail() {
             {
               name: "image",
               label: "Image de la catégorie",
-              defaultValue: data?.productById?.image ?? "",
+              defaultValue: productByIdData?.productById?.image ?? "",
             },
             {
               name: "product",
               label: "Nom du produit",
               type: "text",
-              defaultValue: data?.productById?.product ?? "",
+              defaultValue: productByIdData?.productById?.product ?? "",
             },
             {
               name: "description",
               label: "Description",
               type: "text",
-              defaultValue: data?.productById?.description ?? "",
+              defaultValue: productByIdData?.productById?.description ?? "",
             },
             {
               name: "category",
               label: "Catégorie",
               type: "text",
-              defaultValue: data?.productById?.category ?? "",
+              defaultValue: productByIdData?.productById?.category ?? "",
             },
             {
               name: "material",
               label: "Matériau",
               type: "text",
-              defaultValue: data?.productById?.material ?? "",
+              defaultValue: productByIdData?.productById?.material ?? "",
             },
             {
               name: "color",
               label: "Couleur",
               type: "text",
-              defaultValue: data?.productById?.color ?? "",
+              defaultValue: productByIdData?.productById?.color ?? "",
             },
             {
               name: "min_quantity",
               label: "Quantité minimale",
               type: "number",
-              defaultValue: data?.productById?.min_quantity ?? 0,
+              defaultValue: productByIdData?.productById?.min_quantity ?? 0,
             },
             {
               name: "stock",
               label: "Stock",
               type: "number",
-              defaultValue: data?.productById?.stock ?? 0,
+              defaultValue: productByIdData?.productById?.stock ?? 0,
             },
-            // TODO : Remplacer par le nom des fournisseurs, une fois que la page "Fournisseur" sera créé.
             {
               name: "supplierId",
               label: "Nom du fournisseur",
-              type: "number",
-              defaultValue: data?.productById?.supplier?.id ?? 0,
+              type: "select",
+              options:
+                suppliersData?.getSupplierName.map((supplier) => ({
+                  value: supplier.id,
+                  label: supplier.name,
+                })) ?? [],
+              defaultValue: productByIdData?.productById?.supplier?.id ?? 0,
             },
           ]}
         />
