@@ -141,7 +141,8 @@ INSERT INTO "user" ("name", "email", "password", "activationDate", "isActive", "
 ('Joellyn Bencher',	'jbencher4@example.com',	'$argon2id$v=19$m=19456,t=2,p=1$1yIB/mZZVvdo/8M2is2waA$g9TbiZLLER3FRjfHuu8zgJWpTyz9FoKgU4Ok71tuwMk',	'2024-09-24',	't',	1),
 ('Norene Diggell',	'ndiggell7@example.com',	'$argon2id$v=19$m=19456,t=2,p=1$+qMlrxMBjFHatAIgO4wSdg$nxN0QAqh/IcvvEkoeWw2N9noAblt9kzkaSg2kmKCCYk',	'2024-04-03',	't',	2),
 ('Leo Stansfield',	'lstansfield8@example.com',	'$argon2id$v=19$m=19456,t=2,p=1$NsBZdsL2VW1KIMjhvrOfNw$jFIhqqLEDt+6dFOy06lCsshQPhxU+DNWkfFSKrqtnN8',	'2024-05-04',	't',	2),
-('Mervin Menego',	'mmenego9@example.com',	'$argon2id$v=19$m=19456,t=2,p=1$nmwLI8w9ABarLzEZ2MLa6Q$gW/MUA4zHiTBXM07Y4v2hLTPrst9YVE93NkCapNxur0',	'2024-06-02',	't',	4);
+('Mervin Menego',	'mmenego9@example.com',	'$argon2id$v=19$m=19456,t=2,p=1$nmwLI8w9ABarLzEZ2MLa6Q$gW/MUA4zHiTBXM07Y4v2hLTPrst9YVE93NkCapNxur0',	'2024-06-02',	't',	4),
+('Jean Moret', 'jean.moret@dsi.myentreprise.fr', '$argon2id$v=19$m=19456,t=2,p=1$5M2xuu0OQxzBupBljA50uQ$De01ptsHxigmyJubO/3xLt86v8/GlxLWQgzHhAblZug', '2024-04-02', 't', 4);
 
 INSERT INTO "message" ("title", "message", "created_at", "statusId", "userId") VALUES
 ('vitae nisl aenean',	'eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue eget semper',	'2024-02-29',	2,	2),
