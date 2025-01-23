@@ -30,12 +30,6 @@ export const columns = [
     },
   ],
   [
-    // {
-    //   field: "id",
-    //   headerName: "ID",
-    //   flex: 1,
-    //   maxWidth: 75,
-    // },
     {
       field: "product",
       headerName: "Nom du produit",

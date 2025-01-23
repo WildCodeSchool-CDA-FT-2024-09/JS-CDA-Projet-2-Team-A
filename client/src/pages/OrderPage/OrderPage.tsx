@@ -237,7 +237,7 @@ export default function OrdersDashboardPage() {
                 <TextField
                   select
                   id="supplierId"
-                  name="Four"
+                  name="supplier"
                   label="Fournisseur"
                   value={supplierSelected}
                   onChange={handleSupplierChange}
@@ -297,7 +297,7 @@ export default function OrdersDashboardPage() {
                     {product.stock}
                   </DialogContentText>
                   <Input
-                    name="Quantité"
+                    name="quantity"
                     placeholder="Quantités"
                     type="number"
                     value={product.quantity ?? ""}
