@@ -70,10 +70,11 @@ class OrderItem {
   quantity: number;
 }
 
-@Authorized(["achat", "approvisionnement"])
+@Authorized(["achat", "approvisionnement", "atelier"])
 @Resolver()
 export class OrderResolver {
   // Query to get detailed order information including expected delivery dates
+  @Authorized(["achat", "approvisionnement"])
   @Query(() => [OrderDetails])
   async getOrderDetails(): Promise<OrderDetails[]> {
     const orders = await Order.find({
