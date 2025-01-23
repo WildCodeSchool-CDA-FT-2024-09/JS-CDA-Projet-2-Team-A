@@ -3,7 +3,7 @@ services:
     image: postgres
     env_file: ./server/.env
     volumes:
-      - ./server/data:/app/data
+      - ./server/data:/data
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
@@ -30,7 +30,6 @@ services:
     build: ./server
     volumes:
       - ./server/src:/app/src
-      - ./server/data:/app/data
     env_file: ./server/.env
     command: >
       sh -c "
@@ -39,16 +38,6 @@ services:
       db:
         condition: service_healthy
     restart: "no"
-
-  adminer:
-    image: adminer
-    ports:
-      - 8080:8080
-    container_name: adminer
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
 
   redis:
     image: redis
@@ -59,7 +48,6 @@ services:
     build: ./server
     volumes:
       - ./server/src:/app/src
-      - ./server/data:/app/data
       - ./server/index.ts:/app/index.ts
     env_file: ./server/.env
     command: npm run dev
@@ -80,7 +68,6 @@ services:
     build: ./client
     volumes:
       - ./client/src:/app/src
-      - ./server/data/mock:/server/data/mock
     env_file: ./client/.env
     command: npm run dev
     restart: always
