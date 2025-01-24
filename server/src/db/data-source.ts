@@ -11,7 +11,7 @@ const {
   NODE_ENV,
 } = process.env;
 
-const sync = ENV === "dev";
+const sync = ENV !== "prod";
 
 const dataSourceOptions: DataSourceOptions =
   NODE_ENV === "test"
@@ -31,6 +31,7 @@ const dataSourceOptions: DataSourceOptions =
         entities: entities,
         synchronize: sync,
         logging: false, // Changer à true pour avoir des logs avancés de typeorm en cas d'erreurs.
+        migrations: ["src/db/migrations/*.ts"],
       };
 
 export const AppDataSource = new DataSource(dataSourceOptions);

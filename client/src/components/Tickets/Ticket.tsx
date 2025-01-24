@@ -1,6 +1,6 @@
 import { Dispatch, ReactElement, SetStateAction } from "react";
 import Grid from "@mui/material/Grid2";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import { useMessageContext } from "../../contexts/MessageContext.tsx";
 
 export default function Ticket({
@@ -34,13 +34,28 @@ export default function Ticket({
           flexDirection: "column",
         }}
       >
-        <Typography
-          variant="h6"
-          component="h3"
-          sx={{ fontWeight: "500", textOverflow: "ellipsis" }}
+        <Box // Permet d'isoler le titre et la date ensemble.
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
         >
-          {capitalize(data.title)}
-        </Typography>
+          <Typography
+            variant="h6"
+            component="h3"
+            sx={{
+              fontWeight: "500",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {`${capitalize(data.title)}`}
+          </Typography>
+          <Typography
+            variant="h6"
+            component="h4"
+            sx={{ opacity: 0.7 }}
+          >{`, le ${data.createdAt}`}</Typography>
+        </Box>
         <Typography
           variant="body2"
           sx={{ marginTop: 1, textOverflow: "ellipsis" }}

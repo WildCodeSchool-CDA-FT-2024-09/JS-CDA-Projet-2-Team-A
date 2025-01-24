@@ -5,7 +5,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ReactElement } from "react";
 import { linkType, linkTypeOpt } from "../../types/SideNavBarTypes.ts";
 import Typography from "@mui/material/Typography";
@@ -19,6 +19,7 @@ export default function SideNavBarList({
   link: linkType | linkTypeOpt;
   baseUrl: string;
 }): ReactElement {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [logout] = useLogoutMutation();
   const { setUser } = useUser();
@@ -39,6 +40,7 @@ export default function SideNavBarList({
           login: "",
           role: "",
         });
+        navigate("/");
       })
 
       .catch((error) => {
@@ -65,10 +67,22 @@ export default function SideNavBarList({
             minWidth: "fit-content",
             maxWidth: "fit-content",
             marginRight: "15px",
-            color: pathname.includes(`${link.url}`) ? blue[500] : "inherit",
+            color:
+              pathname === `${baseUrl}/${link.url}` ? blue[500] : "inherit",
           }}
         ></ListItemIcon>
-        <ListItemText primary={<Typography>{link.name}</Typography>} />
+        <ListItemText
+          primary={
+            <Typography
+              sx={{
+                color:
+                  pathname === `${baseUrl}/${link.url}` ? blue[500] : "inherit",
+              }}
+            >
+              {link.name}
+            </Typography>
+          }
+        />
       </ListItemButton>
     </ListItem>
   );

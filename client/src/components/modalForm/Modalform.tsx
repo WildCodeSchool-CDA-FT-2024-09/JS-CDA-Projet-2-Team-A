@@ -23,7 +23,7 @@ interface ModalFormProps<T> {
     label: string;
     type?: string;
     defaultValue?: string | number;
-    options?: { value: string; label: string }[];
+    options?: { value: string | number; label: string }[];
   }[];
   showImageField?: boolean;
   imageFieldName?: keyof T;

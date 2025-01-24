@@ -47,7 +47,7 @@ describe("authenticate query", () => {
 
     expect(result.errors).toBeDefined();
     expect(result.errors?.[0].message).toBe(
-      "User not found: no user with the specified email exists."
+      "Les identifiants sont incorrects."
     );
   });
 
@@ -66,7 +66,7 @@ describe("authenticate query", () => {
 
     expect(result.errors).toBeDefined();
     expect(result.errors?.[0].message).toBe(
-      "Incorrect password: the specified password does not match the one stored for this user."
+      "Les identifiants sont incorrects."
     );
   });
 

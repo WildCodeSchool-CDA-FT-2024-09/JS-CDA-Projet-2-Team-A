@@ -1,7 +1,8 @@
-import { Query, Resolver } from "type-graphql";
+import { Authorized, Query, Resolver } from "type-graphql";
 import { GraphQLError } from "graphql";
 import { MessageStatus } from "../entities";
 
+@Authorized(["achat", "atelier"])
 @Resolver(MessageStatus)
 export default class MessageStatusResolver {
   @Query(() => [MessageStatus])

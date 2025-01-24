@@ -1,4 +1,5 @@
 import { ReactElement, useState } from "react";
+import { ApolloError } from "@apollo/client";
 import { Alert, Box, Snackbar, Typography } from "@mui/material";
 import { useMessageContext } from "../../contexts/MessageContext.tsx";
 import Ticket from "./Ticket.tsx";
@@ -8,14 +9,13 @@ import {
   MessageStatus,
   useGetAllMessageStatusesQuery,
 } from "../../generated/graphql-types.ts";
-import { ApolloError } from "@apollo/client";
 
 export default function TicketsList({ role }: { role: string }): ReactElement {
   const {
     messages,
     loadingMessages,
     errorMessages,
-    refetch,
+    refetchAllMessages,
     updateMessageStatusMutation,
     idForModal,
   } = useMessageContext();
@@ -37,7 +37,7 @@ export default function TicketsList({ role }: { role: string }): ReactElement {
       if (response?.data?.updateMessageStatus) {
         setOpenSnackbar(true);
         setSnackbarMessage(response.data.updateMessageStatus);
-        refetch();
+        refetchAllMessages();
         setOpenModal(false);
       }
     } catch (error) {

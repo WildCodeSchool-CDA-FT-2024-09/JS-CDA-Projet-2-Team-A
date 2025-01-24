@@ -12,6 +12,10 @@ services:
       timeout: 5s
       retries: 5
 
+  integration-redis:
+    image: redis
+    container_name: redis_cache
+
   integration-server:
     build: ./server
     environment:
@@ -24,3 +28,9 @@ services:
     depends_on:
       integration-db:
         condition: service_healthy
+
+  integration-email:
+    build: ./email
+    command: npm run dev
+    restart: always
+    env_file: ./email/.env

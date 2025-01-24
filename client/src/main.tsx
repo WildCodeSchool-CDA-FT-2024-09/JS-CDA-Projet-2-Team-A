@@ -15,6 +15,7 @@ import TicketsPage from "./pages/TicketsPage/TicketsPage.tsx";
 import SuppliersPage from "./pages/SuppliersPage/SuppliersPage.tsx";
 import ProductPage from "./pages/ProductPage/ProductPage.tsx";
 import OrderPage from "./pages/OrderPage/OrderPage.tsx";
+import NotFound from "./pages/NotFound.tsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -56,6 +57,14 @@ const router = createBrowserRouter([
             path: "",
             element: <OrderPage />,
           },
+          {
+            path: "inventaire",
+            element: <InventoryPage />,
+          },
+          {
+            path: "produit/:id",
+            element: <ProductPage />,
+          },
         ],
       },
       {
@@ -65,7 +74,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <InventoryPage />,
-            children: [],
+          },
+          {
+            path: "produit/:id",
+            element: <ProductPage />,
           },
           {
             path: "tickets",
@@ -74,7 +86,11 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: "admin", element: <AdminHomePage />, children: [] },
+      { path: "admin", element: <AdminHomePage /> },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
 ]);

@@ -7,18 +7,27 @@ import {
   Resolver,
   Ctx,
   Mutation,
+  Authorized,
 } from "type-graphql";
+import { AppDataSource } from "../db/data-source";
 import { User } from "../entities/user.entities";
 import { Role } from "../entities/role.entities";
 import { GraphQLError } from "graphql";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
 import { IncomingMessage, ServerResponse } from "http";
-import { IsString } from "class-validator";
+import {
+  IsEmail,
+  IsEnum,
+  IsString,
+  MaxLength,
+  MinLength,
+  validate,
+} from "class-validator";
 import * as jwt from "jsonwebtoken";
 import "dotenv/config";
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, MAIL_URL, LOGIN_PAGE_URL } = process.env;
 
 interface GraphQLContext {
   req: IncomingMessage;
@@ -61,12 +70,27 @@ class AuthResponse {
 @InputType()
 class CreateUserInput {
   @Field()
+  @IsString()
+  @MinLength(3, {
+    message: `Nom trop court, la longueur minimale est de $constraint1 caractères.`,
+  })
+  @MaxLength(100, {
+    message: `Nom trop long, la longueur maximale est de $constraint1 caractères.`,
+  })
   name: string;
 
   @Field()
+  @IsEmail()
+  @MinLength(6, {
+    message: `E-mail trop court, la longueur minimale est de $constraint1 caractères.`,
+  })
+  @MaxLength(255, {
+    message: `E-mail trop long, la longueur maximale est de $constraint1 caractères.`,
+  })
   email: string;
 
   @Field()
+  @IsEnum(["achat", "approvisionnement", "atelier", "admin"])
   roleName: string;
 }
 
@@ -119,31 +143,40 @@ export default class UserResolver {
           role: user.role.role,
         };
       } else {
-        throw new GraphQLError(
-          "Incorrect password: the specified password does not match the one stored for this user."
-        );
+        throw new GraphQLError("Les identifiants sont incorrects.");
       }
     } else {
-      throw new GraphQLError(
-        "User not found: no user with the specified email exists."
-      );
+      throw new GraphQLError("Les identifiants sont incorrects.");
     }
   }
 
+  @Authorized(["admin"])
   @Query(() => [User])
   async allUsers() {
     const users = await User.find({
       relations: {
         role: true,
       },
+      order: { activationDate: "DESC" },
     });
 
     return users;
   }
 
+  @Authorized(["admin"])
   @Mutation(() => String)
   async createUser(@Arg("body") body: CreateUserInput): Promise<string> {
+    // Validation des données entrantes et gestion des erreurs.
+    const errors = await validate(body);
+    if (errors.length) {
+      throw new GraphQLError("Données entrantes erronées");
+    }
+
+    const queryRunner = AppDataSource.createQueryRunner();
+
     try {
+      await queryRunner.startTransaction();
+
       // Step 1: Generate a cryptographically secure random password
       const passwordLength = 12;
       const randomPassword = this.generateRandomPassword(passwordLength);
@@ -172,11 +205,30 @@ export default class UserResolver {
       user.activationDate = new Date();
 
       // Step 6: Save the user to the database
-      await user.save();
+      await queryRunner.manager.save(user);
 
-      // Step 7: Return the generated password (for use by the user or storing elsewhere)
-      return randomPassword;
+      const success = await fetch(`${MAIL_URL}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: user.email,
+          subject: "Première connexion",
+          firstname: user.name,
+          content: randomPassword,
+          loginUrl: LOGIN_PAGE_URL,
+        }),
+      });
+      if (success.status !== 200) {
+        throw new GraphQLError(
+          "Une erreur est survenue lors de l'envoi de l'e-mail."
+        );
+      }
+      await queryRunner.commitTransaction();
+      return success && "User created successfully.";
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw new GraphQLError(
         error instanceof Error ? error.message : "An error occurred",
         {
@@ -185,6 +237,8 @@ export default class UserResolver {
           },
         }
       );
+    } finally {
+      await queryRunner.release();
     }
   }
 
@@ -204,6 +258,7 @@ export default class UserResolver {
     }
   }
 
+  @Authorized()
   @Mutation(() => String)
   async logout(@Ctx() context: GraphQLContext): Promise<string> {
     const user = context.loggedUser;

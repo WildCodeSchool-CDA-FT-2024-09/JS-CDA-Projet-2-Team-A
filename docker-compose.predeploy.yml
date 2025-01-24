@@ -19,6 +19,10 @@ services:
       predeploy-db:
         condition: service_healthy
 
+  predeploy-redis:
+    image: redis
+    container_name: redis_cache
+
   predeploy-server:
     image: scyanth/stockmanage_server
     env_file: ./server/.env
@@ -27,6 +31,12 @@ services:
     depends_on:
       predeploy-db:
         condition: service_healthy
+
+  predeploy-email:
+    build: ./email
+    command: npm run dev
+    restart: always
+    env_file: ./email/.env
 
   predeploy-client:
     image: scyanth/stockmanage_client

@@ -19,6 +19,11 @@ services:
       db:
         condition: service_healthy
 
+  redis:
+    image: redis
+    container_name: redis_cache
+    restart: always
+
   server:
     build: ./server
     volumes:
@@ -31,6 +36,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  email:
+    build: ./email
+    command: npm run dev
+    restart: always
+    env_file: ./email/.env
 
   client:
     build: ./client
@@ -64,6 +75,7 @@ services:
       - server
       - client
       - uploads
+    restart: always
     healthcheck:
       test:
         [

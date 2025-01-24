@@ -142,3 +142,5 @@ dist-ssr
 
 # Database Sqlite file
 src/db/db.sqlite
+
+data/dataset.csv
