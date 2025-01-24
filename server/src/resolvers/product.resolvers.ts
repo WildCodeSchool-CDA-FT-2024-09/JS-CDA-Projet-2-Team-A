@@ -69,7 +69,6 @@ export default class ProductResolver {
     const categoriesCount = await Product.createQueryBuilder("product")
       .select("COUNT(DISTINCT product.category)", "count")
       .getRawOne();
-
     return parseInt(categoriesCount.count, 10);
   }
 
@@ -78,7 +77,6 @@ export default class ProductResolver {
     const totalStockProduct = await Product.createQueryBuilder("product")
       .select("SUM(product.stock)", "total")
       .getRawOne();
-
     return parseInt(totalStockProduct.total, 10) || 0;
   }
 

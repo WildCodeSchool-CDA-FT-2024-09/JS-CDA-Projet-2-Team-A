@@ -131,7 +131,6 @@ export class OrderResolver {
       );
       return sum + deliveryProductsCount;
     }, 0);
-
     return { countDeliveries, totalProducts };
   }
 
