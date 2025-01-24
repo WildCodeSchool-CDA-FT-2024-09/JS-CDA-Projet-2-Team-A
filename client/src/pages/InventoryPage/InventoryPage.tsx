@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardList from "../../components/DashboardList/DashboardList";
 import DashboardSummary from "../../components/DashboardSummary/DashboardSummary";
+import { useUser } from "../../contexts/UserContext.tsx";
 import {
   useAllProductsQuery,
   useDisableProductMutation,
@@ -38,6 +39,9 @@ export default function InventoryPage() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [switchStates, setSwitchStates] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
+  const {
+    user: { role },
+  } = useUser();
 
   const {
     data: allProductsData,
@@ -267,8 +271,8 @@ export default function InventoryPage() {
     if (selectedRowId) {
       const selectedProduct = allProductsData?.allProducts[selectedRowId - 1];
       if (selectedProduct) {
-        const currentPath = window.location.pathname.replace(/\/$/, "");
-        navigate(`${currentPath}/produit/${selectedRowId}`);
+        // const currentPath = window.location.pathname.replace(/\/$/, "");
+        navigate(`/${role}/produit/${selectedRowId}`);
       }
     } else {
       setSnackbarMessage("Veuillez sélectionner un produit à modifier.");

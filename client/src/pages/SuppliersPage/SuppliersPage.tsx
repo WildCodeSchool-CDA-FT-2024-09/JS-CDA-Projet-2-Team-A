@@ -21,14 +21,12 @@ export default function SuppliersPage(): ReactElement {
   ];
   const dataFormated =
     data?.getAllSuppliersWithEmployees?.map((supplier) => ({
-      id: supplier.id,
-      name: supplier.name,
-      address: supplier.address,
-      city: supplier.city,
-      country: supplier.country,
-      employeeName: supplier.employees[0].name,
-      employeePhone: supplier.employees[0].phone_number,
-      employeeEmail: supplier.employees[0].email,
+      id: supplier?.name || "",
+      address: supplier?.city || "",
+      country: supplier?.country || "",
+      employeeName: supplier?.employees[0]?.name || "",
+      employeePhone: supplier?.employees[0]?.phone_number || "",
+      employeeEmail: supplier?.employees[0]?.email || "",
     })) || [];
 
   return (

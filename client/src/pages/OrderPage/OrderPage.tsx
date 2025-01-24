@@ -30,8 +30,13 @@ import {
 } from "./OrderPageUtils.ts";
 import { GridRowSelectionModel } from "@mui/x-data-grid";
 import { ApolloError } from "@apollo/client";
+import { useUser } from "../../contexts/UserContext.tsx";
 
 export default function OrdersDashboardPage() {
+  const {
+    user: { role },
+  } = useUser();
+
   const [openModal, setOpenModal] = useState(false);
 
   // Pour gérer la sélection d'un fournisseur
@@ -198,31 +203,33 @@ export default function OrdersDashboardPage() {
             >
               {!orderTable ? "Liste des commandes" : "Création de commande"}
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-              }}
-            >
-              <Button
-                variant="contained"
-                type="submit"
+            {role === "achat" && (
+              <Box
                 sx={{
-                  height: "40px",
+                  display: "flex",
+                  gap: "10px",
                 }}
-                onClick={
-                  supplierSelected
-                    ? () => {
-                        if (order.length) {
-                          setOpenModal(true);
-                        }
-                      }
-                    : () => setOrderTable(true)
-                }
               >
-                {supplierSelected ? "Suivant" : "Ajouter une commande"}
-              </Button>
-            </Box>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{
+                    height: "40px",
+                  }}
+                  onClick={
+                    supplierSelected
+                      ? () => {
+                          if (order.length) {
+                            setOpenModal(true);
+                          }
+                        }
+                      : () => setOrderTable(true)
+                  }
+                >
+                  {supplierSelected ? "Suivant" : "Ajouter une commande"}
+                </Button>
+              </Box>
+            )}
           </Box>
           {!orderTable && (
             <DashboardList

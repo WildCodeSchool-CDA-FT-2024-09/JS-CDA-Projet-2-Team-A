@@ -15,6 +15,7 @@ import { OrderStatus } from "../entities/order_status.entities";
 import { OrderProduct } from "../entities/order_product.entities";
 import { Product } from "../entities/product.entities";
 import { Supplier } from "../entities/supplier.entities";
+import redisClient from "../../redis.config";
 
 @ObjectType()
 class OrderDetails {
@@ -108,6 +109,12 @@ export class OrderResolver {
 
   @Query(() => InProgressDeliveryStats)
   async getInProgressDeliveryStats(): Promise<InProgressDeliveryStats> {
+    const cacheKey = `getInProgressDeliveryStats`;
+    const cache = await redisClient.get(cacheKey);
+    if (cache) {
+      return JSON.parse(cache);
+    }
+
     // First find the "en livraison" status entity
     const orderStatus = await OrderStatus.findOne({
       where: { status: "En livraison" },
@@ -132,6 +139,11 @@ export class OrderResolver {
       return sum + deliveryProductsCount;
     }, 0);
 
+    await redisClient.set(
+      cacheKey,
+      JSON.stringify({ countDeliveries, totalProducts }),
+      { EX: 60 }
+    );
     return { countDeliveries, totalProducts };
   }
 
