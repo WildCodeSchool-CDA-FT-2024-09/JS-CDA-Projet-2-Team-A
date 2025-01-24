@@ -10,7 +10,6 @@ import {
   Field,
   Authorized,
 } from "type-graphql";
-import redisClient from "../../redis.config";
 
 @InputType()
 class UpdateProductInput {
@@ -56,58 +55,28 @@ class DisableProductInput {
 export default class ProductResolver {
   @Query(() => [Product])
   async allProducts() {
-    const cacheKey = `allProducts`;
-    const cache = await redisClient.get(cacheKey);
-    if (cache) {
-      return JSON.parse(cache);
-    }
-
     const products = await Product.find({
       relations: {
         supplier: true,
       },
     });
 
-    await redisClient.set(cacheKey, JSON.stringify(products), { EX: 60 });
-
     return products;
   }
 
   @Query(() => Number)
   async countDistinctCategories(): Promise<number> {
-    const cacheKey = "countDistinctCategories";
-    const cache = await redisClient.get(cacheKey);
-    if (cache) {
-      return JSON.parse(cache);
-    }
     const categoriesCount = await Product.createQueryBuilder("product")
       .select("COUNT(DISTINCT product.category)", "count")
       .getRawOne();
-
-    await redisClient.set(
-      cacheKey,
-      JSON.stringify(parseInt(categoriesCount.count, 10)),
-      { EX: 60 }
-    );
     return parseInt(categoriesCount.count, 10);
   }
 
   @Query(() => Number)
   async totalStockProduct(): Promise<number> {
-    const cacheKey = "totalStockProduct";
-    const cache = await redisClient.get(cacheKey);
-    if (cache) {
-      return JSON.parse(cache);
-    }
     const totalStockProduct = await Product.createQueryBuilder("product")
       .select("SUM(product.stock)", "total")
       .getRawOne();
-
-    await redisClient.set(
-      cacheKey,
-      JSON.stringify(parseInt(totalStockProduct.count, 10)),
-      { EX: 60 }
-    );
     return parseInt(totalStockProduct.total, 10) || 0;
   }
 

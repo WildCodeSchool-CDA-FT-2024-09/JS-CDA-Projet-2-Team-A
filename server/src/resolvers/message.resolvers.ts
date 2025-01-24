@@ -19,7 +19,6 @@ import {
   validate,
 } from "class-validator";
 import { ServerResponse } from "http";
-import redisClient from "../../redis.config";
 
 interface ContextType {
   res: ServerResponse;
@@ -72,21 +71,12 @@ class updateStatusBody {
 export default class MessageResolver {
   @Query(() => [Message])
   async getAllMessages(): Promise<Message[]> {
-    const cacheKey = `getAllMessages`;
-    const cache = await redisClient.get(cacheKey);
-    if (cache) {
-      return JSON.parse(cache);
-    }
-
     const messages: Message[] = await Message.find({
       order: { created_at: "DESC" },
     });
     if (!messages) {
       throw new GraphQLError("Impossible de récupérer les tickets.");
     }
-
-    await redisClient.set(cacheKey, JSON.stringify(messages), { EX: 60 });
-
     return messages;
   }
 
