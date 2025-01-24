@@ -271,7 +271,6 @@ export default function InventoryPage() {
     if (selectedRowId) {
       const selectedProduct = allProductsData?.allProducts[selectedRowId - 1];
       if (selectedProduct) {
-        // const currentPath = window.location.pathname.replace(/\/$/, "");
         navigate(`/${role}/produit/${selectedRowId}`);
       }
     } else {
