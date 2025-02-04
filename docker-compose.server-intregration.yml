@@ -1,10 +1,7 @@
 services:
   integration-db:
     image: postgres
-    environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
-      - POSTGRES_DB=db
+    env_file: ./server/.env
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
@@ -18,11 +15,7 @@ services:
 
   integration-server:
     build: ./server
-    environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
-      - POSTGRES_DB=db
-      - POSTGRES_HOST=integration-db
+    env_file: ./server/.env
     command: npm run test
     restart: always
     depends_on:

@@ -125,7 +125,7 @@ export default function ModalForm<T extends Record<string, unknown>>({
                     >
                       {imagePreview ? (
                         <img
-                          src={imagePreview}
+                          src={`/${imagePreview}`}
                           alt="Prévisualisation"
                           style={{
                             maxWidth: "100%",

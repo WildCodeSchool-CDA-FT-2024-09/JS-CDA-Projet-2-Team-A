@@ -175,7 +175,7 @@ export default function OrdersDashboardPage() {
           gap: "20px",
         }}
       >
-        <DashboardSummary lowStockCount={0} outOfStockCount={0} />
+        <DashboardSummary lowStockCount={93} outOfStockCount={15} />
         <Box
           sx={{
             borderRadius: "5px",
