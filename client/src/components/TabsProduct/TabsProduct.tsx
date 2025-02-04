@@ -239,7 +239,7 @@ export default function TabsProductGlobal({
                     }}
                   >
                     <img
-                      src={image || "/image-placeholder.svg"}
+                      src={image ? `/${image}` : "/image-placeholder.svg"}
                       alt={category}
                       style={{
                         left: "0",

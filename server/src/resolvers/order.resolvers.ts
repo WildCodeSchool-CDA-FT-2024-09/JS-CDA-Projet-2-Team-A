@@ -78,6 +78,7 @@ export class OrderResolver {
   @Query(() => [OrderDetails])
   async getOrderDetails(): Promise<OrderDetails[]> {
     const orders = await Order.find({
+      order: { id: "DESC" },
       relations: [
         "orderProduct",
         "orderProduct.product",

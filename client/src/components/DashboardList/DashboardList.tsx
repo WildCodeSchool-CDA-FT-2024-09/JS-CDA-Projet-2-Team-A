@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import useScreenSize from "../../hook/useScreenSize";
+import { frFR } from "@mui/x-data-grid/locales";
 
 interface DashboardListProps<T> {
   columns: GridColDef[];
@@ -30,6 +31,7 @@ export default function DashboardList<T>({
       >
         {data.length ? (
           <DataGrid
+            localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
             rows={data}
             columns={columns}
             initialState={{
@@ -50,7 +52,7 @@ export default function DashboardList<T>({
           />
         ) : (
           <Typography variant="h6" component="h3">
-            Aucune donnée à afficher.
+            Chargement...
           </Typography>
         )}
       </Box>
